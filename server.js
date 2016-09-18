@@ -11,7 +11,7 @@ app.use('/static', express.static('static'));
 //setup mongoDB
 const getModel = require('./src/mongoDB.js')({
     debug: true,
-    connectURI: 'mongodb://localhost/visitingLandmarks'
+    connectURI: 'mongodb://user:WFchAU13dCAjlsXz78DN@ds033116.mlab.com:33116/vlm_pascal'
 });
 
 const passportSocketIo = require('passport.socketio');

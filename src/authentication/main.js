@@ -6,8 +6,10 @@ module.exports = (app, io, User)=> {
     const passport = require('passport');
     const passportSocketIo = require('passport.socketio');
     const session = require('express-session');
-    const RedisStore = require('connect-redis')(session);
-    const store = new RedisStore();
+
+    //@todo: Redis session store for production? Or at least file based?
+    //const RedisStore = require('connect-redis')(session);
+    //const store = new RedisStore();
     const secret = 'acf8u5HDhVWBmd8p';
     const cookieName = 'session';
 
@@ -20,7 +22,7 @@ module.exports = (app, io, User)=> {
         key: cookieName,
         resave : false,
         saveUninitialized : false,
-        store,
+        //store,
         secret,
         cookie: { maxAge : 604800000 }
     }));
@@ -51,7 +53,7 @@ module.exports = (app, io, User)=> {
         key:          cookieName,
         passport,
         secret,
-        store,
+        //store,
         success:      onAuthorizeSuccess,  // *optional* callback on success - read more below
         fail:         onAuthorizeFail     // *optional* callback on fail/error - read more below
     }));
