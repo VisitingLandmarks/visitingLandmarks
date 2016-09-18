@@ -3,7 +3,7 @@ import renderString  from './view/serverSide.jsx';
 import passport from 'passport';
 import logger from './logger';
 
-export default module.exports = (app, getConnectionByUserId, getModel) => {
+export default module.exports = (app, getConnectionByUserId, getModel) => { //eslint-disable-line no-unused-vars
 
     // We are going to fill these out in the sections to follow
     const handleRender = (req, res) => {
@@ -24,9 +24,9 @@ export default module.exports = (app, getConnectionByUserId, getModel) => {
     app.get('/', handleRender);
 
 
-    app.post('/login', passport.authenticate('local'), function (req, res) {
+    app.post('/login', passport.authenticate('local'), function (req, res) { //eslint-disable-line no-unused-vars
 
-        const user = req.user;
+        //const user = req.user; 
         //Challenge.getByUser(req.user._id).then((challenges) => {
         //    res.json({
         //       user,
