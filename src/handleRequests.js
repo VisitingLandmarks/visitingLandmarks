@@ -26,13 +26,10 @@ export default module.exports = (app, getConnectionByUserId, getModel) => { //es
 
     app.post('/login', passport.authenticate('local'), function (req, res) { //eslint-disable-line no-unused-vars
 
-        //const user = req.user; 
-        //Challenge.getByUser(req.user._id).then((challenges) => {
-        //    res.json({
-        //       user,
-        //        challenges
-         //   });
-        //});
+        const user = req.user;
+        res.json({
+            user
+        });
 
     });
 

@@ -19,7 +19,7 @@ export default (store) => {
     const changer = {
         true: () => {
             currentState = true;
-            window.socket = io.connect('http://localhost:8000');
+            window.socket = io.connect('http://localhost:8001');
 
             //bind client side events
             window.socket.on('storeAction', store.dispatch);

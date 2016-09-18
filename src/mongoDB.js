@@ -16,8 +16,8 @@ var getMongoDB = function (config) {
     return mongoose;
 };
 
-const models = {};
 const getModelFactory = (config) => {
+    const models = {};
 
     /**
      * this function initializes the model

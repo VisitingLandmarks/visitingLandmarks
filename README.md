@@ -44,7 +44,12 @@ There are several grunt tasks for different quality checks. Easiest is you just 
 * Grunt
 * Webpack
 * Babel
-* Apache Cordova / Adobe Phonegap
+* Apache Cordova / Adobe PhoneGap
+
+#### UserManagement
+* passport.js
+* express-session
+* connect-mongo
 
 #### Testing
 * Mocha
