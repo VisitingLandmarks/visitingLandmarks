@@ -1,0 +1,58 @@
+import React from 'react';
+// import ReactDOM from 'react-dom';
+
+import {Provider} from 'react-redux'
+import {createStore} from 'redux';
+import {renderToString} from 'react-dom/server';
+import visitingLandmarks from './container/visitingLandmarks';
+import reducer from './reducer/reducer';
+
+import loggedInAction from './action/loggedIn';
+import addChallengeAction from './action/addChallenge';
+
+export default (user, challenges, userAgent) => {
+
+
+    // Create a new Redux store instance
+    const store = createStore(reducer);
+
+    if (user) {
+        store.dispatch(loggedInAction(user));
+    }
+
+    if (challenges) {
+        store.dispatch(addChallengeAction(challenges));
+    }
+
+    // Render the component to a string
+    const html = renderToString(
+        <Provider store={store}>
+            <visitingLandmarks radiumConfig={{userAgent}} />
+        </Provider>
+    );
+
+    // Grab the initial state from our Redux store
+    const initialState = store.getState();
+    return renderFullPage(html, initialState);
+}
+
+//@todo: move to template
+function renderFullPage(html, initialState) {
+    return `
+    <!doctype html>
+    <html>
+      <head>
+        <title>visitingLandmarks</title>
+        
+      </head>
+      <body>
+        <div id="root">${html}</div>
+        <script>
+          window.__INITIAL_STATE__ = ${JSON.stringify(initialState)}
+        </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+         <script src="static/all.js"></script>
+      </body>
+    </html>
+    `
+}
