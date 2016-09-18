@@ -4,26 +4,26 @@ const logger = require('../logger');
 module.exports = function (mongoDB) {
 
     const userSchema = new mongoDB.Schema({
-            email: {
-                type: String,
-                trim: true,
-                unique: true,
-                lowercase: true,
-                required: 'Email address is required',
-                match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
-            },
-            name: String,
-            passwordHash: {
-                type: String,
-                required: true,
-                select: false
-            },
-            passwordSalt: {
-                type: String,
-                required: true,
-                select: false
-            }
+        email: {
+            type: String,
+            trim: true,
+            unique: true,
+            lowercase: true,
+            required: 'Email address is required',
+            match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
         },
+        name: String,
+        passwordHash: {
+            type: String,
+            required: true,
+            select: false
+        },
+        passwordSalt: {
+            type: String,
+            required: true,
+            select: false
+        }
+    },
         {
             timestamps: true
         });
@@ -74,8 +74,6 @@ module.exports = function (mongoDB) {
      */
     userSchema.statics.getRandom = (ignoreUUIDs)=> {
 
-        console.log('getRandom', ignoreUUIDs);
-
         const filter = {_id: {$nin: ignoreUUIDs}};
         return UserModel.count(filter).exec().then((count) => {
 
@@ -102,7 +100,6 @@ module.exports = function (mongoDB) {
         //@todo: verify security level of password
         return generatePasswordHash(clearTextPassword)
             .then((passwordData) => {
-                console.log(passwordData)
                 const passwordHash = passwordData.passwordHash;
                 const passwordSalt = passwordData.passwordSalt;
 
@@ -117,7 +114,7 @@ module.exports = function (mongoDB) {
                 });
 
             });
-    }
+    };
 
     /**
      * get the minimal unique information to identify a user in sessions
@@ -126,7 +123,7 @@ module.exports = function (mongoDB) {
      * @param done
      */
     userSchema.statics.serializeUser = (user, done) => {
-        logger.debug('serialize User')
+        logger.debug('serialize User');
         done(null, user._id);
     };
 
@@ -138,7 +135,7 @@ module.exports = function (mongoDB) {
      * @param done
      */
     userSchema.statics.deserializeUser = (id, done) => {
-        logger.debug('deserialize User')
+        logger.debug('deserialize User');
         UserModel.findById(id).select('-__v').exec(done);
     };
 

@@ -28,9 +28,9 @@ export default (store) => {
             currentState = false;
             window.socket.disconnect();
         }
-    }
+    };
 
     store.subscribe(changeState);
     changeState();
 
-}
+};

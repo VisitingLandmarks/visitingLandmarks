@@ -27,12 +27,12 @@ export default module.exports = (app, getConnectionByUserId, getModel) => {
     app.post('/login', passport.authenticate('local'), function (req, res) {
 
         const user = req.user;
-        Challenge.getByUser(req.user._id).then((challenges) => {
-            res.json({
-                user,
-                challenges
-            });
-        });
+        //Challenge.getByUser(req.user._id).then((challenges) => {
+        //    res.json({
+        //       user,
+        //        challenges
+         //   });
+        //});
 
     });
 

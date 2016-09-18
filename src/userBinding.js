@@ -1,7 +1,7 @@
-const logger = require('./logger');
+const logger = require('./logger'); //eslint-disable-line no-unused-vars
 // import addChallengeAction from './view/action/addChallenge.js';
 
-module.exports = (getModel, getConnectionByUserId) => {
+module.exports = (getModel, getConnectionByUserId) => { //eslint-disable-line no-unused-vars
 
 
     // const Challenges = getModel('challenge');
@@ -15,7 +15,7 @@ module.exports = (getModel, getConnectionByUserId) => {
     //
     // }
 
-    return (userSocket) => {
+    return (userSocket) => {//eslint-disable-line no-unused-vars
 
         // userSocket.on('addChallenge', (cb)=> {
         //

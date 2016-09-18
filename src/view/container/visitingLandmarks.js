@@ -1,4 +1,4 @@
-import {connect} from 'react-redux'
+import {connect} from 'react-redux';
 
 import visitingLandmarks from '../presentational/visitingLandmarks.jsx';
 
@@ -13,7 +13,7 @@ const mapStateToProps = (state) => {
         loggedIn: !!state.user,
         username: state.user && state.user.name,
         failedLogin : !!state.failedLogin
-    }
+    };
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -22,7 +22,7 @@ const mapDispatchToProps = (dispatch) => {
         handleLogout: () => dispatch(loggedOutAction()),
         onFailedLogIn: () => dispatch(failedLogInAction()),
         onChallengeAdded: (challenge) => dispatch(addChallengeAction(challenge))
-    }
+    };
 };
 
 

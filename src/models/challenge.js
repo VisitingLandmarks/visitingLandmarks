@@ -3,11 +3,11 @@ const logger = require('../logger');
 module.exports = function (mongoDB) {
 
     const challengeSchema = new mongoDB.Schema({
-            player: [mongoDB.Schema.Types.ObjectId],
-            results: mongoDB.Schema.Types.Mixed,
-            currentPuzzle: mongoDB.Schema.Types.ObjectId
+        player: [mongoDB.Schema.Types.ObjectId],
+        results: mongoDB.Schema.Types.Mixed,
+        currentPuzzle: mongoDB.Schema.Types.ObjectId
 
-        },
+    },
         {
             timestamps: true
         });
