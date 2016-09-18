@@ -19,8 +19,14 @@ export default class LoginArea extends React.Component {
 
     render() {
         return (
-            this.props.loggedIn ? <LoggedIn username={this.props.username} handleLogout={this.props.handleLogout}/> :
-                <Login handleLoginSubmit={this.handleLoginSubmit} failedLogin={this.props.failedLogin}/>
+            <div className="LoginArea">
+
+                {
+                    this.props.loggedIn ?
+                    <LoggedIn username={this.props.username} handleLogout={this.props.handleLogout}/> :
+                    <Login handleLoginSubmit={this.handleLoginSubmit} failedLogin={this.props.failedLogin}/>
+                }
+            </div>
         )
     }
 }

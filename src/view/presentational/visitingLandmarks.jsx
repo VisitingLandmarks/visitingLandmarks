@@ -1,6 +1,8 @@
 import React from 'react';
-import LoginArea from './loginArea.jsx';
 import Radium from 'radium';
+
+import MainMap from './mainMap.jsx';
+import LoginArea from './loginArea.jsx';
 
 class VisitingLandmarks extends React.Component {
     constructor(props) {
@@ -9,7 +11,8 @@ class VisitingLandmarks extends React.Component {
 
     render() {
         return (
-            <div>
+            <div className="mainContainer">
+                <MainMap/>
                 <LoginArea {...this.props}/>
             </div>
         )

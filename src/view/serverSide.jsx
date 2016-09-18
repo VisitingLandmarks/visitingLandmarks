@@ -37,7 +37,10 @@ function renderFullPage(html, initialState) {
     <html>
       <head>
         <title>visitingLandmarks</title>
-        
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+        <link rel="stylesheet" href="static/style.css">
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.0-rc.3/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.0.0-rc.3/dist/leaflet.js"></script>
       </head>
       <body>
         <div id="root">${html}</div>
