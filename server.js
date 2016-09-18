@@ -1,18 +1,17 @@
 'use strict';
 require('babel-register');
 
+const config = require('./config');
+
 //setup express
 const express = require('express');
-const {app, server} = require('./src/express.js')(express, 8000);
+const {app, server} = require('./src/express.js')(express, config.port);
 
 //setup routes
 app.use('/static', express.static('static'));
 
 //setup mongoDB
-const getModel = require('./src/mongoDB.js')({
-    debug: true,
-    connectURI: 'mongodb://user:WFchAU13dCAjlsXz78DN@ds033116.mlab.com:33116/vlm_pascal'
-});
+const getModel = require('./src/mongoDB.js')(config.mongoDB);
 
 const passportSocketIo = require('passport.socketio');
 const getConnectionByUserId = (userId) => {
