@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import visitingLandmarks from './container/visitingLandmarks.js';
+import VisitingLandmarks from './container/visitingLandmarks.js';
 import {Provider} from 'react-redux'
 import {createStore} from 'redux'
 import reducer from './reducer/reducer';
@@ -12,7 +12,7 @@ delete window.__INITIAL_STATE__;
 
 ReactDOM.render(
     <Provider store={store}>
-        <visitingLandmarks />
+        <VisitingLandmarks />
     </Provider>
     , document.getElementById('root'));
 

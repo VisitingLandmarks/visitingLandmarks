@@ -1,7 +1,4 @@
-module.exports = {
-    port: 8000,
-    mongoDB:{
-        debug: true,
-        connectURI: 'mongodb://user:WFchAU13dCAjlsXz78DN@ds033116.mlab.com:33116/vlm_pascal'
-    }
-}
+/**
+ * builds config based on a public base.js and a private local.js
+ */
+module.exports = require('deepmerge')(require('./base.js'), require('./local.js'));

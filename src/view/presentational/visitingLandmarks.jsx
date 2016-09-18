@@ -1,9 +1,8 @@
 import React from 'react';
 import LoginArea from './loginArea.jsx';
-import Challenges from './challenges.jsx';
 import Radium from 'radium';
 
-class visitingLandmarks extends React.Component {
+class VisitingLandmarks extends React.Component {
     constructor(props) {
         super(props);
     }
@@ -12,10 +11,9 @@ class visitingLandmarks extends React.Component {
         return (
             <div>
                 <LoginArea {...this.props}/>
-               <Challenges onChallengeAdded={this.props.onChallengeAdded} challenges={this.props.challenges}/>
             </div>
         )
     }
 }
 
-export default Radium(visitingLandmarks);
+export default Radium(VisitingLandmarks);

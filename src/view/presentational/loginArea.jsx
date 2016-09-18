@@ -13,9 +13,6 @@ export default class LoginArea extends React.Component {
         $.post('/login', loginData)
             .done((data) => {
                 component.props.onLoggedIn(data.user);
-                if (data.challenges) {
-                    component.props.onChallengeAdded(data.challenges);
-                }
             })
             .fail(component.props.onFailedLogIn);
     }

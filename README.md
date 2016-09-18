@@ -1,27 +1,59 @@
 # visitingLandmarks
 
+## Run It
+1. Install node.js (>=6.0.0)
+2. Install grunt-cli 
+```
+npm install -g grunt-cli
+```
+3. Install dependencies
+```
+npm install
+```
+4. Setup an local config file (config/local.js) and configure your DB endpoint
+```javascript
+module.exports = {
+    mongoDB:{
+        connectURI: 'mongodb://user:password@server:port/db'
+    }
+};
+```
+5. Pack client files
+```
+grunt webpack
+```
+6. Start the server
+```
+node server
+```
+
+
 ### TechStack
 
 #### Frontend
 * React
 * Redux
+* Radium
+
+#### Communication
 * socket.io
 
 #### TaskRunner / Building
 * Grunt
 * Webpack
 * Babel
+* Apache Cordova / Adobe Phonegap
 
 #### Testing
 * Mocha
-* Sinon
 * Chai
+* Sinon
 
 #### Backend + DB
 * Node.js
 * Express
-* Mongoose
 * MongoDB
+* Mongoose
 
 #### Map / Geolocation
 * Leaflet.js

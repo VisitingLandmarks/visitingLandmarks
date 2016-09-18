@@ -1,5 +1,5 @@
 // This is fired every time the server side receives a request
-import renderString  from './view/serverSide.jsx';
+import serverSide  from './view/serverSide.jsx';
 import passport from 'passport';
 import logger from './logger';
 
@@ -14,7 +14,7 @@ export default module.exports = (app, getConnectionByUserId, getModel) => { //es
             req.headers['user-agent']
         ]).then(values => {
             // Send the rendered page back to the client
-            res.send(renderString(...values));
+            res.send(serverSide(...values));
         }, err => {
             res.status(500).send(err);
         });

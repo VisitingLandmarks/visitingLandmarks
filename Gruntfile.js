@@ -69,10 +69,10 @@ module.exports = function (grunt) {
                 failOnError: false, // don't report error to grunt if webpack find errors
                 // Use this if webpack errors are tolerable and grunt should continue
 
-                watch: true, // use webpacks watcher
+                watch: false, // use webpacks watcher
                 // You need to keep the grunt process alive
 
-                keepalive: true // don't finish the grunt task
+                keepalive: false // don't finish the grunt task
                 // Use this in combination with the watch option
 
                 //inline: true,  // embed the webpack-dev-server runtime into the bundle

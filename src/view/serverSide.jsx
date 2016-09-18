@@ -4,14 +4,12 @@ import React from 'react';
 import {Provider} from 'react-redux'
 import {createStore} from 'redux';
 import {renderToString} from 'react-dom/server';
-import visitingLandmarks from './container/visitingLandmarks';
+import VisitingLandmarks from './container/visitingLandmarks';
 import reducer from './reducer/reducer';
 
 import loggedInAction from './action/loggedIn';
-import addChallengeAction from './action/addChallenge';
 
-export default (user, challenges, userAgent) => {
-
+export default (user, userAgent) => {
 
     // Create a new Redux store instance
     const store = createStore(reducer);
@@ -20,14 +18,10 @@ export default (user, challenges, userAgent) => {
         store.dispatch(loggedInAction(user));
     }
 
-    if (challenges) {
-        store.dispatch(addChallengeAction(challenges));
-    }
-
     // Render the component to a string
     const html = renderToString(
         <Provider store={store}>
-            <visitingLandmarks radiumConfig={{userAgent}} />
+            <VisitingLandmarks radiumConfig={{userAgent}} />
         </Provider>
     );
 
