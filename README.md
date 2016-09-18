@@ -27,4 +27,4 @@
 * Leaflet.js
 
 #### Graphic Icon
-Front Lawn House by Alfredo Hernandez from the Noun Project
+* House by Vishwas Shetty from the Noun Project
