@@ -3,7 +3,7 @@ import config from '../../config';
 
 module.exports = (app, io, User)=> {
 
-    const logger = require('../logger.js');
+    const logger = require('../helper/logger.js');
     const passport = require('passport');
     const passportSocketIo = require('passport.socketio');
     const session = require('express-session');

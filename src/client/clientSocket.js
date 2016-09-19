@@ -1,7 +1,9 @@
 import io from 'socket.io-client';
 
+
 /**
  * establish socket.io connection for loggedIn Users
+ * and manage the state of the connection
  * @param store
  */
 export default (store) => {
@@ -16,6 +18,10 @@ export default (store) => {
         }
     };
 
+    /**
+     * handles two methods to switch between true(connected) and false(disconnected)
+     * @type {{true: (function()), false: (function())}}
+     */
     const changer = {
         true: () => {
             currentState = true;

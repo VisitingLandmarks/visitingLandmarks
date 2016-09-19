@@ -1,12 +1,15 @@
 // This is fired every time the server side receives a request
 import serverSide  from './view/serverSide.jsx';
 import passport from 'passport';
-import logger from './logger';
+import logger from './helper/logger.js';
 
 export default module.exports = (app, getConnectionByUserId, getModel) => { //eslint-disable-line no-unused-vars
 
-    // We are going to fill these out in the sections to follow
-    const handleRender = (req, res) => {
+
+    /**
+     * handle all get requests on the main address, in short deliver the app
+     */
+    app.get('/', (req, res) => {
 
         Promise.all([
             req.user,
@@ -19,12 +22,14 @@ export default module.exports = (app, getConnectionByUserId, getModel) => { //es
             res.status(500).send(err);
         });
 
-    };
-
-    app.get('/', handleRender);
+    });
 
 
-    app.post('/login', passport.authenticate('local'), function (req, res) { //eslint-disable-line no-unused-vars
+    /**
+     * handle a post on the login route
+     * send back the user if successful
+     */
+    app.post('/login', passport.authenticate('local'), function (req, res) {
 
         const user = req.user;
         res.json({
@@ -34,7 +39,9 @@ export default module.exports = (app, getConnectionByUserId, getModel) => { //es
     });
 
 
-    //logout - post only, get is a bad idea -> prefetch
+    /**
+     * logout - post only, get is a bad idea -> prefetch
+     */
     app.post('/logout', function (req, res) {
         if (req.user) {
 

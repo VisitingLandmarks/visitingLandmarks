@@ -1,7 +1,9 @@
 module.exports = {
+    name: 'visitingLandmarks',
+    logLevel: 'debug',
     port: 8001,
-    mongoDB:{
+    mongoDB: {
         debug: true,
-        connectURI : 'mongodb://localhost'
+        connectURI: 'mongodb://localhost'
     }
 };

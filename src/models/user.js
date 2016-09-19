@@ -1,29 +1,39 @@
 import {verify as verifyPassword, generate as generatePasswordHash} from '../helper/password.js';
-const logger = require('../logger');
+import logger from '../helper/logger.js';
 
-module.exports = function (mongoDB) {
+/**
+ * returns a mongoose model representing a User
+ * @param mongoDB
+ * @return UserModel
+ */
+export default module.exports = function (mongoDB) {
 
     const userSchema = new mongoDB.Schema({
-        email: {
-            type: String,
-            trim: true,
-            unique: true,
-            lowercase: true,
-            required: 'Email address is required',
-            match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
+            email: {
+                type: String,
+                trim: true,
+                unique: true,
+                lowercase: true,
+                required: 'Email address is required',
+                match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
+            },
+            name: String,
+            isAdmin: {
+                type: Boolean,
+                required: true,
+                default: false
+            },
+            passwordHash: {
+                type: String,
+                required: true,
+                select: false
+            },
+            passwordSalt: {
+                type: String,
+                required: true,
+                select: false
+            }
         },
-        name: String,
-        passwordHash: {
-            type: String,
-            required: true,
-            select: false
-        },
-        passwordSalt: {
-            type: String,
-            required: true,
-            select: false
-        }
-    },
         {
             timestamps: true
         });
@@ -67,25 +77,26 @@ module.exports = function (mongoDB) {
         });
     };
 
+
     /**
      * return a random user and ignore a array of uuid for the result
      * @param ignoreUUIDs
      * @returns {Promise.<TResult>}
      */
-    userSchema.statics.getRandom = (ignoreUUIDs)=> {
-
-        const filter = {_id: {$nin: ignoreUUIDs}};
-        return UserModel.count(filter).exec().then((count) => {
-
-            //no need to run the findOne as well
-            if (!count) {
-                return;
-            }
-
-            var random = Math.floor(Math.random() * count);
-            return UserModel.findOne(filter).skip(random).exec();
-        });
-    };
+    // userSchema.statics.getRandom = (ignoreUUIDs)=> {
+    //
+    //     const filter = {_id: {$nin: ignoreUUIDs}};
+    //     return UserModel.count(filter).exec().then((count) => {
+    //
+    //         //no need to run the findOne as well
+    //         if (!count) {
+    //             return;
+    //         }
+    //
+    //         var random = Math.floor(Math.random() * count);
+    //         return UserModel.findOne(filter).skip(random).exec();
+    //     });
+    // };
 
 
     /**
@@ -95,7 +106,7 @@ module.exports = function (mongoDB) {
      * @param name (optional)
      * @returns {Promise}
      */
-    userSchema.statics.register = (email, clearTextPassword, name) => {
+    userSchema.statics.register = (email, clearTextPassword, name, isAdmin) => {
 
         //@todo: verify security level of password
         return generatePasswordHash(clearTextPassword)
@@ -105,9 +116,9 @@ module.exports = function (mongoDB) {
 
                 return new UserModel({
                     passwordHash,
-
                     passwordSalt,
                     email,
+                    isAdmin,
                     name
                 }).save().catch((message)=> {
                     logger.error({email, message}, 'mongoDB Error in userSchema.statics.register');
@@ -115,6 +126,7 @@ module.exports = function (mongoDB) {
 
             });
     };
+
 
     /**
      * get the minimal unique information to identify a user in sessions

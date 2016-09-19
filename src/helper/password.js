@@ -1,6 +1,6 @@
 'use strict';
 const crypto = require('crypto');
-const logger = require('../logger.js');
+import logger from './logger.js';
 
 /**
  * generates random string of characters i.e salt

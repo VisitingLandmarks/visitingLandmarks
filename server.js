@@ -30,7 +30,7 @@ io.on('connection', require('./src/userBinding.js')(getModel, getConnectionByUse
 const authentication = require('./src/authentication/main.js')(app, io, getModel('user'));
 
 //setup logging
-const logger = require('./src/logger.js');
+const logger = require('./src/helper/logger.js');
 var uuid = require('node-uuid');
 app.use(function (req, res, next) {
     req.logger = logger.child({reqId: uuid()});
@@ -39,8 +39,6 @@ app.use(function (req, res, next) {
 
 require('./src/handleRequests.js')(app, getConnectionByUserId, getModel);
 
-
-// const UserModel = getModel('user');
 //
-// UserModel.register('testing1@test.com', 'pw1');
-// UserModel.register('testing2@test.com', 'pw2');
+// const UserModel = getModel('user');
+// UserModel.register('admin@test.com', 'admin', 'admin', true);

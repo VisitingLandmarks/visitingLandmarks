@@ -1,0 +1,14 @@
+body {
+    padding: 0;
+    margin: 0;
+}
+html, body, #root, .mainContainer, #mainMap {
+    height: 100%;
+}
+
+.LoginArea {
+    position: fixed;
+    bottom: 100px;
+    right:100px;
+    z-index:50000;
+}
