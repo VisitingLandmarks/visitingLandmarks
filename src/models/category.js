@@ -12,7 +12,8 @@ export default module.exports = function (mongoDB) {
             name: {
                 en : String,
                 dk : String
-            }
+            },
+            items: [mongoDB.Schema.ObjectId]
         },
         {
             timestamps: true

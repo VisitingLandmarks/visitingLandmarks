@@ -32,7 +32,6 @@
     "express-session": "^1.14.1",
     "grunt": "^1.0.1",
     "mongoose": "^4.6.0",
-    "node-uuid": "^1.4.7",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
     "passport.socketio": "^3.6.2",
