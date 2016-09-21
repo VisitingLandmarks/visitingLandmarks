@@ -1,4 +1,5 @@
 export default {
     failedLogin: 0,
-    user:false
+    user:false,
+    locations : []
 };

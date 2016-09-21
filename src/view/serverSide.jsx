@@ -8,14 +8,19 @@ import VisitingLandmarks from './container/visitingLandmarks';
 import reducer from './reducer/reducer';
 
 import loggedInAction from './action/loggedIn';
+import setLocationsAction from './action/setLocations';
 
-export default (user, userAgent) => {
+export default (user, locations, userAgent) => {
 
     // Create a new Redux store instance
     const store = createStore(reducer);
 
     if (user) {
         store.dispatch(loggedInAction(user));
+    }
+
+    if (locations) {
+        store.dispatch(setLocationsAction(locations));
     }
 
     // Render the component to a string

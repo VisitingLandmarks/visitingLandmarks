@@ -12,7 +12,7 @@ class VisitingLandmarks extends React.Component {
     render() {
         return (
             <div className="mainContainer">
-                <MainMap/>
+                <MainMap locations={this.props.locations}/>
                 <LoginArea {...this.props}/>
             </div>
         )

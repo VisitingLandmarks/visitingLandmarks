@@ -1,5 +1,5 @@
 export const type = 'LOGGED_OUT';
-export default (user) => { // eslint-disable-line no-unused-vars
+export default () => { 
     return {
         type
     };

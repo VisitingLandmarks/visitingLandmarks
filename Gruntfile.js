@@ -55,7 +55,7 @@ module.exports = function (grunt) {
                 stats: {
                     // Configure the console output
                     colors: false,
-                    modules: true,
+                    modules: false,
                     reasons: true
                 },
                 // stats: false disables the stats output
@@ -63,7 +63,7 @@ module.exports = function (grunt) {
                 //storeStatsTo: "xyz", // writes the status to a variable named xyz
                 // you may use it later in grunt i.e. <%= xyz.hash %>
 
-                progress: false, // Don't show progress
+                progress: true, // Don't show progress
                 // Defaults to true
 
                 failOnError: false, // don't report error to grunt if webpack find errors

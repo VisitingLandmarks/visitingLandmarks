@@ -5,6 +5,7 @@ import logger from './helper/logger.js';
 
 export default module.exports = (app, getConnectionByUserId, getModel) => { //eslint-disable-line no-unused-vars
 
+    const Location = getModel('location');
 
     /**
      * handle all get requests on the main address, in short deliver the app
@@ -12,9 +13,10 @@ export default module.exports = (app, getConnectionByUserId, getModel) => { //es
     app.get('/', (req, res) => {
 
         Promise.all([
-            req.user,
-            //req.user && Challenge.getByUser(req.user._id),
-            req.headers['user-agent']
+            //which data is required for rendering?
+            req.user, //the user
+            Location.find().exec(), //all locations //@todo: filter returned fields
+            req.headers['user-agent'] //the user agent
         ]).then(values => {
             // Send the rendered page back to the client
             res.send(serverSide(...values));
