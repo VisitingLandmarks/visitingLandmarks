@@ -8,11 +8,14 @@ export default class MainMap extends React.Component {
     componentDidMount() {
         console.log('didMount', this.props);
         this.leafLetMap = L.map('mainMap');
-        L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png').addTo(this.leafLetMap);
+        L.tileLayer('https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png').addTo(this.leafLetMap);
 
         //geolocation
-        this.leafLetMap.locate({watch: true, setView: true, maxZoom: 16});
-        this.leafLetMap.on('locationfound', onLocationFound.bind(this.leafLetMap));
+        //first location and setting the view
+        this.leafLetMap.locate({setView: true, maxZoom: 16});
+
+        //continous watching to redraw the marker
+        this.leafLetMap.on('locationfound', onLocationFound.bind(this));
 
         //marker and popup
         this.props.locations.forEach((location)=> {
@@ -40,7 +43,14 @@ export default class MainMap extends React.Component {
  */
 function onLocationFound(e) {
     console.log('onLocation');
+
+    //go to watching mode for geolocation
+    if (!this.isGeoWatching) {
+        this.leafLetMap.locate({watch: true});
+        this.isGeoWatching = true;
+    }
+
     var radius = e.accuracy / 2;
-    L.marker(e.latlng).addTo(this);
-    L.circle(e.latlng, radius).addTo(this);
+    L.marker(e.latlng).addTo(this.leafLetMap);
+    L.circle(e.latlng, radius).addTo(this.leafLetMap);
 }
