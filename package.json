@@ -49,21 +49,21 @@
     "socket.io": "^1.4.8",
     "socket.io-client": "^1.4.8",
     "webpack": "^1.13.2",
-    "xml2js": "^0.4.17"
-  },
-  "devDependencies": {
-    "chai": "^3.5.0",
-    "deep-freeze": "0.0.1",
     "eslint-plugin-react": "^6.2.2",
     "grunt-eslint": "^19.0.0",
     "grunt-mocha-test": "^0.13.1",
     "grunt-nodemon": "^0.4.2",
     "grunt-webpack": "^1.0.14",
+    "webpack-dev-server": "^1.16.0",
+    "xml2js": "^0.4.17"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "deep-freeze": "0.0.1",
+
     "jsdom": "^9.5.0",
     "mocha": "^3.0.2",
     "sinon": "^1.17.5",
-    "sinon-chai": "^2.8.0",
-    "webpack": "^1.13.2",
-    "webpack-dev-server": "^1.16.0"
+    "sinon-chai": "^2.8.0"
   }
 }
