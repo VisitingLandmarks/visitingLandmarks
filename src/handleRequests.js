@@ -15,7 +15,7 @@ export default module.exports = (app, getConnectionByUserId, getModel) => { //es
         Promise.all([
             //which data is required for rendering?
             req.user, //the user
-            Location.find().exec(), //all locations //@todo: filter returned fields
+            Location.getAllForMap(), //all locations
             req.headers['user-agent'] //the user agent
         ]).then(values => {
             // Send the rendered page back to the client

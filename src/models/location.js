@@ -32,10 +32,30 @@ export default module.exports = function (mongoDB) {
                     default: [0, 0]
                 }
             },
+
+            postCode: Number,
+            postDistrict: String,
+
+            complexTypeId: Number,
+            complexTypeTerm: String,
+
             constructionYear: Number,
+            conversionYear: Number,
+            floors: Number,
             buildArea: Number,
             totalArea: Number,
-            floors: Number,
+
+            material: {
+                outerWallsId : Number,
+                outerWallsTerm : String,
+                roofId : Number,
+                roofTerm : String,
+                materialsSourceId : Number,
+                materialsSourceTerm : String,
+                areaSourceId : Number,
+                areaSourceTerm : String
+            },
+
             usageId: Number,
             usageTerm: String
         },
@@ -43,8 +63,20 @@ export default module.exports = function (mongoDB) {
             timestamps: true
         });
 
+    //safe data we want to use on the map
+    const getForUserWhitelist = {
+        originalUrl : 1,
+        originalId : 1,
+        constructionYear : 1,
+        location : 1
+    };
+
     //fancy index for geo distance calculation
     locationSchema.index({location: '2dsphere'});
+    
+    locationSchema.statics.getAllForMap = () => {
+        return LocationModel.find({}, getForUserWhitelist).exec();
+    };
 
 
     //build model based on scheme

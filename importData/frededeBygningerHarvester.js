@@ -45,7 +45,7 @@ function prepareForImport(data) {
     console.log(resumptionTokenObject._);
     if (resumptionTokenObject['$']) {
 
-    console.log(resumptionTokenObject['$'].cursor + '+' + records.length + ' of ' + resumptionTokenObject['$'].completeListSize);
+        console.log(resumptionTokenObject['$'].cursor + '+' + records.length + ' of ' + resumptionTokenObject['$'].completeListSize);
     }
     return {
         resumptionToken: resumptionTokenObject._,
@@ -69,16 +69,41 @@ function prepareRecord(record) {
 
         var building = record.metadata[0]['fbb:buildingWrap'][0]['fbb:building'][0];
         var BBR = building['fbb:BBR'][0];
-        var coordinates = normalizeGeo(BBR['fbb:primaryAddress'][0]['fbb:location'][0]['gml:MultiPoint'][0]['gml:pointMember'][0]['gml:Point'][0]['gml:coordinates'][0].split(','), BBR['fbb:primaryAddress'][0]['fbb:location'][0]['gml:MultiPoint'][0]['$']['srsName']);
-
+        var caseStudy = building['fbb:caseWrap'][0]['fbb:case'][0];
+        var primaryAdress = BBR['fbb:primaryAddress'][0];
+        var coordinates = normalizeGeo(primaryAdress['fbb:location'][0]['gml:MultiPoint'][0]['gml:pointMember'][0]['gml:Point'][0]['gml:coordinates'][0].split(','), primaryAdress['fbb:location'][0]['gml:MultiPoint'][0]['$']['srsName']);
+        console.log(BBR['fbb:id'][0]);
         var data = {
             originalUrl: building['fbb:id'][0],
             originalId: BBR['fbb:id'][0],
+
+            name: caseStudy['fbb:name'][0] || caseStudy['fbb:caseLocation'][0],
+
             location: {coordinates},
+
+            postCode: primaryAdress['fbb:post_code'][0],
+            postDistrict: primaryAdress['fbb:postal_district'][0],
+
+            complexTypeId: caseStudy['fbb:complexType'] && caseStudy['fbb:complexType'][0] && caseStudy['fbb:complexType'][0]['fbb:conceptID'][0],
+            complexTypeTerm: caseStudy['fbb:complexType'] && caseStudy['fbb:complexType'][0] && caseStudy['fbb:complexType'][0]['fbb:term'][0],
+
             constructionYear: typeof BBR['fbb:constructionYear'][0] === 'string' && BBR['fbb:constructionYear'][0].split('-')[0],
+            conversionYear: typeof BBR['fbb:conversionYear'][0] === 'string' && BBR['fbb:conversionYear'][0].split('-')[0],
+            floors: BBR['fbb:floors'] && BBR['fbb:floors'][0],
             buildArea: BBR['fbb:builtArea'] && BBR['fbb:builtArea'][0],
             totalArea: BBR['fbb:totalArea'] && BBR['fbb:totalArea'][0],
-            floors: BBR['fbb:floors'] && BBR['fbb:floors'][0],
+
+            material: {
+                outerWallsId: BBR['fbb:outerWalls'] && BBR['fbb:outerWalls'][0] && BBR['fbb:outerWalls'][0]['fbb:conceptID'] && BBR['fbb:outerWalls'][0]['fbb:conceptID'][0],
+                outerWallsTerm: BBR['fbb:outerWalls'] && BBR['fbb:outerWalls'][0] && BBR['fbb:outerWalls'][0]['fbb:term'] && BBR['fbb:outerWalls'][0]['fbb:term'][0],
+                roofId: BBR['fbb:roof'] && BBR['fbb:roof'][0] && BBR['fbb:roof'][0]['fbb:conceptID'] && BBR['fbb:roof'][0]['fbb:conceptID'][0],
+                roofTerm: BBR['fbb:roof'] && BBR['fbb:roof'][0] && BBR['fbb:roof'][0]['fbb:term'] && BBR['fbb:roof'][0]['fbb:term'][0],
+                materialsSourceId: BBR['fbb:materialsSource'] && BBR['fbb:materialsSource'][0] && BBR['fbb:materialsSource'][0]['fbb:conceptID'] && BBR['fbb:materialsSource'][0]['fbb:conceptID'][0],
+                materialsSourceTerm: BBR['fbb:materialsSource'] && BBR['fbb:materialsSource'][0] && BBR['fbb:materialsSource'][0]['fbb:term'] && BBR['fbb:materialsSource'][0]['fbb:term'][0],
+                areaSourceId: BBR['fbb:areaSource'] && BBR['fbb:areaSource'][0] && BBR['fbb:areaSource'][0]['fbb:conceptID'] && BBR['fbb:areaSource'][0]['fbb:conceptID'][0],
+                areaSourceTerm: BBR['fbb:areaSource'] && BBR['fbb:areaSource'][0] && BBR['fbb:areaSource'][0]['fbb:term'] && BBR['fbb:areaSource'][0]['fbb:term'][0]
+            },
+
             usageId: BBR['fbb:usage'] && BBR['fbb:usage'][0] && BBR['fbb:usage'][0]['fbb:conceptID'] && BBR['fbb:usage'][0]['fbb:conceptID'][0],
             usageTerm: BBR['fbb:usage'] && BBR['fbb:usage'][0] && BBR['fbb:usage'][0]['fbb:term'] && BBR['fbb:usage'][0]['fbb:term'][0]
 
@@ -102,9 +127,16 @@ function prepareRecord(record) {
  */
 const harvestingCompleted = (data) => {
     console.log('harvestingCompleted: ' + data.length + ' records');
-    data.forEach((data)=> {
-        new LocationModel(data).save();
-    });
+    Promise.all(data.map((data)=> {
+        return new LocationModel(data).save();
+    }))
+        .then(()=> {
+            console.log('done');
+        })
+        .catch((e)=> {
+            console.log('error:', e);
+        });
+
 };
 
 const next =

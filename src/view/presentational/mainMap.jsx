@@ -5,6 +5,10 @@ export default class MainMap extends React.Component {
         super(props);
     }
 
+    /**
+     * execute once, when react adds the element to dom
+     * the typical way to connect a "non" react component in a larger react project
+     */
     componentDidMount() {
 
         this.leafLetMap = L.map('mainMap');
@@ -17,14 +21,13 @@ export default class MainMap extends React.Component {
         //continous watching to redraw the marker
         this.leafLetMap.on('locationfound', onLocationFound.bind(this));
 
-        const markers = L.markerClusterGroup();
-
         //marker and popup
+        const markers = L.markerClusterGroup();
         this.props.locations.forEach((location)=> {
 
             //@todo: use a small template
-            const title = location.usageTerm + ' (' + location.constructionYear + ')'
-                + '<br/>' + location.originalId
+            const title = location.originalId
+                + ' (' + location.constructionYear + ')'
                 + '<br/><a href="' + location.originalUrl + '">' + location.originalUrl + '</a>';
 
             //Leaflet is using (north, east) or (latLng), but the backend stores it in the more common (east, north) or (lngLat) format
@@ -32,13 +35,10 @@ export default class MainMap extends React.Component {
             const popup = L.popup({closeButton: false}).setContent(title);
 
             marker.bindPopup(popup);
-            //     marker.addTo(this.leafLetMap);
-
             markers.addLayer(marker);
-            this.leafLetMap.addLayer(markers);
         });
 
-
+        this.leafLetMap.addLayer(markers);
     }
 
     render() {
@@ -69,10 +69,10 @@ function onLocationFound(geoData) {
     }
 
     //create users position on Map
-    this.userMarker =
-    {
+    this.userMarker = {
         marker: L.marker(geoData.latlng).addTo(this.leafLetMap),
         circle: L.circle(geoData.latlng, {radius}).addTo(this.leafLetMap)
-
     };
 }
+
+
