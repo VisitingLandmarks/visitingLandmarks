@@ -4,6 +4,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-mocha-test');
     grunt.loadNpmTasks('grunt-nodemon');
     grunt.loadNpmTasks('grunt-webpack');
+    grunt.loadNpmTasks('grunt-contrib-copy');
 
     grunt.initConfig({
         mochaTest: {
@@ -29,6 +30,17 @@ module.exports = function (grunt) {
                     delay: 2000,
                     ignore: ['node_modules/**']
                 }
+            }
+        },
+        copy: {
+            build: {
+                files: [
+                    {
+                        src: 'config/envToConfig.js',
+                        dest: 'config/local.js',
+                        filter: 'isFile'
+                    }
+                ]
             }
         },
         webpack: {

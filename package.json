@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "postinstall": "grunt postinstall",
+    "heroku-postbuild": "grunt postinstall",
     "start": "node server.js",
     "test": "grunt"
   },
@@ -19,7 +19,7 @@
   },
   "engines": {
     "node": "6.x.x",
-    "npm" : "3.x.x"
+    "npm": "3.x.x"
   },
   "homepage": "https://github.com/VisitingLandmarks/visitingLandmarks#readme",
   "dependencies": {
@@ -35,9 +35,16 @@
     "cookie-parser": "^1.4.3",
     "deepmerge": "^0.2.10",
     "es6-promisify": "^4.1.0",
+    "eslint-plugin-react": "^6.2.2",
     "express": "^4.14.0",
     "express-session": "^1.14.1",
     "grunt": "^1.0.1",
+    "grunt-contrib-copy": "^1.0.0",
+    "grunt-eslint": "^19.0.0",
+    "grunt-mocha-test": "^0.13.1",
+    "grunt-nodemon": "^0.4.2",
+    "grunt-webpack": "^1.0.14",
+    "mocha": "^3.0.2",
     "mongoose": "^4.6.0",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
@@ -53,11 +60,6 @@
     "socket.io": "^1.4.8",
     "socket.io-client": "^1.4.8",
     "webpack": "^1.13.2",
-    "eslint-plugin-react": "^6.2.2",
-    "grunt-eslint": "^19.0.0",
-    "grunt-mocha-test": "^0.13.1",
-    "grunt-nodemon": "^0.4.2",
-    "grunt-webpack": "^1.0.14",
     "webpack-dev-server": "^1.16.0",
     "xml2js": "^0.4.17"
   },
@@ -65,7 +67,6 @@
     "chai": "^3.5.0",
     "deep-freeze": "0.0.1",
     "jsdom": "^9.5.0",
-    "mocha": "^3.0.2",
     "sinon": "^1.17.5",
     "sinon-chai": "^2.8.0"
   }
