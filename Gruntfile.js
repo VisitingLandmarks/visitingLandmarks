@@ -35,11 +35,7 @@ module.exports = function (grunt) {
         copy: {
             build: {
                 files: [
-                    {
-                        src: 'config/envToConfig.js',
-                        dest: 'config/local.js',
-                        filter: 'isFile'
-                    }
+                    {src: 'config/envToConfig.js', dest: 'config/local.js'}
                 ]
             }
         },
