@@ -126,7 +126,7 @@ module.exports = function (grunt) {
     });
 
 
-    grunt.registerTask('postinstall', ['webpack:build']);
+    grunt.registerTask('postinstall', ['copy:build', 'webpack:build']);
     grunt.registerTask('unit', ['mochaTest:build']);
     grunt.registerTask('monitor', ['nodemon:build']);
     grunt.registerTask('hint', ['eslint']);
