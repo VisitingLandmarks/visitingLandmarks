@@ -41,7 +41,6 @@ module.exports = function (grunt) {
         },
         webpack: {
             build: {
-                // webpack options
                 entry: './src/view/main.jsx',
                 output: {
                     path: './static/',
@@ -54,36 +53,24 @@ module.exports = function (grunt) {
                             loader: 'babel-loader',
                             exclude: /node_modules/,
                             query: {
-                                presets: ['es2015', 'react']
+                                presets: ['react', 'es2017', 'es2015']
                             }
                         }
                     ]
                 },
-
                 stats: {
-                    // Configure the console output
                     colors: false,
                     modules: false,
                     reasons: true
                 },
-                // stats: false disables the stats output
-
-                progress: false, // Don't show progress
-
-                failOnError: true, // don't report error to grunt if webpack find errors
-                // Use this if webpack errors are tolerable and grunt should continue
-
-                watch: false, // use webpacks watcher
-                // You need to keep the grunt process alive
-
-                keepalive: false // don't finish the grunt task
-                // Use this in combination with the watch option
-
+                progress: false,
+                failOnError: true,
+                watch: false,
+                keepalive: false
             },
 
             dev: {
-                // webpack options
-                entry: './src/view/main.jsx',
+                entry: ['./src/view/main.jsx'],
                 output: {
                     path: './static/',
                     filename: 'all.js'
@@ -95,28 +82,20 @@ module.exports = function (grunt) {
                             loader: 'babel-loader',
                             exclude: /node_modules/,
                             query: {
-                                presets: ['es2015', 'react']
+                                presets: ['react', 'es2017'],
+                                plugins: ['transform-runtime']
                             }
                         }
                     ]
                 },
-
                 stats: {
-                    // Configure the console output
                     colors: false,
                     modules: false,
                     reasons: true
                 },
-
-                failOnError: false, // don't report error to grunt if webpack find errors
-                // Use this if webpack errors are tolerable and grunt should continue
-
-                watch: true, // use webpacks watcher
-                // You need to keep the grunt process alive
-
-                keepalive: true // don't finish the grunt task
-                // Use this in combination with the watch option
-
+                failOnError: false,
+                watch: true,
+                keepalive: true
             }
         }
     });

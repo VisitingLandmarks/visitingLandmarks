@@ -1,6 +1,3 @@
-import logger from '../helper/logger.js';
-
-
 /**
  * returns a mongoose model representing a category
  * @param mongoDB
@@ -21,8 +18,8 @@ export default module.exports = function (mongoDB) {
             location: {
                 'type': {
                     type: String,
-                    enum: "Point",
-                    default: "Point"
+                    enum: 'Point',
+                    default: 'Point'
                 },
                 coordinates: {
                     type: [Number],
@@ -36,6 +33,9 @@ export default module.exports = function (mongoDB) {
             postCode: Number,
             postDistrict: String,
 
+            municipalityId: Number,
+            municipalityTerm: String,
+
             complexTypeId: Number,
             complexTypeTerm: String,
 
@@ -46,14 +46,14 @@ export default module.exports = function (mongoDB) {
             totalArea: Number,
 
             material: {
-                outerWallsId : Number,
-                outerWallsTerm : String,
-                roofId : Number,
-                roofTerm : String,
-                materialsSourceId : Number,
-                materialsSourceTerm : String,
-                areaSourceId : Number,
-                areaSourceTerm : String
+                outerWallsId: Number,
+                outerWallsTerm: String,
+                roofId: Number,
+                roofTerm: String,
+                materialsSourceId: Number,
+                materialsSourceTerm: String,
+                areaSourceId: Number,
+                areaSourceTerm: String
             },
 
             usageId: Number,
@@ -65,17 +65,33 @@ export default module.exports = function (mongoDB) {
 
     //safe data we want to use on the map
     const getForUserWhitelist = {
-        originalUrl : 1,
-        originalId : 1,
-        constructionYear : 1,
-        location : 1
+        _id: 1,
+        originalUrl: 1,
+        originalId: 1,
+        constructionYear: 1,
+        location: 1
     };
 
     //fancy index for geo distance calculation
     locationSchema.index({location: '2dsphere'});
-    
-    locationSchema.statics.getAllForMap = () => {
-        return LocationModel.find({}, getForUserWhitelist).exec();
+
+
+    /**
+     * get all locations
+     * as object with the object id as key
+     * @returns {Promise.<TResult>}
+     */
+    locationSchema.statics.getAllAsObject = () => {
+        return LocationModel.find({}, getForUserWhitelist).exec()
+            .then((locations) => {
+                return locations.reduce(function(o, v) {
+                    v = v.toObject();
+                    const id = v._id;
+                    delete v._id;
+                    o[id] = v;
+                    return o;
+                }, {});
+            });
     };
 
 

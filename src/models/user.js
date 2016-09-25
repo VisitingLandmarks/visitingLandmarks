@@ -9,6 +9,7 @@ import logger from '../helper/logger.js';
 export default module.exports = function (mongoDB) {
 
     const userSchema = new mongoDB.Schema({
+            //basic user properties
             email: {
                 type: String,
                 trim: true,
@@ -32,11 +33,33 @@ export default module.exports = function (mongoDB) {
                 type: String,
                 required: true,
                 select: false
-            }
+            },
+            //and now the game based information
+            visited: [mongoDB.Schema.Types.ObjectId]
         },
         {
             timestamps: true
         });
+
+    //making sure that the combination of user und visited objects is unique - he either visited or not
+    //this index can also help to answer the question if a user has visited a specific building or not yet.
+    userSchema.index({_id: 1, visited: 1}, {unique: true});
+
+
+    /**
+     * add a location to the visit history of a user
+     * @param locationId
+     * @returns {Promise.<TResult>}
+     */
+    userSchema.methods.visitedLocation = function (locationId) {
+
+        //check if user was here already
+        if (~this.visited.indexOf(locationId)) {
+            return false;
+        }
+
+        return this.update({$addToSet: {visited: locationId}}).exec();
+    };
 
 
     /**
@@ -76,27 +99,6 @@ export default module.exports = function (mongoDB) {
 
         });
     };
-
-
-    /**
-     * return a random user and ignore a array of uuid for the result
-     * @param ignoreUUIDs
-     * @returns {Promise.<TResult>}
-     */
-    // userSchema.statics.getRandom = (ignoreUUIDs)=> {
-    //
-    //     const filter = {_id: {$nin: ignoreUUIDs}};
-    //     return UserModel.count(filter).exec().then((count) => {
-    //
-    //         //no need to run the findOne as well
-    //         if (!count) {
-    //             return;
-    //         }
-    //
-    //         var random = Math.floor(Math.random() * count);
-    //         return UserModel.findOne(filter).skip(random).exec();
-    //     });
-    // };
 
 
     /**

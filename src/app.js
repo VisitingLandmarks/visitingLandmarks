@@ -7,8 +7,9 @@ const {app, server} = require('./express.js')(express, config.port);
 //setup routes
 app.use('/static', express.static('static'));
 
-//setup mongoDB
+//setup mongoDB and datarepository
 const getModel = require('./mongoDB.js')(config.mongoDB);
+const dataRepository = require('./dataRepository.js')(getModel);
 
 const passportSocketIo = require('passport.socketio');
 const getConnectionByUserId = (userId) => {
@@ -20,14 +21,16 @@ const getConnectionByUserId = (userId) => {
 
 //setup io
 const io = require('socket.io')(server);
-io.on('connection', require('./userBinding.js')(getModel, getConnectionByUserId));
+
+//handle socket.io requests of the user
+io.on('connection', require('./handleSocketIORequests.js')(getConnectionByUserId, dataRepository));
 
 //setup authentication
-const authentication = require('./authentication/main.js')(app, io, getModel('user'));
+require('./authentication/main.js')(app, io, getModel('user'));
 
 //and now handle requests
-require('./handleRequests.js')(app, getConnectionByUserId, getModel);
+require('./handleHTTPRequests.js')(app, getConnectionByUserId, dataRepository);
 
-//
+// an example to add a user during development
 // const UserModel = getModel('user');
 // UserModel.register('admin@test.com', 'admin', 'admin', true);

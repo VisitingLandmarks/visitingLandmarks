@@ -1,5 +1,4 @@
 import React from 'react';
-// import ReactDOM from 'react-dom';
 
 import {Provider} from 'react-redux'
 import {createStore} from 'redux';
@@ -9,6 +8,7 @@ import reducer from './reducer/reducer';
 
 import loggedInAction from './action/loggedIn';
 import setLocationsAction from './action/setLocations';
+import visitedLocationsAction from './action/visitedLocations';
 
 export default (user, locations, userAgent) => {
 
@@ -21,6 +21,10 @@ export default (user, locations, userAgent) => {
 
     if (locations) {
         store.dispatch(setLocationsAction(locations));
+    }
+
+    if (user && user.visited) {
+        store.dispatch(visitedLocationsAction(user.visited));
     }
 
     // Render the component to a string

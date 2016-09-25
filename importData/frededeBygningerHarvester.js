@@ -72,14 +72,17 @@ function prepareRecord(record) {
         var caseStudy = building['fbb:caseWrap'][0]['fbb:case'][0];
         var primaryAdress = BBR['fbb:primaryAddress'][0];
         var coordinates = normalizeGeo(primaryAdress['fbb:location'][0]['gml:MultiPoint'][0]['gml:pointMember'][0]['gml:Point'][0]['gml:coordinates'][0].split(','), primaryAdress['fbb:location'][0]['gml:MultiPoint'][0]['$']['srsName']);
-        console.log(BBR['fbb:id'][0]);
         var data = {
+
             originalUrl: building['fbb:id'][0],
             originalId: BBR['fbb:id'][0],
 
             name: caseStudy['fbb:name'][0] || caseStudy['fbb:caseLocation'][0],
 
             location: {coordinates},
+
+            municipalityId: BBR['fbb:municipality'][0] && BBR['fbb:municipality'][0]['fbb:conceptID'][0],
+            municipalityTerm: BBR['fbb:municipality'][0] && BBR['fbb:municipality'][0]['fbb:term'][0],
 
             postCode: primaryAdress['fbb:post_code'][0],
             postDistrict: primaryAdress['fbb:postal_district'][0],

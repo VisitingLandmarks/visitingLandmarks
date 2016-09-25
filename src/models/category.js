@@ -1,6 +1,3 @@
-import logger from '../helper/logger.js';
-
-
 /**
  * returns a mongoose model representing a category
  * @param mongoDB

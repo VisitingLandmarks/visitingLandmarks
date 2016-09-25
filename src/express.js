@@ -33,7 +33,7 @@ export default module.exports = (express = require('express'), port = 80) => {
      * display 500 and error id to the user and log error internally
      * removing the next will make the function fail. it is only an error handle if all 4 arguments are defined
      */
-    app.use((err, req, res, next) => { // eslint-disable-line no-undef
+    app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
         req.log.error(err);
         res.status(500).send(req.reqId);
     });

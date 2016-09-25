@@ -4,6 +4,8 @@ import Radium from 'radium';
 import MainMap from './mainMap.jsx';
 import LoginArea from './loginArea.jsx';
 
+import {onVisitLocation} from '../../client/toServer.js';
+
 class VisitingLandmarks extends React.Component {
     constructor(props) {
         super(props);
@@ -12,7 +14,7 @@ class VisitingLandmarks extends React.Component {
     render() {
         return (
             <div className="mainContainer">
-                <MainMap locations={this.props.locations}/>
+                <MainMap locations={this.props.locations} onVisitLocation={onVisitLocation} />
                 <LoginArea {...this.props}/>
             </div>
         )
