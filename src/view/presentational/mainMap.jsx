@@ -23,32 +23,72 @@ export default class MainMap extends React.Component {
         //continous watching to redraw the marker
         this.leafLetMap.on('locationfound', onLocationFound.bind(this));
 
-        //marker and popup
-        const markers = L.markerClusterGroup();
-        Object.values(this.props.locations)
-            .forEach((location)=> {
+        //trigger the initial creation of markers
+        createMarkers(this);
+    }
 
-                const title = `${location.originalId} (${location.constructionYear })<br/>
-                <a href="${location.originalUrl}">${location.originalUrl}</a><br/>
-                visited already: ${location.visited}`;
+    /**
+     * called when the component is updated with different properties
+     */
+    componentDidUpdate() {
+        updateMarkers(this.props.locations, this.popups);
 
-                //add a latLng property to the location, so that we can calculate distances
-                location.latLng = L.latLng(location.location.coordinates.reverse());
-
-                //Leaflet is using (north, east) or (latLng), but the backend stores it in the more common (east, north) or (lngLat) format
-                const marker = L.marker(location.latLng, {alt: title});
-                const popup = L.popup({closeButton: false}).setContent(title);
-
-                marker.bindPopup(popup);
-                markers.addLayer(marker);
-            });
-
-        this.leafLetMap.addLayer(markers);
     }
 
     render() {
         return <div id="mainMap"></div>;
     }
+}
+
+
+/**
+ * create the markers and store a reference to the popups and the precalculated latLng for later
+ * @param self
+ */
+function createMarkers(self) {
+
+    //marker and popup
+    const markerClusterGroup = L.markerClusterGroup();
+    self.popups = {};
+    self.latLng = {};
+
+    Object.values(self.props.locations)
+        .forEach((location)=> {
+
+                const title = `${location.originalId} (${location.constructionYear })<br/>
+                <a href="${location.originalUrl}">${location.originalUrl}</a><br/>
+                visited already: ${location.visited}`;
+                self.latLng[location.originalId] = L.latLng(location.location.coordinates.reverse());
+                const marker = L.marker(self.latLng[location.originalId]);
+                self.popups[location.originalId] = L.popup({closeButton: false}).setContent(title);
+                marker.bindPopup(self.popups[location.originalId]);
+                markerClusterGroup.addLayer(marker);
+
+            }
+        );
+
+    self.leafLetMap.addLayer(markerClusterGroup);
+}
+
+
+/**
+ * update the markers on the map
+ * @todo right now this just works for the title, not coordinations, removing or adding locations
+ * @param self
+ */
+function updateMarkers(locations, popups) {
+
+    Object.values(locations)
+        .forEach((location)=> {
+
+                const title = `${location.originalId} (${location.constructionYear })<br/>
+                <a href="${location.originalUrl}">${location.originalUrl}</a><br/>
+                visited already: ${location.visited}`;
+
+                popups[location.originalId].setContent(title);
+
+            }
+        );
 }
 
 
@@ -76,8 +116,13 @@ function onLocationFound(geoData) {
             const location = this.props.locations[locationId];
 
             //distance is in meters and we want everything that is as 50m close to the user
-            //@todo: this algorithm is relative heavy. There is maybe a faster implementation by filtering the locations by lat,lng just on a numerical basis
-            return !location.visited && location.latLng.distanceTo(geoData.latlng) <= config.game.visitDistance;
+            return !location.visited &&
+                this.latLng &&
+                this.latLng[location.originalId] &&
+                //@todo: calcute first the easier difference between lat and lng before handling to the more complex algorithm
+                (Math.abs(geoData.latlng.lat - this.latLng[location.originalId].lat) < config.game.visitDistance.lat) &&
+                (Math.abs(geoData.latlng.lng - this.latLng[location.originalId].lng) < config.game.visitDistance.lng) &&
+                this.latLng[location.originalId].distanceTo(geoData.latlng) <= config.game.visitDistance.meters;
         })
         //and mark them as visited
         .forEach(this.props.onVisitLocation);
