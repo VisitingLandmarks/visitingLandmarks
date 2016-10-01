@@ -1,12 +1,12 @@
 // This is fired every time the server side receives a request
 import serverSide  from './view/serverSide.jsx';
 import passport from 'passport';
-import logger from './helper/logger.js';
+import logger from './helper/logger';
+import {sendConfirmedUser} from './email';
 
+//@todo: too much logic in here. Buisness Logic should be abstracted from the interface
+export default module.exports = (app, getConnectionByUserId, sendActionToAllConnectionOfAUser, dataRepository) => {
 
-export default module.exports = (app, getConnectionByUserId, dataRepository) => { //eslint-disable-line no-unused-vars
-
-    //const Location = getModel('location');
 
     /**
      * handle all get requests on the main address, in short deliver the app
@@ -27,6 +27,31 @@ export default module.exports = (app, getConnectionByUserId, dataRepository) => 
 
     });
 
+
+    /**
+     * handle an incoming email registration
+     */
+    app.get('/confirm/:confirmationToken', function (req, res) {
+
+        const confirmationToken = req.params.confirmationToken;
+
+        dataRepository.User.confirm(confirmationToken)
+            .then((user) => {
+                if (!user) {
+                    res.status(404).send();
+                    return;
+                }
+                return sendConfirmedUser(user);
+            })
+            .then(() => {
+                res.send();
+            })
+            .catch((err) => {
+                res.status(500).send(err);
+            });
+
+
+    });
 
     /**
      * handle a post on the login route

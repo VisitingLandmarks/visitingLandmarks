@@ -1,5 +1,7 @@
 import {verify as verifyPassword, generate as generatePasswordHash} from '../helper/password.js';
+import generateRandomString from '../helper/generateRandomString.js';
 import logger from '../helper/logger.js';
+
 
 /**
  * returns a mongoose model representing a User
@@ -16,7 +18,7 @@ export default module.exports = function (mongoDB) {
                 unique: true,
                 lowercase: true,
                 required: 'Email address is required',
-                match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
+                match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,8})+$/, 'Please fill a valid email address']
             },
             name: String,
             isAdmin: {
@@ -24,6 +26,18 @@ export default module.exports = function (mongoDB) {
                 required: true,
                 default: false
             },
+            isConfirmed: {
+                type: Boolean,
+                required: true,
+                default: false
+            },
+            confirmationToken: {
+                type: String,
+                unique: true,
+                select: false
+            },
+            // resetPasswordToken: String,
+            // resetPasswordExpires: Date,
             passwordHash: {
                 type: String,
                 required: true,
@@ -111,14 +125,17 @@ export default module.exports = function (mongoDB) {
     userSchema.statics.register = (email, clearTextPassword, name, isAdmin) => {
 
         //@todo: verify security level of password
+        //@todo: handle already used email
         return generatePasswordHash(clearTextPassword)
             .then((passwordData) => {
                 const passwordHash = passwordData.passwordHash;
                 const passwordSalt = passwordData.passwordSalt;
+                const confirmationToken = generateRandomString();
 
                 return new UserModel({
                     passwordHash,
                     passwordSalt,
+                    confirmationToken,
                     email,
                     isAdmin,
                     name
@@ -126,6 +143,32 @@ export default module.exports = function (mongoDB) {
                     logger.error({email, message}, 'mongoDB Error in userSchema.statics.register');
                 });
 
+            });
+    };
+
+
+    /**
+     * set a user to confirmed
+     * @param confirmationToken
+     * @returns {Promise|Promise.<T>}
+     */
+    userSchema.statics.confirm = (confirmationToken) => {
+
+        return UserModel.findOne({confirmationToken})
+            .then((user) => {
+
+                //the request was successful, but there is no user with that confirmation token
+                if (!user) {
+                    return;
+                }
+
+                user.isConfirmed = true;
+                user.confirmationToken = generateRandomString();
+
+                return user.save();
+            })
+            .catch((err) => {
+                logger.error(err, 'error during mail confirmation');
             });
     };
 
@@ -152,6 +195,7 @@ export default module.exports = function (mongoDB) {
         logger.debug('deserialize User');
         UserModel.findById(id).select('-__v').exec(done);
     };
+
 
     //build model based on scheme
     const UserModel = mongoDB.model('User', userSchema);

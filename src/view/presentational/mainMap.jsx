@@ -48,12 +48,11 @@ export default class MainMap extends React.Component {
 function createMarkers(self) {
 
     //marker and popup
-    const markerClusterGroup = L.markerClusterGroup();
     self.popups = {};
     self.latLng = {};
 
-    Object.values(self.props.locations)
-        .forEach((location)=> {
+    const markers = Object.values(self.props.locations)
+        .map((location)=> {
 
                 const title = `${location.originalId} (${location.constructionYear })<br/>
                 <a href="${location.originalUrl}">${location.originalUrl}</a><br/>
@@ -62,11 +61,14 @@ function createMarkers(self) {
                 const marker = L.marker(self.latLng[location.originalId]);
                 self.popups[location.originalId] = L.popup({closeButton: false}).setContent(title);
                 marker.bindPopup(self.popups[location.originalId]);
-                markerClusterGroup.addLayer(marker);
+                return marker;
 
             }
         );
 
+    //create the cluster layer and add the markers
+    const markerClusterGroup = L.markerClusterGroup();
+    markerClusterGroup.addLayers(markers);
     self.leafLetMap.addLayer(markerClusterGroup);
 }
 
@@ -107,8 +109,6 @@ function onLocationFound(geoData) {
     //radius is per definition of geolocation half the accuracy
     const radius = geoData.accuracy / 2;
 
-    console.time('calculateDistance TO all points');
-
     //iterate over all locations
     Object.keys(this.props.locations)
     //find all close locations that are not collected by the user yet
@@ -127,9 +127,7 @@ function onLocationFound(geoData) {
         //and mark them as visited
         .forEach(this.props.onVisitLocation);
 
-    console.timeEnd('calculateDistance TO all points');
-
-    //if there is already a usermarker update it
+    //if there is already a user marker update it
     if (this.userMarker) {
         this.userMarker.marker.setLatLng(geoData.latlng);
         this.userMarker.circle.setLatLng(geoData.latlng);

@@ -45,6 +45,8 @@ export default module.exports = (getModel) => {
 
 
     return {
+        Location,
+        User,
         getAllLocations,
         findUserById
     };

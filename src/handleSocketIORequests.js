@@ -1,18 +1,8 @@
 import logger from './helper/logger';
 import visitedLocationAction from './view/action/visitedLocations';
 
-export default module.exports = (getConnectionByUserId, dataRepository) => {
-
-    /**
-     * a helper that will send a redux action to all connections of a user
-      * @param userId
-     * @param payload
-     */
-    const sendActionToAllConnectionOfAUser = (userId, payload) => {
-        getConnectionByUserId(userId).forEach(socket => {
-            socket.emit('storeAction', payload);
-        });
-    };
+//@todo: too much logic in here. Buisness Logic should be abstracted from the interface
+export default module.exports = (sendActionToAllConnectionOfAUser, dataRepository) => {
 
     return (userSocket) => {
 

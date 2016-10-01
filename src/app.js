@@ -22,14 +22,17 @@ const getConnectionByUserId = (userId) => {
 //setup io
 const io = require('socket.io')(server);
 
+//sugar a wrapper to send an event to all connections of a given user
+const sendActionToAllConnectionOfAUser = require('./helper/sendActionToAllConnectionOfAUser')(getConnectionByUserId);
+
 //handle socket.io requests of the user
-io.on('connection', require('./handleSocketIORequests.js')(getConnectionByUserId, dataRepository));
+io.on('connection', require('./handleSocketIORequests.js')(sendActionToAllConnectionOfAUser, dataRepository));
 
 //setup authentication
 require('./authentication/main.js')(app, io, getModel('user'));
 
 //and now handle requests
-require('./handleHTTPRequests.js')(app, getConnectionByUserId, dataRepository);
+require('./handleHTTPRequests.js')(app, getConnectionByUserId, sendActionToAllConnectionOfAUser, dataRepository);
 
 // an example to add a user during development
 // const UserModel = getModel('user');

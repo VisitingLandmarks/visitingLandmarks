@@ -1,14 +1,6 @@
-'use strict';
 const crypto = require('crypto');
 import logger from './logger.js';
-
-/**
- * generates random string of characters i.e salt
- * @function
- * @param {number} length - Length of the random string.
- */
-const genRandomString = (length) =>
-    crypto.randomBytes(length).toString('hex');
+import generateRandomString from './generateRandomString.js';
 
 
 /**
@@ -30,7 +22,7 @@ export const verify = (password, passwordHash, salt) => {
  * @param salt
  * @returns {Promise}
  */
-export const generate = (password, passwordSalt = genRandomString(32)) => {
+export const generate = (password, passwordSalt = generateRandomString()) => {
 
     return new Promise((resolve, reject) => {
         crypto.pbkdf2(password, new Buffer(passwordSalt,'binary'), 100000, 512, 'sha512', (err, key) => { // eslint-disable-line no-undef

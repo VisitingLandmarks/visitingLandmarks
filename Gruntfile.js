@@ -27,7 +27,7 @@ module.exports = function (grunt) {
                 script: 'server.js',
                 options: {
                     ext: 'js,jsx',
-                    delay: 2000,
+                    delay: 1000,
                     ignore: ['node_modules/**']
                 }
             }
@@ -75,6 +75,7 @@ module.exports = function (grunt) {
                     path: './static/',
                     filename: 'all.js'
                 },
+                devtool: "#inline-source-map",
                 module: {
                     loaders: [
                         {
