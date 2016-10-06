@@ -2,7 +2,7 @@
 import serverSide  from './view/serverSide.jsx';
 import passport from 'passport';
 import logger from './helper/logger';
-import {sendConfirmedUser} from './email';
+import {sendUserConfirmed, sendUserRegistered} from './email';
 
 //@todo: too much logic in here. Buisness Logic should be abstracted from the interface
 export default module.exports = (app, getConnectionByUserId, sendActionToAllConnectionOfAUser, dataRepository) => {
@@ -48,7 +48,7 @@ export default module.exports = (app, getConnectionByUserId, sendActionToAllConn
                     res.status(404).send();
                     return;
                 }
-                return sendConfirmedUser(user);
+                return sendUserConfirmed(user);
             })
             .then(() => {
                 res.send();
@@ -70,14 +70,15 @@ export default module.exports = (app, getConnectionByUserId, sendActionToAllConn
         //register is only possible if not logged in
         if (req.user) {
             logger.warn({
-                registeredUser: reg.user.email,
+                registeredUser: req.user.email,
                 triedToRegister: req.body.username
             }, 'user who is logged in tried to register');
             res.status(403).send();
         }
 
         dataRepository.User.register(req.body.username, req.body.password)
-            .then(()=> {
+            .then(sendUserRegistered)
+            .then((user)=> {
                 next();
             });
 

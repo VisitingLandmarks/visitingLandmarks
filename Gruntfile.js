@@ -27,7 +27,7 @@ module.exports = function (grunt) {
             build: {
                 script: 'server.js',
                 options: {
-                    ext: 'js,jsx',
+                    ext: 'js,jsx,handlebars',
                     delay: 1000,
                     ignore: ['node_modules/**']
                 }

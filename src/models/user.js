@@ -83,7 +83,7 @@ export default module.exports = function (mongoDB) {
      */
     userSchema.statics.authenticate = (email, password, callback) => {
 
-        UserModel.findOne({email: email}).select('+passwordHash +passwordSalt').exec(function (err, user) {
+        UserModel.findOne({email: email.toLowerCase()}).select('+passwordHash +passwordSalt').exec(function (err, user) {
 
             if (err) {
                 logger.error({email}, 'db error during user authenticate');
