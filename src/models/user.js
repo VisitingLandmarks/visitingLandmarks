@@ -20,7 +20,6 @@ export default module.exports = function (mongoDB) {
                 required: 'Email address is required',
                 match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,8})+$/, 'Please fill a valid email address']
             },
-            name: String,
             isAdmin: {
                 type: Boolean,
                 required: true,
@@ -97,19 +96,21 @@ export default module.exports = function (mongoDB) {
                 return callback(err, user);
             }
 
-            // verify the password with the existing hash from the user
-            if (!verifyPassword(password, user.passwordHash, user.passwordSalt)) {
-                return callback(err, null);
-            }
+            verifyPassword(password, user.passwordHash, user.passwordSalt)
+                .then(()=> {
 
-            // remove password and salt from the result without modifying the document.
-            user = user.toObject();
-            delete user.passwordHash;
-            delete user.passwordSalt;
-            delete user.__v;
+                    // remove password and salt from the result without modifying the document.
+                    user = user.toObject();
+                    delete user.passwordHash;
+                    delete user.passwordSalt;
+                    delete user.__v;
 
-            // return user representing object, not the user model! if everything is ok
-            callback(err, user);
+                    // return user representing object, not the user model! if everything is ok
+                    callback(err, user);
+                })
+                .catch((error)=> {
+                    callback(null, false, {message: 'Incorrect username.'});
+                });
 
         });
     };
@@ -122,10 +123,9 @@ export default module.exports = function (mongoDB) {
      * @param name (optional)
      * @returns {Promise}
      */
-    userSchema.statics.register = (email, clearTextPassword, name, isAdmin) => {
+    userSchema.statics.register = (email, clearTextPassword, isAdmin) => {
 
         //@todo: verify security level of password
-        //@todo: handle already used email
         return generatePasswordHash(clearTextPassword)
             .then((passwordData) => {
                 const passwordHash = passwordData.passwordHash;
@@ -138,10 +138,14 @@ export default module.exports = function (mongoDB) {
                     confirmationToken,
                     email,
                     isAdmin,
-                    name
-                }).save().catch((message)=> {
-                    logger.error({email, message}, 'mongoDB Error in userSchema.statics.register');
-                });
+                })
+                    .save()
+                    .then((user)=> {
+                        return user.toObject();
+                    })
+                    .catch((message)=> {
+                        logger.error({email, message}, 'mongoDB Error in userSchema.statics.register');
+                    });
 
             });
     };

@@ -1,3 +1,4 @@
+const webpack = require("webpack");
 module.exports = function (grunt) {
 
     grunt.loadNpmTasks('grunt-eslint');
@@ -46,6 +47,17 @@ module.exports = function (grunt) {
                     path: './static/',
                     filename: 'all.js'
                 },
+                plugins: [
+                    new webpack.DefinePlugin({
+                        'process.env.NODE_ENV': '"production"'
+                    }),
+                    new webpack.optimize.DedupePlugin(),
+                    new webpack.optimize.UglifyJsPlugin({
+                        compress: {
+                            warnings: false
+                        }
+                    })
+                ],
                 module: {
                     loaders: [
                         {
@@ -53,7 +65,8 @@ module.exports = function (grunt) {
                             loader: 'babel-loader',
                             exclude: /node_modules/,
                             query: {
-                                presets: ['react', 'es2017', 'es2015']
+                                presets: ['react', 'es2017'],
+                                plugins: ['transform-runtime']
                             }
                         }
                     ]
@@ -94,6 +107,7 @@ module.exports = function (grunt) {
                     modules: false,
                     reasons: true
                 },
+                progress: true,
                 failOnError: false,
                 watch: true,
                 keepalive: true

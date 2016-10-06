@@ -11,7 +11,9 @@ import generateRandomString from './generateRandomString.js';
  */
 export const verify = (password, passwordHash, salt) => {
     return generate(password, salt).then((passwordData) => {
-        return passwordData.passwordHash === passwordHash;
+        if (passwordData.passwordHash !== passwordHash) {
+            throw Error('incorrect password');
+        };
     });
 };
 
@@ -23,6 +25,9 @@ export const verify = (password, passwordHash, salt) => {
  * @returns {Promise}
  */
 export const generate = (password, passwordSalt = generateRandomString()) => {
+
+    //ensure password is a string
+    password = password.toString();
 
     return new Promise((resolve, reject) => {
         crypto.pbkdf2(password, new Buffer(passwordSalt,'binary'), 100000, 512, 'sha512', (err, key) => { // eslint-disable-line no-undef

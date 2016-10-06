@@ -8,6 +8,13 @@ import {sendConfirmedUser} from './email';
 export default module.exports = (app, getConnectionByUserId, sendActionToAllConnectionOfAUser, dataRepository) => {
 
 
+    function sendUser(req, res) {
+
+        const user = req.user;
+        res.json({user});
+
+    }
+
     /**
      * handle all get requests on the main address, in short deliver the app
      */
@@ -53,18 +60,35 @@ export default module.exports = (app, getConnectionByUserId, sendActionToAllConn
 
     });
 
+
     /**
      * handle a post on the login route
      * send back the user if successful
      */
-    app.post('/login', passport.authenticate('local'), function (req, res) {
+    app.post('/register', function (req, res, next) {
 
-        const user = req.user;
-        res.json({
-            user
-        });
+        //register is only possible if not logged in
+        if (req.user) {
+            logger.warn({
+                registeredUser: reg.user.email,
+                triedToRegister: req.body.username
+            }, 'user who is logged in tried to register');
+            res.status(403).send();
+        }
 
-    });
+        dataRepository.User.register(req.body.username, req.body.password)
+            .then(()=> {
+                next();
+            });
+
+    }, passport.authenticate('local'), sendUser);
+
+
+    /**
+     * handle a post on the login route
+     * send back the user if successful
+     */
+    app.post('/login', passport.authenticate('local'), sendUser);
 
 
     /**
