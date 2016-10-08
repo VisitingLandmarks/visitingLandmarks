@@ -16,6 +16,10 @@ const mapStateToProps = (state) => {
         userEmail: state.user && state.user.email,
         userEmailConfirmed: state.user && state.user.isConfirmed,
         locations: state.locations,
+        visitedlocations: (state.user && state.user.visited || []).reduce((obj, id)=> { //an object is easier to access and check
+            obj[id] = true;
+            return obj;
+        }, {}),
         openDialog: {
             login: state.openDialog === 'login',
             register: state.openDialog === 'register'

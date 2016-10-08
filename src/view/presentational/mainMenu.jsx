@@ -31,7 +31,7 @@ export default class MainMenu extends React.Component {
         if (this.props.loggedIn) {
             menuItems = [
                 <MenuItem key="userEmail" primaryText={this.props.userEmail} />,
-                <Divider />,
+                <Divider key="userEmailDivider" />,
                 <MenuItem key="logout" primaryText="Logout" onTouchTap={this.props.requestLogout}/>
             ];
         } else {

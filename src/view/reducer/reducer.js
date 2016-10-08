@@ -27,7 +27,6 @@ import initialState from './initialState';
 export default (oldState = initialState, action) => {
 
     switch (action.type) {
-
         //user management
 
         //login
@@ -75,7 +74,7 @@ export default (oldState = initialState, action) => {
         }
         case typeLogoutSuccess:
         {
-            return Object.assign({}, oldState, initialState);
+            return Object.assign({}, oldState, initialState); //@todo: bad idea -> removes all locations -> sugar the initial state with the correct locations
         }
         case typeLogoutFailure:
         {
@@ -100,18 +99,7 @@ export default (oldState = initialState, action) => {
         }
         case typeVisitedLocations:
         {
-            const changedLocations = action.locationIds.reduce((changedLocations, locationId) => {
-
-                //ignore the change if the location is not in the oldstate
-                if (oldState.locations[locationId]) {
-                    //get old location state and build new object with changed value
-                    changedLocations[locationId] = Object.assign({}, oldState.locations[locationId], {visited: true});
-                }
-                return changedLocations;
-            }, {});
-
-            return Object.assign({}, oldState, {locations: Object.assign({}, oldState.locations, changedLocations)});
-
+            return Object.assign({}, oldState, {user: Object.assign({}, oldState.user, {visited : oldState.user.visited.concat(action.locationIds)})});
         }
 
 

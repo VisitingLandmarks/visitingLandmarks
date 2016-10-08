@@ -27,7 +27,7 @@ var getMongoDB = (config) => {
 
 
 /**
- * establish a mongo connection based on a config
+ * establish a mongo connection
  * @param config object
  * @returns {function()}
  */

@@ -20,12 +20,12 @@ class VisitingLandmarks extends React.Component {
     render() {
 
         return (
-                <div className="mainContainer">
-                    <MainMap locations={this.props.locations} onVisitLocation={onVisitLocation}/>
-                    <MainMenu {...this.props}/>
-                </div>
+            <div className="mainContainer">
+                <MainMap visitedlocations={this.props.visitedlocations} locations={this.props.locations} onVisitLocation={onVisitLocation}/>
+                <MainMenu {...this.props}/>
+            </div>
         )
-        
+
     }
 }
 

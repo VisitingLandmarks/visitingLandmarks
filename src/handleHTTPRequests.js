@@ -74,13 +74,16 @@ export default module.exports = (app, getConnectionByUserId, sendActionToAllConn
                 triedToRegister: req.body.username
             }, 'user who is logged in tried to register');
             res.status(403).send();
+            return;
         }
 
         dataRepository.User.register(req.body.username, req.body.password)
-            .then(sendUserRegistered)
-            .then((user)=> { //invoce next middleware, which will authenticate the new registered user
+            .then((user)=> { //invoke next middleware, which will authenticate the new registered user
+                if (user) {
+                    sendUserRegistered(user);
+                }
                 next();
-            });
+        });
 
     }, passport.authenticate('local'), sendUser);
 

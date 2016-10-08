@@ -11,12 +11,5 @@ module.exports = {
         sendOptions: {
             from: '"Visiting Landmarks" <info@visitinglandmarks.com>'
         }
-    },
-    game: { //settings for the game logic. Rules, etc.
-        visitDistance: {
-            lat: 0.1,
-            lng: 0.1,
-            meters: 50
-        }
     }
 };

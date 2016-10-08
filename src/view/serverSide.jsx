@@ -7,9 +7,9 @@ import {renderToString} from 'react-dom/server';
 import VisitingLandmarks from './container/visitingLandmarks';
 import reducer from './reducer/reducer';
 
-import loginSuccessfulAction from './action/request/logoutSuccess';
+import loginSuccessfulAction from './action/request/loginSuccess';
 import setLocationsAction from './action/setLocations';
-import visitedLocationsAction from './action/visitedLocations';
+// import visitedLocationsAction from './action/visitedLocations';
 
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -28,9 +28,9 @@ export default (user, locations, userAgent) => {
         store.dispatch(setLocationsAction(locations));
     }
 
-    if (user && user.visited) {
-        store.dispatch(visitedLocationsAction(user.visited));
-    }
+    // if (user && user.visited) {
+    //     store.dispatch(visitedLocationsAction(user.visited));
+    // }
 
     // Render the component to a string
     const html = renderToString(
