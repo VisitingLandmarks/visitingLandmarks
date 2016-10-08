@@ -1,28 +1,54 @@
 import nodemailer from 'nodemailer';
 import logger from '../helper/logger';
 import config from '../../config';
-const EmailTemplate = require('email-templates').EmailTemplate;
-const sendUserRegisteredTemplateDir   = require('path').join(__dirname, 'template', 'sendUserRegistered');
 
 // create reusable transporter object using the default SMTP transport
 const transporter = nodemailer.createTransport(config.email.smtpTransport);
 
-const sendUserRegisteredTemplate = transporter.templateSender(new EmailTemplate(sendUserRegisteredTemplateDir), {
-    from: '"Visiting Landmarks" <info@visitinglandmarks.com>'
-});
+//setting up email templates
+const EmailTemplate = require('email-templates').EmailTemplate;
 
-export const sendUserRegistered = (user) => {
-    return sendUserRegisteredTemplate({
-        to: user.email,
-        subject: 'Welcome!'
-    }, {user})
+/**
+ * preparing a email template
+ * @param templateName string
+ */
+const prepareEmailTemplate = (templateName) => {
+    return transporter.templateSender(new EmailTemplate(require('path').join(__dirname, 'template', templateName)), config.email.sendOptions);
+};
+
+//build object with template name as key and the prepared setup templates for nodemailer
+const templates = ['userEmailConfirmed', 'userRegistered'].reduce((obj, templateName) => {
+    obj[templateName] = prepareEmailTemplate(templateName);
+    return obj;
+}, {});
+
+
+/**
+ * extend the nodemailer promise with logging
+ * @param promise
+ * @param logger
+ * @returns {Promise.<T>|Promise|Promise<R>|*}
+ */
+const addLogging = (promise, logger) => {
+    return promise
         .then((emailInfo)=> {
-            logger.info({emailInfo, user}, 'UserRegistered email send');
+            logger.info({emailInfo}, 'email send');
             return emailInfo;
         })
         .catch((err) => {
-            logger.error(err, 'failed to send UserRegistered email');
-        });
+            logger.error(err, 'failed to send email');
+        })
+};
+
+
+/**
+ * send a email when a user registered his emailadress
+ * @param user
+ */
+export const sendUserRegistered = (user) => {
+    return addLogging(templates.userRegistered({
+        to: user.email
+    }, {user}), logger.child({template: 'userRegistered'}));
 };
 
 
@@ -32,19 +58,7 @@ export const sendUserRegistered = (user) => {
  * @returns {Promise|Promise.<T>}
  */
 export const sendUserConfirmed = (user) => {
-
-    return transporter.sendMail({
-        from: '"Fred Foo ?" <foo@blurdybloop.com>', // sender address
-        to: user.email,
-        subject: 'Hello ✔', // Subject line
-        text: 'Hello world ?', // plaintext body
-        html: '<b>Hello world ?</b>' // html body
-    })
-        .then((emailInfo)=> {
-            logger.info({emailInfo, user}, 'email send');
-            return emailInfo;
-        })
-        .catch((err) => {
-            logger.error(err, 'failed to send email');
-        });
+    return addLogging(templates.userEmailConfirmed({
+        to: user.email
+    }, {user}), logger.child({toEmail: user.email, template: 'userEmailConfirmed'}));
 };

@@ -7,7 +7,10 @@ module.exports = {
         connectURI: 'mongodb://localhost' //overwrite mongoDB connection stream
     },
     email: {
-        smtpTransport : 'smtps://user%40gmail.com:pass@smtp.gmail.com' //overwrite with SMTP info to send Email
+        smtpTransport: 'smtps://user%40gmail.com:pass@smtp.gmail.com', //overwrite with SMTP info to send Email,
+        sendOptions: {
+            from: '"Visiting Landmarks" <info@visitinglandmarks.com>'
+        }
     },
     game: { //settings for the game logic. Rules, etc.
         visitDistance: {

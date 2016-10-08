@@ -1,22 +1,27 @@
 import React from 'react';
 
-import {Provider} from 'react-redux'
-import {createStore} from 'redux';
+import {Provider} from 'react-redux';
+import { createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
 import {renderToString} from 'react-dom/server';
 import VisitingLandmarks from './container/visitingLandmarks';
 import reducer from './reducer/reducer';
 
-import loggedInAction from './action/loggedIn';
+import loginSuccessfulAction from './action/request/logoutSuccess';
 import setLocationsAction from './action/setLocations';
 import visitedLocationsAction from './action/visitedLocations';
+
+import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
 export default (user, locations, userAgent) => {
 
     // Create a new Redux store instance
-    const store = createStore(reducer);
+    const store = createStore(reducer,applyMiddleware(thunk));
 
     if (user) {
-        store.dispatch(loggedInAction(user));
+        store.dispatch(loginSuccessfulAction(user));
     }
 
     if (locations) {
@@ -30,7 +35,9 @@ export default (user, locations, userAgent) => {
     // Render the component to a string
     const html = renderToString(
         <Provider store={store}>
+            <MuiThemeProvider muiTheme={getMuiTheme({userAgent},darkBaseTheme)}>
             <VisitingLandmarks radiumConfig={{userAgent}} />
+            </MuiThemeProvider>
         </Provider>
     );
 
@@ -59,7 +66,6 @@ function renderFullPage(html, initialState) {
         <script>
           window.__INITIAL_STATE__ = ${JSON.stringify(initialState)}
         </script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
          <script src="static/all.js"></script>
       </body>
     </html>

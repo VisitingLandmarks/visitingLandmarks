@@ -78,7 +78,7 @@ export default module.exports = (app, getConnectionByUserId, sendActionToAllConn
 
         dataRepository.User.register(req.body.username, req.body.password)
             .then(sendUserRegistered)
-            .then((user)=> {
+            .then((user)=> { //invoce next middleware, which will authenticate the new registered user
                 next();
             });
 

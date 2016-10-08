@@ -150,6 +150,10 @@ export default module.exports = function (mongoDB) {
             });
     };
 
+    userSchema.statics.getConfirmationToken = (userId) => {
+        return UserModel.findById(userId, 'confirmationToken').select('+confirmationToken').exec();
+    };
+
 
     /**
      * set a user to confirmed

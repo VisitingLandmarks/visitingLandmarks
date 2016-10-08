@@ -49,7 +49,9 @@ module.exports = function (grunt) {
                 },
                 plugins: [
                     new webpack.DefinePlugin({
-                        'process.env.NODE_ENV': '"production"'
+                        'process.env': {
+                            'NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+                        }
                     }),
                     new webpack.optimize.DedupePlugin(),
                     new webpack.optimize.UglifyJsPlugin({
@@ -88,6 +90,13 @@ module.exports = function (grunt) {
                     path: './static/',
                     filename: 'all.js'
                 },
+                plugins: [
+                    new webpack.DefinePlugin({
+                        'process.env': {
+                            'NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+                        }
+                    })
+                ],
                 devtool: "#inline-source-map",
                 module: {
                     loaders: [

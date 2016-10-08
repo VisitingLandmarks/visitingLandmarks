@@ -2,24 +2,36 @@ import {connect} from 'react-redux';
 
 import VisitingLandmarks from '../presentational/visitingLandmarks.jsx';
 
-import loggedInAction from '../action/loggedIn';
-import loggedOutAction from '../action/loggedOut';
-import failedLogInAction from '../action/failedLogIn';
+
+import {registerThunk} from '../action/thunk/register';
+import {loginThunk} from '../action/thunk/login';
+import {logoutThunk} from '../action/thunk/logout';
+
+import dialogCloseAction from '../action/dialogClose';
+import dialogOpenAction from '../action/dialogOpen';
 
 const mapStateToProps = (state) => {
     return {
         loggedIn: !!state.user,
-        username: state.user && state.user.name,
-        failedLogin : !!state.failedLogin,
-        locations : state.locations
+        userEmail: state.user && state.user.email,
+        userEmailConfirmed: state.user && state.user.isConfirmed,
+        locations: state.locations,
+        openDialog: {
+            login: state.openDialog === 'login',
+            register: state.openDialog === 'register'
+        }
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onLoggedIn: (user) => dispatch(loggedInAction(user)),
-        handleLogout: () => dispatch(loggedOutAction()),
-        onFailedLogIn: () => dispatch(failedLogInAction())
+        requestRegister: (username, password) => dispatch(registerThunk({username, password})),
+        requestLogin: (username, password) => dispatch(loginThunk({username, password})),
+        requestLogout: () => dispatch(logoutThunk()),
+
+        onCloseDialog: () => dispatch(dialogCloseAction()),
+        onOpenLoginDialog: () => dispatch(dialogOpenAction('login')),
+        onOpenRegisterDialog: () => dispatch(dialogOpenAction('register'))
     };
 };
 

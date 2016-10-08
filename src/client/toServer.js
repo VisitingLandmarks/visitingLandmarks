@@ -20,6 +20,4 @@ const onlyWhenSocketAvailable = (func) => {
  */
 export const onVisitLocation = onlyWhenSocketAvailable((locationId) => {
     window.socket.emit('visitedLocation', locationId);
-
 });
-

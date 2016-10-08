@@ -1,4 +1,4 @@
-export const type = 'FAILED_LOG_IN';
+export const type = 'REQUEST_REGISTER_FAILURE';
 export default () => {
     return {
         type

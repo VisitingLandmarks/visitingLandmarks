@@ -1,5 +1,10 @@
 export default {
-    failedLogin: 0,
-    user:false,
-    locations : {}
+    user: false,
+    locations: {},
+    openDialog: false,
+    actions: {
+        registering: false,
+        loggingIn: false,
+        loggingOut: false,
+    }
 };

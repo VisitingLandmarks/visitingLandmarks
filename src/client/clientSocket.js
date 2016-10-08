@@ -1,5 +1,5 @@
+//@todo: rebuild using thunk
 import io from 'socket.io-client';
-
 
 /**
  * establish socket.io connection for loggedIn Users
@@ -25,7 +25,7 @@ export default (store) => {
     const changer = {
         true: () => {
             currentState = true;
-            window.socket = io.connect('http://localhost:8001');
+            window.socket = io.connect('/');
 
             //bind client side events
             window.socket.on('storeAction', store.dispatch);
