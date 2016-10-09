@@ -1,5 +1,6 @@
 export default {
     user: false,
+    followUser: true,
     locations: {},
     openDialog: false,
     actions: {

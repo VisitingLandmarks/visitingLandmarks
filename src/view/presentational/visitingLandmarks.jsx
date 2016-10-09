@@ -21,7 +21,13 @@ class VisitingLandmarks extends React.Component {
 
         return (
             <div className="mainContainer">
-                <MainMap visitedlocations={this.props.visitedlocations} locations={this.props.locations} onVisitLocation={onVisitLocation}/>
+                <MainMap
+                    followUser={this.props.followUser}
+                    visitedlocations={this.props.visitedlocations}
+                    locations={this.props.locations}
+                    onToggleFollowUser={this.props.onToggleFollowUser}
+                    onVisitLocation={onVisitLocation}
+                />
                 <MainMenu {...this.props}/>
             </div>
         )

@@ -16,7 +16,7 @@ export default module.exports = (getModel) => {
     //caching is in the responsibility of the dataRepository
     const cache = {
         Location: {
-            getAllAsObject: memoize(Location.getAllAsObject, { maxAge: 15 * 60 * 1000 })
+            getAllAsObject: memoize(Location.getAllAsObject, {maxAge: 15 * 60 * 1000})
         }
     };
 
@@ -40,7 +40,16 @@ export default module.exports = (getModel) => {
      * @returns {Promise}
      */
     const findUserById = (userId) => {
-        return User.findOne(userId).exec();
+        return User.findById(userId).exec();
+    };
+
+    /**
+     * get a single user based on the email
+     * @param userId
+     * @returns {Promise}
+     */
+    const findUserByEmail = (email) => {
+        return User.findOne({email: email.toLowerCase()}).exec();
     };
 
 
@@ -48,7 +57,8 @@ export default module.exports = (getModel) => {
         Location,
         User,
         getAllLocations,
-        findUserById
+        findUserById,
+        findUserByEmail
     };
 
 };

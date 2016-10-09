@@ -8,6 +8,7 @@ const transporter = nodemailer.createTransport(config.email.smtpTransport);
 //setting up email templates
 const EmailTemplate = require('email-templates').EmailTemplate;
 
+
 /**
  * preparing a email template
  * @param templateName string
@@ -17,10 +18,20 @@ const prepareEmailTemplate = (templateName) => {
 };
 
 //build object with template name as key and the prepared setup templates for nodemailer
-const templates = ['userEmailConfirmed', 'userRegistered'].reduce((obj, templateName) => {
+const templates = ['userEmailConfirmed', 'userRegistered', 'userResetPassword'].reduce((obj, templateName) => {
     obj[templateName] = prepareEmailTemplate(templateName);
     return obj;
 }, {});
+
+
+/**
+ * extend a template with global settings like domain
+ * @param obj
+ * @returns {*}
+ */
+const extendTemplateData = (obj) => {
+    return Object.assign({baseDomain: config.baseDomain}, obj);
+};
 
 
 /**
@@ -42,23 +53,35 @@ const addLogging = (promise, logger) => {
 
 
 /**
+ * send email when a user confirmed his emailadress
+ * @param user
+ * @returns {Promise|Promise.<T>}
+ */
+export const sendEmailConfirmed = (user) => {
+    return addLogging(templates.userEmailConfirmed({
+        to: user.email
+    }, extendTemplateData({user})), logger.child({toEmail: user.email, template: 'userEmailConfirmed'}));
+};
+
+
+/**
  * send a email when a user registered his emailadress
  * @param user
  */
 export const sendUserRegistered = (user) => {
     return addLogging(templates.userRegistered({
         to: user.email
-    }, {user}), logger.child({template: 'userRegistered'}));
+    }, extendTemplateData({user})), logger.child({template: 'userRegistered'}));
 };
 
 
 /**
- * send email when a user confirmed his emailadress
+ * send a email when a user registered his emailadress
  * @param user
- * @returns {Promise|Promise.<T>}
  */
-export const sendUserConfirmed = (user) => {
-    return addLogging(templates.userEmailConfirmed({
+export const sendUserResetPassword = (user) => {
+    return addLogging(templates.userResetPassword({
         to: user.email
-    }, {user}), logger.child({toEmail: user.email, template: 'userEmailConfirmed'}));
+    }, extendTemplateData({user})), logger.child({template: 'userResetPassword'}));
 };
+

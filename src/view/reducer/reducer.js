@@ -1,26 +1,28 @@
 //user management
 //login
-import {type as typeRegister} from '../action/request/register';
-import {type as typeRegisterSuccess} from '../action/request/registerSuccess';
-import {type as typeRegisterFailure} from '../action/request/registerFailure';
+import {type as registerType} from '../action/request/register';
+import {type as registerSuccessType} from '../action/request/registerSuccess';
+import {type as registerFailureType} from '../action/request/registerFailure';
 
 //login
-import {type as typeLogin} from '../action/request/login';
-import {type as typeLoginSuccess} from '../action/request/loginSuccess';
-import {type as typeLoginFailure} from '../action/request/loginFailure';
+import {type as loginType} from '../action/request/login';
+import {type as loginSuccessType} from '../action/request/loginSuccess';
+import {type as loginFailureType} from '../action/request/loginFailure';
 
 //logout
-import {type as typeLogout} from '../action/request/logout';
-import {type as typeLogoutSuccess} from '../action/request/logoutSuccess';
-import {type as typeLogoutFailure} from '../action/request/logoutFailure';
+import {type as logoutType} from '../action/request/logout';
+import {type as logoutSuccessType} from '../action/request/logoutSuccess';
+import {type as logoutFailureType} from '../action/request/logoutFailure';
 
 //UI management
-import {type as typeDialogClose} from '../action/dialogClose';
-import {type as typeDialogOpenLogin} from '../action/dialogOpen';
+import {type as setFollowUserType} from '../action/setFollowUser';
+
+import {type as dialogCloseType} from '../action/dialogClose';
+import {type as dialogOpenLoginType} from '../action/dialogOpen';
 
 //locations
-import {type as typeSetLocations} from '../action/setLocations';
-import {type as typeVisitedLocations} from '../action/visitedLocations';
+import {type as setLocationsType} from '../action/setLocations';
+import {type as visitedLocationsType} from '../action/visitedLocations';
 
 import initialState from './initialState';
 
@@ -30,18 +32,18 @@ export default (oldState = initialState, action) => {
         //user management
 
         //login
-        case typeRegister:
+        case registerType:
         {
             return Object.assign({}, oldState, {actions: Object.assign({}, oldState.actions, {registering: 'inProgress'})});
         }
-        case typeRegisterSuccess:
+        case registerSuccessType:
         {
             return Object.assign({}, oldState, {
                 user: action.user,
                 actions: Object.assign({}, oldState.actions, {registering: 'success'})
             });
         }
-        case typeRegisterFailure:
+        case registerFailureType:
         {
             return Object.assign({}, oldState, {
                 actions: Object.assign({}, oldState.actions, {registering: 'failure'})
@@ -49,18 +51,18 @@ export default (oldState = initialState, action) => {
         }
             
         //login
-        case typeLogin:
+        case loginType:
         {
             return Object.assign({}, oldState, {actions: Object.assign({}, oldState.actions, {logginIn: 'inProgress'})});
         }
-        case typeLoginSuccess:
+        case loginSuccessType:
         {
             return Object.assign({}, oldState, {
                 user: action.user,
                 actions: Object.assign({}, oldState.actions, {logginIn: 'success'})
             });
         }
-        case typeLoginFailure:
+        case loginFailureType:
         {
             return Object.assign({}, oldState, {
                 actions: Object.assign({}, oldState.actions, {logginIn: 'failure'})
@@ -68,36 +70,40 @@ export default (oldState = initialState, action) => {
         }
             
         //logout
-        case typeLogout:
+        case logoutType:
         {
             return Object.assign({}, oldState, {actions: Object.assign({}, oldState.actions, {loggingOut: 'inProgress'})});
         }
-        case typeLogoutSuccess:
+        case logoutSuccessType:
         {
             return Object.assign({}, oldState, initialState); //@todo: bad idea -> removes all locations -> sugar the initial state with the correct locations
         }
-        case typeLogoutFailure:
+        case logoutFailureType:
         {
             return Object.assign({}, oldState, {actions: Object.assign({}, oldState.actions, {loggingOut: 'failure'})});
         }
 
 
         //UI management
-        case typeDialogClose:
+        case setFollowUserType:
+        {
+            return Object.assign({}, oldState, {followUser : action.value});
+        }
+        case dialogCloseType:
         {
             return Object.assign({}, oldState, {openDialog: false});
         }
-        case typeDialogOpenLogin:
+        case dialogOpenLoginType:
         {
             return Object.assign({}, oldState, {openDialog: action.dialog});
         }
 
         //locations
-        case typeSetLocations:
+        case setLocationsType:
         {
             return Object.assign({}, oldState, {locations: action.locations});
         }
-        case typeVisitedLocations:
+        case visitedLocationsType:
         {
             return Object.assign({}, oldState, {user: Object.assign({}, oldState.user, {visited : oldState.user.visited.concat(action.locationIds)})});
         }

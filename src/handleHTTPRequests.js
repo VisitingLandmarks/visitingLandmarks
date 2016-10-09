@@ -2,7 +2,7 @@
 import serverSide  from './view/serverSide.jsx';
 import passport from 'passport';
 import logger from './helper/logger';
-import {sendUserConfirmed, sendUserRegistered} from './email';
+import {sendEmailConfirmed, sendUserRegistered, sendUserResetPassword} from './email';
 
 //@todo: too much logic in here. Buisness Logic should be abstracted from the interface
 export default module.exports = (app, getConnectionByUserId, sendActionToAllConnectionOfAUser, dataRepository) => {
@@ -36,7 +36,7 @@ export default module.exports = (app, getConnectionByUserId, sendActionToAllConn
 
 
     /**
-     * handle an incoming email registration
+     * handle an confirmation url for an email with is send to the user in an email
      */
     app.get('/confirm/:confirmationToken', function (req, res) {
 
@@ -48,7 +48,7 @@ export default module.exports = (app, getConnectionByUserId, sendActionToAllConn
                     res.status(404).send();
                     return;
                 }
-                return sendUserConfirmed(user);
+                return sendEmailConfirmed(user);
             })
             .then(() => {
                 res.send();
@@ -56,7 +56,6 @@ export default module.exports = (app, getConnectionByUserId, sendActionToAllConn
             .catch((err) => {
                 res.status(500).send(err);
             });
-
 
     });
 
@@ -83,10 +82,59 @@ export default module.exports = (app, getConnectionByUserId, sendActionToAllConn
                     sendUserRegistered(user);
                 }
                 next();
-        });
+            });
 
     }, passport.authenticate('local'), sendUser);
 
+
+    app.post('/requestResetPassword', function (req, res) {
+
+        //resetPassword is only possible if not logged in
+        if (req.user) {
+            logger.warn({
+                registeredUser: req.user.email,
+                triedToReset: req.body.username
+            }, 'user who is logged in tried to reset password');
+            res.status(403).send();
+            return;
+        }
+        
+        dataRepository.findUserByEmail(req.body.username)
+            .then((user)=> {
+                if (!user) {
+                    throw 'user during request does not exist';
+                }
+                return user.newPasswordResetToken().then(sendUserResetPassword);
+            })
+            .catch((err)=> {
+                logger.error(err, 'unable to handle resetPassword request');
+                res.status(403).send();
+            });
+
+    });
+
+
+    /**
+     * reset the password of a user with a token send to a second channel
+     */
+    app.get('/resetPassword/:resetPasswordToken', function (req, res) {
+
+        const resetPasswordToken = req.params.confirmationToken;
+
+        dataRepository.User.resetPassword(resetPasswordToken)
+            .then((user) => {
+                if (!user) {
+                    res.status(404).send();
+                    return;
+                }
+
+                res.send('verified token, but we dont have a form yet');
+            })
+            .catch((err) => {
+                res.status(500).send(err);
+            });
+
+    });
 
     /**
      * handle a post on the login route

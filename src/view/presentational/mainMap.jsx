@@ -12,25 +12,34 @@ export default class MainMap extends React.Component {
      */
     componentDidMount() {
 
-        this.leafLetMap = L.map('mainMap');
+        this.leafLetMap = L.map('mainMap', {
+            dragging : !this.props.followUser, //this could also be done with the setUserInteractivity method
+            doubleClickZoom : false,
+            scrollWheelZoom : 'center',
+            touchZoom : 'center'
+        });
         L.tileLayer('https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png').addTo(this.leafLetMap);
 
         //geolocation
-        //first location and setting the view
-        this.leafLetMap.locate({setView: true, maxZoom: 16});
-
-        //continous watching to redraw the marker
+        //continuously watching to redraw the marker
         this.leafLetMap.on('locationfound', onLocationFound.bind(this));
+
+        //first location and setting the view
+        this.leafLetMap.locate({setView: true, enableHighAccuracy: true, maxZoom: 16});
 
         //trigger the initial creation of markers
         createMarkers(this);
     }
 
+
     /**
      * called when the component is updated with different properties
      */
     componentDidUpdate() {
+
         updateMarkers(this.props.locations, this.props.visitedlocations, this.popups);
+
+        setUserInteractivity(this.leafLetMap, !this.props.followUser);
 
         //recheck buildings
         if (onLocationFound.lastData) {
@@ -100,6 +109,22 @@ function updateMarkers(locations, visitedlocations, popups) {
 
 }
 
+
+/**
+ * allow or disallow the user to move on the map
+ * @param map
+ * @param userIsAllowedToMoveMap
+ */
+function setUserInteractivity(map, userIsAllowedToMoveMap) {
+    if (userIsAllowedToMoveMap) {
+        map.dragging.enable();
+    } else {
+        map.dragging.disable();
+
+    }
+}
+
+
 /**
  * display a marker and circle for the users position
  * @param geoData
@@ -108,21 +133,44 @@ function onLocationFound(geoData) {
 
     const component = this;
 
-    //allow calling this function again without having the geoData -> to handle user login, when near a building
-    onLocationFound.lastData = function() {
+    //allow calling this function again without having the geoData
+    // - the switch "follow user"
+    // - user logs in and the position check needs to be redone
+    // component.lateastGeoData = geoData;
+    onLocationFound.lastData = () => {
         onLocationFound.call(component, geoData);
-    }
+    };
 
     //go to watching mode
-    if (!this.isGeoWatching) {
-        this.leafLetMap.locate({watch: true});
-        this.isGeoWatching = true;
+    if (!component.isGeoWatching) {
+        component.leafLetMap.locate({watch: true});
+        component.isGeoWatching = true;
     }
 
+    //follow user
+    if (component.props.followUser) {
+        component.leafLetMap.panTo(geoData.latlng);
+    }
 
     //radius is per definition of geolocation half the accuracy
     const radius = geoData.accuracy / 2;
 
+    //if there is already a user marker update it
+    if (this.userMarker) {
+        this.userMarker.marker.setLatLng(geoData.latlng);
+        this.userMarker.circle.setLatLng(geoData.latlng);
+        this.userMarker.circle.setRadius(radius);
+        return;
+        //create users position on Map, if not exist yet
+    } else {
+        this.userMarker = {
+            marker: L.marker(geoData.latlng).addTo(this.leafLetMap),
+            circle: L.circle(geoData.latlng, {radius}).addTo(this.leafLetMap)
+        };
+    }
+
+
+    //here comes the logic to check that we are near a building.
     //iterate over all locations
     Object.keys(component.props.locations)
     //find all close locations that are not collected by the user yet
@@ -140,20 +188,6 @@ function onLocationFound(geoData) {
         })
         //and mark them as visited
         .forEach(component.props.onVisitLocation);
-
-    //if there is already a user marker update it
-    if (this.userMarker) {
-        this.userMarker.marker.setLatLng(geoData.latlng);
-        this.userMarker.circle.setLatLng(geoData.latlng);
-        this.userMarker.circle.setRadius(radius);
-        return;
-    }
-
-    //create users position on Map
-    this.userMarker = {
-        marker: L.marker(geoData.latlng).addTo(this.leafLetMap),
-        circle: L.circle(geoData.latlng, {radius}).addTo(this.leafLetMap)
-    };
 }
 
 

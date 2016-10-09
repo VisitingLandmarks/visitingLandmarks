@@ -1,5 +1,6 @@
-import React from 'react';
+import config from '../../config';
 
+import React from 'react';
 import {Provider} from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
@@ -9,7 +10,6 @@ import reducer from './reducer/reducer';
 
 import loginSuccessfulAction from './action/request/loginSuccess';
 import setLocationsAction from './action/setLocations';
-// import visitedLocationsAction from './action/visitedLocations';
 
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -27,10 +27,6 @@ export default (user, locations, userAgent) => {
     if (locations) {
         store.dispatch(setLocationsAction(locations));
     }
-
-    // if (user && user.visited) {
-    //     store.dispatch(visitedLocationsAction(user.visited));
-    // }
 
     // Render the component to a string
     const html = renderToString(
@@ -55,11 +51,11 @@ function renderFullPage(html, initialState) {
         <title>visitingLandmarks</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
         <link rel="stylesheet" href="static/style.css">
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.0-rc.3/dist/leaflet.css">
-        <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.0.0-rc.1.0/dist/MarkerCluster.css">
-        <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.0.0-rc.1.0/dist/MarkerCluster.Default.css">
-        <script src="https://unpkg.com/leaflet@1.0.0-rc.3/dist/leaflet.js"></script>
-        <script src="https://unpkg.com/leaflet.markercluster@1.0.0-rc.1.0/dist/leaflet.markercluster.js"></script>
+        <link rel="stylesheet" href="${config.frontendPath.leafLet}leaflet.css">
+        <link rel="stylesheet" href="${config.frontendPath.leafLetMarkerCluster}MarkerCluster.css">
+        <link rel="stylesheet" href="${config.frontendPath.leafLetMarkerCluster}MarkerCluster.Default.css">
+        <script src="${config.frontendPath.leafLet}leaflet.js"></script>
+        <script src="${config.frontendPath.leafLetMarkerCluster}leaflet.markercluster.js"></script>
       </head>
       <body>
         <div id="root">${html}</div>

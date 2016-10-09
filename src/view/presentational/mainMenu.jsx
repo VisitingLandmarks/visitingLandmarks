@@ -7,10 +7,15 @@ import Divider from 'material-ui/Divider';
 
 import DialogLogin from './dialog/login.jsx';
 import DialogRegister from './dialog/register.jsx';
+import Toggle from 'material-ui/Toggle';
 
 
 const menuStyle = {
     display: 'inline-block'
+};
+
+const toggleStyle = {
+    marginBottom: 16
 };
 
 
@@ -23,6 +28,12 @@ export default class MainMenu extends React.Component {
 
         super(props);
 
+        this.onToggleFollowUser = this.onToggleFollowUser.bind(this);
+
+    }
+
+    onToggleFollowUser(event, value) {
+        return this.props.onToggleFollowUser(value);
     }
 
     render() {
@@ -30,8 +41,8 @@ export default class MainMenu extends React.Component {
         let menuItems;
         if (this.props.loggedIn) {
             menuItems = [
-                <MenuItem key="userEmail" primaryText={this.props.userEmail} />,
-                <Divider key="userEmailDivider" />,
+                <MenuItem key="userEmail" primaryText={this.props.userEmail}/>,
+                <Divider key="userEmailDivider"/>,
                 <MenuItem key="logout" primaryText="Logout" onTouchTap={this.props.requestLogout}/>
             ];
         } else {
@@ -48,6 +59,7 @@ export default class MainMenu extends React.Component {
                     <Menu style={menuStyle}>
                         {menuItems}
                     </Menu>
+                    <Toggle label="Follow me" onToggle={this.onToggleFollowUser} defaultToggled={this.props.followUser} style={toggleStyle}/>
                 </Paper>
                 <DialogLogin open={this.props.openDialog.login} onCloseDialog={this.props.onCloseDialog} requestLogin={this.props.requestLogin}/>
                 <DialogRegister open={this.props.openDialog.register} onCloseDialog={this.props.onCloseDialog} requestRegister={this.props.requestRegister}/>

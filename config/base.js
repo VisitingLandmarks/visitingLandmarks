@@ -2,6 +2,11 @@ module.exports = {
     name: 'visitingLandmarks',
     logLevel: 'debug',
     port: 8001,
+    baseDomain: 'http://localhost:8001',
+    frontendPath: {
+        leafLet: 'https://unpkg.com/leaflet@1.0.1/dist/',
+        leafLetMarkerCluster: 'https://unpkg.com/leaflet.markercluster@1.0.0-rc.1.0/dist/'
+    },
     mongoDB: {
         debug: true,
         connectURI: 'mongodb://localhost' //overwrite mongoDB connection stream

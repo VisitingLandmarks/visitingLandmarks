@@ -35,7 +35,11 @@ export default module.exports = function (mongoDB) {
                 unique: true,
                 select: false
             },
-            // resetPasswordToken: String,
+            resetPasswordToken: {
+                type: String,
+                unique: true,
+                select: false
+            },
             // resetPasswordExpires: Date,
             passwordHash: {
                 type: String,
@@ -115,6 +119,7 @@ export default module.exports = function (mongoDB) {
         });
     };
 
+    //@todo a method to change password -> password reset / password change
 
     /**
      * register a new user
@@ -150,9 +155,23 @@ export default module.exports = function (mongoDB) {
             });
     };
 
-    userSchema.statics.getConfirmationToken = (userId) => {
-        return UserModel.findById(userId, 'confirmationToken').select('+confirmationToken').exec();
+
+    /**
+     * set a new password reset token
+     * which will overwrite the old one -> invalidation of the old one
+     * @returns {*}
+     */
+    userSchema.methods.newPasswordResetToken = function () {
+
+        this.resetPasswordToken = generateRandomString();
+        return this.save();
+
     };
+
+
+    // userSchema.statics.getConfirmationToken = (userId) => {
+    //     return UserModel.findById(userId, 'confirmationToken').select('+confirmationToken').exec();
+    // };
 
 
     /**
