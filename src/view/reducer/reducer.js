@@ -14,11 +14,16 @@ import {type as logoutType} from '../action/request/logout';
 import {type as logoutSuccessType} from '../action/request/logoutSuccess';
 import {type as logoutFailureType} from '../action/request/logoutFailure';
 
+//change Password
+import {type as changePasswordType} from '../action/request/changePassword';
+import {type as changePasswordSuccessType} from '../action/request/changePasswordSuccess';
+import {type as changePasswordFailureType} from '../action/request/changePasswordFailure';
+
 //UI management
 import {type as setFollowUserType} from '../action/setFollowUser';
 
 import {type as dialogCloseType} from '../action/dialogClose';
-import {type as dialogOpenLoginType} from '../action/dialogOpen';
+import {type as dialogOpenType} from '../action/dialogOpen';
 
 //locations
 import {type as setLocationsType} from '../action/setLocations';
@@ -49,7 +54,7 @@ export default (oldState = initialState, action) => {
                 actions: Object.assign({}, oldState.actions, {registering: 'failure'})
             });
         }
-            
+
         //login
         case loginType:
         {
@@ -68,7 +73,7 @@ export default (oldState = initialState, action) => {
                 actions: Object.assign({}, oldState.actions, {logginIn: 'failure'})
             });
         }
-            
+
         //logout
         case logoutType:
         {
@@ -83,17 +88,33 @@ export default (oldState = initialState, action) => {
             return Object.assign({}, oldState, {actions: Object.assign({}, oldState.actions, {loggingOut: 'failure'})});
         }
 
+        //changePassword
+        case changePasswordType:
+        {
+            return Object.assign({}, oldState, {actions: Object.assign({}, oldState.actions, {changingPassword: 'inProgress'})});
+        }
+        case changePasswordSuccessType:
+        {
+            return Object.assign({}, oldState, {
+                actions: Object.assign({}, oldState.actions, {changingPassword: 'success'})
+            });
+        }
+        case changePasswordFailureType:
+        {
+            return Object.assign({}, oldState, {actions: Object.assign({}, oldState.actions, {changingPassword: 'failure'})});
+        }
+
 
         //UI management
         case setFollowUserType:
         {
-            return Object.assign({}, oldState, {followUser : action.value});
+            return Object.assign({}, oldState, {followUser: action.value});
         }
         case dialogCloseType:
         {
             return Object.assign({}, oldState, {openDialog: false});
         }
-        case dialogOpenLoginType:
+        case dialogOpenType:
         {
             return Object.assign({}, oldState, {openDialog: action.dialog});
         }
@@ -105,7 +126,7 @@ export default (oldState = initialState, action) => {
         }
         case visitedLocationsType:
         {
-            return Object.assign({}, oldState, {user: Object.assign({}, oldState.user, {visited : oldState.user.visited.concat(action.locationIds)})});
+            return Object.assign({}, oldState, {user: Object.assign({}, oldState.user, {visited: oldState.user.visited.concat(action.locationIds)})});
         }
 
 

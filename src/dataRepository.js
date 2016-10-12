@@ -51,6 +51,14 @@ export default module.exports = (getModel) => {
     const findUserByEmail = (email) => {
         return User.findOne({email: email.toLowerCase()}).exec();
     };
+    /**
+     * get a single user based on the email
+     * @param userId
+     * @returns {Promise}
+     */
+    const findUserByResetPasswordToken = (resetPasswordToken) => {
+        return User.findOne({resetPasswordToken}).exec();
+    };
 
 
     return {
@@ -58,7 +66,8 @@ export default module.exports = (getModel) => {
         User,
         getAllLocations,
         findUserById,
-        findUserByEmail
+        findUserByEmail,
+        findUserByResetPasswordToken
     };
 
 };

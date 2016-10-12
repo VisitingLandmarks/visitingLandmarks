@@ -7,6 +7,7 @@ import Divider from 'material-ui/Divider';
 
 import DialogLogin from './dialog/login.jsx';
 import DialogRegister from './dialog/register.jsx';
+import DialogChangePassword from './dialog/changePassword.jsx';
 import Toggle from 'material-ui/Toggle';
 
 
@@ -63,6 +64,7 @@ export default class MainMenu extends React.Component {
                 </Paper>
                 <DialogLogin open={this.props.openDialog.login} onCloseDialog={this.props.onCloseDialog} requestLogin={this.props.requestLogin}/>
                 <DialogRegister open={this.props.openDialog.register} onCloseDialog={this.props.onCloseDialog} requestRegister={this.props.requestRegister}/>
+                <DialogChangePassword open={this.props.openDialog.changePassword} onCloseDialog={this.props.onCloseDialog} requestChangePassword={this.props.requestChangePassword}/>
             </div>
         )
 

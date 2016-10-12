@@ -169,6 +169,28 @@ export default module.exports = function (mongoDB) {
     };
 
 
+    /**
+     * set a new password
+     * which will overwrite the old one -> invalidation of the old one
+     * @returns {*}
+     */
+    userSchema.methods.setPassword = function (clearTextPassword) {
+
+        return generatePasswordHash(clearTextPassword)
+            .then((passwordData) => {
+                this.passwordHash = passwordData.passwordHash;
+                this.passwordSalt = passwordData.passwordSalt;
+                this.passwordResetToken = undefined;
+                return this.save();
+            })
+            .catch((message)=> {
+                logger.error({userId: this._id, message}, 'mongoDB Error in userSchema.methods.setPassword');
+            });
+
+
+    };
+
+
     // userSchema.statics.getConfirmationToken = (userId) => {
     //     return UserModel.findById(userId, 'confirmationToken').select('+confirmationToken').exec();
     // };

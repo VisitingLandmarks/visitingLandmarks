@@ -15,30 +15,46 @@ export default module.exports = (app, getConnectionByUserId, sendActionToAllConn
 
     }
 
+    const onlyLoggedInUsers = (req, res, next)=> {
+        if (!req.user) {
+            res.status(403).send();
+            return;
+        }
+
+        next();
+    };
+
+    const handleMainAppRequests = (params, res) => {
+
+        Promise.all([
+            //which data is required for rendering?
+            params.user, //the user
+            dataRepository.getAllLocations(), //all locations
+            res.req.headers['user-agent'],//the user agent,
+            params.openDialog
+        ]).then(values => {
+            // Send the rendered page back to the client
+            res.send(serverSide(...values));
+        }, (err) => {
+            res.status(500).send(err);
+        });
+
+    };
+
     /**
      * handle all get requests on the main address, in short deliver the app
      */
     app.get('/', (req, res) => {
-
-        Promise.all([
-            //which data is required for rendering?
-            req.user, //the user
-            dataRepository.getAllLocations(), //all locations
-            req.headers['user-agent'] //the user agent
-        ]).then(values => {
-            // Send the rendered page back to the client
-            res.send(serverSide(...values));
-        }, err => {
-            res.status(500).send(err);
-        });
-
+        handleMainAppRequests({
+            user: req.user,
+        }, res);
     });
 
 
     /**
      * handle an confirmation url for an email with is send to the user in an email
      */
-    app.get('/confirm/:confirmationToken', function (req, res) {
+    app.get('/confirm/:confirmationToken', (req, res) => {
 
         const confirmationToken = req.params.confirmationToken;
 
@@ -64,7 +80,7 @@ export default module.exports = (app, getConnectionByUserId, sendActionToAllConn
      * handle a post on the login route
      * send back the user if successful
      */
-    app.post('/register', function (req, res, next) {
+    app.post('/register', (req, res, next) => {
 
         //register is only possible if not logged in
         if (req.user) {
@@ -87,7 +103,7 @@ export default module.exports = (app, getConnectionByUserId, sendActionToAllConn
     }, passport.authenticate('local'), sendUser);
 
 
-    app.post('/requestResetPassword', function (req, res) {
+    app.post('/requestResetPassword', (req, res) => {
 
         //resetPassword is only possible if not logged in
         if (req.user) {
@@ -98,7 +114,7 @@ export default module.exports = (app, getConnectionByUserId, sendActionToAllConn
             res.status(403).send();
             return;
         }
-        
+
         dataRepository.findUserByEmail(req.body.username)
             .then((user)=> {
                 if (!user) {
@@ -117,18 +133,39 @@ export default module.exports = (app, getConnectionByUserId, sendActionToAllConn
     /**
      * reset the password of a user with a token send to a second channel
      */
-    app.get('/resetPassword/:resetPasswordToken', function (req, res) {
+    app.get('/resetPassword/:resetPasswordToken', (req, res) => {
 
-        const resetPasswordToken = req.params.confirmationToken;
+        const resetPasswordToken = req.params.resetPasswordToken;
 
-        dataRepository.User.resetPassword(resetPasswordToken)
+        dataRepository.findUserByResetPasswordToken(resetPasswordToken)
             .then((user) => {
                 if (!user) {
                     res.status(404).send();
                     return;
                 }
 
-                res.send('verified token, but we dont have a form yet');
+                req.login(user, function (err) {
+                    logger.error(err, 'cant login user manually during password reset');
+                    handleMainAppRequests({
+                        user: !err && user,
+                        openDialog: 'changePassword'
+                    }, res);
+                })
+
+            })
+            .catch((err) => {
+                res.status(500).send(err);
+            });
+
+    });
+
+    app.post('/changePassword', onlyLoggedInUsers, (req, res)=> {
+
+        const newPassword = req.body.password;
+
+        req.user.setPassword(newPassword)
+            .then(()=> {
+                res.send();
             })
             .catch((err) => {
                 res.status(500).send(err);
@@ -146,7 +183,7 @@ export default module.exports = (app, getConnectionByUserId, sendActionToAllConn
     /**
      * logout - post only, get is a bad idea -> prefetch
      */
-    app.post('/logout', function (req, res) {
+    app.post('/logout', (req, res) => {
         if (req.user) {
 
             let sockets = getConnectionByUserId(req.user._id);

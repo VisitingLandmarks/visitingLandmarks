@@ -5,6 +5,7 @@ import VisitingLandmarks from '../presentational/visitingLandmarks.jsx';
 import {registerThunk} from '../action/thunk/register';
 import {loginThunk} from '../action/thunk/login';
 import {logoutThunk} from '../action/thunk/logout';
+import {changePasswordThunk} from '../action/thunk/changePassword';
 
 import setFollowUserAction from '../action/setFollowUser';
 import dialogCloseAction from '../action/dialogClose';
@@ -26,7 +27,8 @@ const mapStateToProps = (state) => {
         }, {}),
         openDialog: {
             login: state.openDialog === 'login',
-            register: state.openDialog === 'register'
+            register: state.openDialog === 'register',
+            changePassword: state.openDialog === 'changePassword'
         }
     };
 };
@@ -36,6 +38,7 @@ const mapDispatchToProps = (dispatch) => {
         requestRegister: (username, password) => dispatch(registerThunk({username, password})),
         requestLogin: (username, password) => dispatch(loginThunk({username, password})),
         requestLogout: () => dispatch(logoutThunk()),
+        requestChangePassword: (password) => dispatch(changePasswordThunk(password)),
 
         onToggleFollowUser: (newValue) =>dispatch(setFollowUserAction(newValue)),
 
