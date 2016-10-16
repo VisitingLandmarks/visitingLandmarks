@@ -12,13 +12,13 @@ export function changePasswordThunk(newPassword) {
         dispatch(requestChangePasswordAction());
         axios.post('/changePassword', {password: newPassword})
             .then((response) => {
-                dispatch(requestChangePasswordActionSuccess())
+                dispatch(requestChangePasswordActionSuccess(response));
             })
 
             //delay the closing of the login to display some positive feedback to the user
             .then(() => {
-                return new Promise((resolve, reject) => {
-                    setTimeout(resolve, 500)
+                return new Promise((resolve) => {
+                    setTimeout(resolve, 500);
                 });
             })
 
@@ -26,6 +26,6 @@ export function changePasswordThunk(newPassword) {
                 dispatch(dialogCloseAction());
             })
 
-            .catch((response) => dispatch(requestChangePasswordActionFailure()))
-    }
+            .catch((response) => dispatch(requestChangePasswordActionFailure(response)));
+    };
 }

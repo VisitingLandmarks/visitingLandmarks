@@ -8,7 +8,7 @@ export function logoutThunk() {
     return function (dispatch) {
         dispatch(requestLogoutAction());
         axios.post('/logout')
-            .then((response) => dispatch(requestLogoutActionSuccess()))
-            .catch((response) => dispatch(requestLogoutActionFailure()))
-    }
+            .then((response) => dispatch(requestLogoutActionSuccess(response)))
+            .catch((response) => dispatch(requestLogoutActionFailure(response)));
+    };
 }

@@ -48,7 +48,7 @@ const addLogging = (promise, logger) => {
         })
         .catch((err) => {
             logger.error(err, 'failed to send email');
-        })
+        });
 };
 
 

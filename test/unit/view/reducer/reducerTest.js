@@ -33,33 +33,22 @@ describe('reducer', ()=> {
 
     it(typeVisitedLocations, () => {
 
+        const dateA = new Date();
+        const dateB = new Date();
+
         const oldState = deepFreeze({
-            failedLogin: 1,
-            locations: {
-                a: {
-                    visited: true,
-                    otherData: 123
-                },
-                b: {otherData: 456},
-                c: {otherData: 789}
+            visited : {
+                a : dateA
             }
         });
-        const newState = {
-            failedLogin: 1,
-            locations: {
-                a: {
-                    visited: true,
-                    otherData: 123
-                },
-                b: {otherData: 456},
-                c: {
-                    visited: true,
-                    otherData: 789
-                }
-            }
-        };
 
-        assert.deepEqual(reducer(oldState, visitedLocationsAction('c')), newState);
+        const newState = deepFreeze({
+            visited : {
+                a : dateA,
+                b : dateB
+            }
+        });
+        assert.deepEqual(reducer(oldState, visitedLocationsAction({b:dateB})), newState);
 
     });
 

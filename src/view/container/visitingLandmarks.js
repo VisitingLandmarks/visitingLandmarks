@@ -21,10 +21,7 @@ const mapStateToProps = (state) => {
         //an object is easier to access and check
         //@todo: is this a good case for a virtual property in the mongodb model?
         //@todo: or maybe storying it as object anyway? with some tracking data as property like timestamp?
-        visitedlocations: (state.user && state.user.visited || []).reduce((obj, id)=> {
-            obj[id] = true;
-            return obj;
-        }, {}),
+        visitedlocations: state.user && state.user.visited,
         openDialog: {
             login: state.openDialog === 'login',
             register: state.openDialog === 'register',

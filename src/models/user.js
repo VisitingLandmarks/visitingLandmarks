@@ -52,10 +52,15 @@ export default module.exports = function (mongoDB) {
                 select: false
             },
             //and now the game based information
-            visited: [mongoDB.Schema.Types.ObjectId]
+            visited: {
+                type: mongoDB.Schema.Types.Object,
+                required: true,
+                default: {}
+            }
         },
         {
-            timestamps: true
+            timestamps: true,
+            minimize: false
         });
 
     //making sure that the combination of user und visited objects is unique - he either visited or not
@@ -71,11 +76,19 @@ export default module.exports = function (mongoDB) {
     userSchema.methods.visitedLocation = function (locationId) {
 
         //check if user was here already
-        if (~this.visited.indexOf(locationId)) {
-            return false;
+        if (this.visited[locationId]) {
+           return false;
         }
 
-        return this.update({$addToSet: {visited: locationId}}).exec();
+        const timeOfVisit = new Date();
+        this.visited[locationId] = timeOfVisit;
+        this.markModified('visited');
+
+        return this.save()
+            .then(() => timeOfVisit)
+            .catch((message)=> {
+                logger.error({message, locationId, userId: this._id}, 'mongoDB Error in userSchema.methods.visitedLocation');
+            });
     };
 
 
@@ -112,7 +125,7 @@ export default module.exports = function (mongoDB) {
                     // return user representing object, not the user model! if everything is ok
                     callback(err, user);
                 })
-                .catch((error)=> {
+                .catch(()=> {
                     callback(null, false, {message: 'Incorrect username.'});
                 });
 
@@ -143,6 +156,7 @@ export default module.exports = function (mongoDB) {
                     confirmationToken,
                     email,
                     isAdmin,
+                    visited: {}
                 })
                     .save()
                     .then((user)=> {

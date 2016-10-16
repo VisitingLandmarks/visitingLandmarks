@@ -150,7 +150,7 @@ export default module.exports = (app, getConnectionByUserId, sendActionToAllConn
                         user: !err && user,
                         openDialog: 'changePassword'
                     }, res);
-                })
+                });
 
             })
             .catch((err) => {

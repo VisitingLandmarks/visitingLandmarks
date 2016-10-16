@@ -13,7 +13,7 @@ export const verify = (password, passwordHash, salt) => {
     return generate(password, salt).then((passwordData) => {
         if (passwordData.passwordHash !== passwordHash) {
             throw Error('incorrect password');
-        };
+        }
     });
 };
 

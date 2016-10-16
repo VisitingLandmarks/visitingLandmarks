@@ -1,4 +1,4 @@
-const webpack = require("webpack");
+const webpack = require('webpack');
 module.exports = function (grunt) {
 
     grunt.loadNpmTasks('grunt-eslint');
@@ -68,7 +68,7 @@ module.exports = function (grunt) {
                             exclude: /node_modules/,
                             query: {
                                 presets: ['react', 'es2017'],
-                                plugins: ['transform-runtime']
+                                plugins: ['transform-runtime', 'transform-object-rest-spread']
                             }
                         }
                     ]
@@ -97,7 +97,7 @@ module.exports = function (grunt) {
                         }
                     })
                 ],
-                devtool: "#inline-source-map",
+                devtool: '#inline-source-map',
                 module: {
                     loaders: [
                         {
@@ -106,7 +106,7 @@ module.exports = function (grunt) {
                             exclude: /node_modules/,
                             query: {
                                 presets: ['react', 'es2017'],
-                                plugins: ['transform-runtime']
+                                plugins: ['transform-runtime', 'transform-object-rest-spread']
                             }
                         }
                     ]

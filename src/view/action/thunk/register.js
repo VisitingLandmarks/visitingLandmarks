@@ -12,13 +12,13 @@ export function registerThunk(registerData) {
         dispatch(requestRegisterAction());
         axios.post('/register', registerData)
             .then((response) => {
-                dispatch(requestRegisterActionSuccess(response.data.user))
+                dispatch(requestRegisterActionSuccess(response.data.user));
             })
 
             //delay the closing of the register to display some positive feedback to the user
             .then(() => {
-                return new Promise((resolve, reject) => {
-                    setTimeout(resolve, 500)
+                return new Promise((resolve) => {
+                    setTimeout(resolve, 500);
                 });
             })
 
@@ -26,6 +26,6 @@ export function registerThunk(registerData) {
                 dispatch(dialogCloseAction());
             })
             
-            .catch((response) => dispatch(requestRegisterActionFailure()))
-    }
+            .catch((response) => dispatch(requestRegisterActionFailure(response)));
+    };
 }

@@ -39,7 +39,8 @@ export default (oldState = initialState, action) => {
         //login
         case registerType:
         {
-            return Object.assign({}, oldState, {actions: Object.assign({}, oldState.actions, {registering: 'inProgress'})});
+            // return Object.assign({}, oldState, {actions: Object.assign({}, oldState.actions, {registering: 'inProgress'})});
+            return {...oldState, actions: {...oldState.actions, registering: 'inProgress'}};
         }
         case registerSuccessType:
         {
@@ -126,7 +127,19 @@ export default (oldState = initialState, action) => {
         }
         case visitedLocationsType:
         {
-            return Object.assign({}, oldState, {user: Object.assign({}, oldState.user, {visited: oldState.user.visited.concat(action.locationIds)})});
+            return Object.assign(
+                {},
+                oldState,
+                {
+                    user: Object.assign(
+                        {},
+                        oldState.user,
+                        {
+                            visited: Object.assign({}, oldState.user.visited, action.visitedLocation)
+                        }
+                    )
+                }
+            );
         }
 
 

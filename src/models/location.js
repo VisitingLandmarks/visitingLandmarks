@@ -16,7 +16,7 @@ export default module.exports = function (mongoDB) {
             // longitute -> x -> easting
             // latitutde -> y -> northing
             location: {
-                'type': {
+                type: {
                     type: String,
                     enum: 'Point',
                     default: 'Point'

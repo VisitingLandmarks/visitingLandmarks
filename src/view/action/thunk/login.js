@@ -12,13 +12,13 @@ export function loginThunk(loginData) {
         dispatch(requestLoginAction());
         axios.post('/login', loginData)
             .then((response) => {
-                dispatch(requestLoginActionSuccess(response.data.user))
+                dispatch(requestLoginActionSuccess(response.data.user));
             })
 
             //delay the closing of the login to display some positive feedback to the user
             .then(() => {
-                return new Promise((resolve, reject) => {
-                    setTimeout(resolve, 500)
+                return new Promise((resolve) => {
+                    setTimeout(resolve, 500);
                 });
             })
 
@@ -26,6 +26,6 @@ export function loginThunk(loginData) {
                 dispatch(dialogCloseAction());
             })
             
-            .catch((response) => dispatch(requestLoginActionFailure()))
-    }
+            .catch((response) => dispatch(requestLoginActionFailure(response)));
+    };
 }

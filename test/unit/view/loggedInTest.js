@@ -1,11 +1,10 @@
 require('../../testDOM.js')();
 
-import LoggedIn from '../../../src/view/presentational/loggedIn.jsx';
+// import LoggedIn from '../../../src/view/presentational/loggedIn.jsx';
 import React from 'react';
 import ReactDOM from 'react-dom';
-console.log(LoggedIn);
 
-describe('loggedIn.jsx', ()=> {
+describe.skip('loggedIn.jsx', ()=> {
 
     return;
     beforeEach(()=> {

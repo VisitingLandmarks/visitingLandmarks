@@ -93,7 +93,7 @@ function createMarkers(self) {
  * @param self
  */
 function updateMarkers(locations, visitedlocations, popups) {
-
+    
     Object.keys(locations)
         .forEach((locationId)=> {
 
@@ -168,7 +168,6 @@ function onLocationFound(geoData) {
             circle: L.circle(geoData.latlng, {radius}).addTo(this.leafLetMap)
         };
     }
-
 
     //here comes the logic to check that we are near a building.
     //iterate over all locations

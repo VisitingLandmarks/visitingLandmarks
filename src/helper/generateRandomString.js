@@ -7,4 +7,4 @@ const crypto = require('crypto');
  */
 export default module.exports = (length = 32) => {
     return crypto.randomBytes(length).toString('hex');
-}
+};

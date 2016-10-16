@@ -1,12 +1,7 @@
 export const type = 'VISITED_LOCATION';
-export default (locationIds) => {
-
-    if (!Array.isArray(locationIds)) {
-        locationIds = [locationIds];
-    }
-
+export default (visitedLocation) => {
     return {
         type,
-        locationIds
+        visitedLocation
     };
 };
