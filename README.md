@@ -66,4 +66,5 @@ There are several grunt tasks for different quality checks. Easiest is you just 
 * Leaflet.js
 
 #### Graphic Icon
-* House by Vishwas Shetty from the Noun Project
+* "House" by Vishwas Shetty from the Noun Project
+* "User Placeholder" by Freepik from www.flaticon.com  (http://www.flaticon.com/free-icon/user-placeholder_22966)
