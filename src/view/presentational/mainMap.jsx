@@ -1,8 +1,18 @@
 import React from 'react';
 import gameSettings from '../../../config/gameSettings';
+import markerStyle from '../../client/map/markerStyle';
+
 export default class MainMap extends React.Component {
     constructor(props) {
         super(props);
+
+        //marker and popup
+        this.marker = {};
+        this.popups = {};
+        this.latLng = {};
+
+        this.updateOrientationMarker = this.updateOrientationMarker.bind(this);
+
     }
 
 
@@ -11,6 +21,9 @@ export default class MainMap extends React.Component {
      * the typical way to connect a "non" react component in a larger react project
      */
     componentDidMount() {
+
+        const component = this;
+        require('leaflet-rotatedmarker');
 
         this.leafLetMap = L.map('mainMap', {
             dragging: !this.props.followUser, //this could also be done with the setUserInteractivity method
@@ -21,37 +34,69 @@ export default class MainMap extends React.Component {
 
         L.tileLayer('https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png').addTo(this.leafLetMap);
 
-        this.markerStyle = {
-            user: L.icon({
-                iconUrl: '/static/img/marker/user.png',
-                iconRetinaUrl: '/static/img/marker/user-2x.png',
-                shadowUrl: '/static/img/marker/shadow.png',
-                shadowSize: [41, 41],
-                shadowAnchor: [11, 41],
-                iconSize: [64, 64],
-                iconAnchor: [32, 64],
-                popupAnchor: [32, -10]
-            }),
-            visited: L.icon({
-                iconUrl: '/static/img/marker/grey.png',
-                iconRetinaUrl: '/static/img/marker/grey-2x.png',
-                shadowUrl: '/static/img/marker/shadow.png',
-                iconSize: [25, 41],
-                iconAnchor: [12, 41],
-                popupAnchor: [1, -34],
-                shadowSize: [41, 41]
-            })
-        };
-
         //geolocation
         //continuously watching to redraw the marker
         this.leafLetMap.on('locationfound', onLocationFound.bind(this));
 
+        // orientation Events
+
+// device APIs are available
+        function onDeviceReady() {
+            console.log('ready');
+            window.removeEventListener('deviceorientation', onDeviceOrientation, false);
+            navigator.compass.getCurrentHeading(onSuccess, onError);
+        }
+
+// onSuccess: Get the current heading
+        function onSuccess(heading) {
+            console.log('Heading: ' + heading.magneticHeading);
+            component.updateOrientationMarker(heading.magneticHeading);
+        }
+
+// onError: Failed to get the heading
+        function onError(compassError) {
+            console.log('Compass Error: ' + compassError.code);
+        }
+
+        function onDeviceOrientation(e) {
+            console.log('onDeviceOrientation', e);
+            // const alpha = e.webkitCompassHeading || e.absolute && e.alpha;
+            let alpha = e.webkitCompassHeading || e.alpha;
+
+            if (typeof alpha !== 'number') {
+                return;
+            }
+
+            //normalize from -180/180 to 0/360
+            alpha = (alpha + 360) % 360;
+
+            console.log(alpha);
+            component.updateOrientationMarker(alpha);
+        }
+
+        //native browsers
+        window.addEventListener('deviceorientation', onDeviceOrientation, false);
+
+        //PhoneGap
+        document.addEventListener('deviceready', onDeviceReady, false);
+
+
+
+
+
+
         //first location and setting the view
         this.leafLetMap.locate({setView: true, enableHighAccuracy: true, maxZoom: 16});
 
+        //build coordiantes
+        createCoordinates(this.latLng, this.props.locations);
+
         //trigger the initial creation of markers
-        createMarkers(this);
+        this.leafLetMap.addLayer(createMarkers(this, this.props.locations, this.latLng, this.marker, this.popups));
+    }
+
+    updateOrientationMarker(deg) {
+        this.userMarker.arrow.setRotationAngle(deg);
     }
 
 
@@ -60,7 +105,7 @@ export default class MainMap extends React.Component {
      */
     componentDidUpdate() {
 
-        updateMarkers(this.props.locations, this.props.visitedlocations, this.marker, this.markerStyle, this.popups);
+        updateMarkers(this.props.locations, this.props.visitedlocations, this.marker, this.popups);
 
         setUserInteractivity(this.leafLetMap, !this.props.followUser);
 
@@ -78,44 +123,49 @@ export default class MainMap extends React.Component {
 
 
 /**
+ * create the leaflet coordidantes based on native coordinates
+ * @param latLng
+ * @param locations
+ */
+const createCoordinates = (latLng, locations) => {
+    Object.keys(locations)
+        .forEach((locationId) => {
+            const location = locations[locationId];
+            latLng[location.originalId] = L.latLng(location.location.coordinates.reverse());
+        });
+};
+
+
+/**
  * create the markers and store a reference to the popups and the precalculated latLng for later
  * @param self
  */
-function createMarkers(self) {
+function createMarkers(self, locations, latLng, marker, popups) {
 
-    //marker and popup
-    self.marker = {};
-    self.popups = {};
-    self.latLng = {};
+    const markers = Object.keys(locations)
+        .map((locationId) => {
 
-    const markers = Object.keys(self.props.locations)
-        .map((locationId)=> {
+            const location = locations[locationId];
+            // const userVisit = self.props.visitedlocations[locationId];
+            latLng[location.originalId] = L.latLng(location.location.coordinates.reverse());
+            const buildMarker = marker[location.originalId] = L.marker(latLng[location.originalId]);
 
-            const location = self.props.locations[locationId];
-            const userVisit = self.props.visitedlocations[locationId];
-            self.latLng[location.originalId] = L.latLng(location.location.coordinates.reverse());
-            const marker = self.marker[location.originalId] = L.marker(self.latLng[location.originalId]);
+            // if (userVisit) {
+            //     marker.setIcon(self.markerStyle.visited);
+            // }
 
-            if (userVisit) {
-                marker.setIcon(self.markerStyle.visited);
-            }
+            popups[location.originalId] = L.popup({closeButton: false});
+            buildMarker.bindPopup(popups[location.originalId]);
 
-            const title = `${location.originalId} (${location.constructionYear })<br/>
-                <a href="${location.originalUrl}">${location.originalUrl}</a><br/>
-                ${JSON.stringify(location.location)}<br/>
-                visited already: ${userVisit}`;
-
-            self.popups[location.originalId] = L.popup({closeButton: false}).setContent(title);
-            marker.bindPopup(self.popups[location.originalId]);
-
-            return marker;
+            return buildMarker;
 
         });
 
     //create the cluster layer and add the markers
     const markerClusterGroup = L.markerClusterGroup();
     markerClusterGroup.addLayers(markers);
-    self.leafLetMap.addLayer(markerClusterGroup);
+
+    return markerClusterGroup;
 }
 
 
@@ -124,13 +174,12 @@ function createMarkers(self) {
  * @todo right now this just works for the title, not coordinations, removing or adding locations
  * @param self
  */
-function updateMarkers(locations, visitedlocations, marker, markerStyle, popups) {
+function updateMarkers(locations, visitedlocations, marker, popups) {
 
     Object.keys(locations)
         .forEach((locationId)=> {
 
             const location = locations[locationId];
-
             const userVisit = visitedlocations[locationId];
 
             if (userVisit) {
@@ -200,9 +249,10 @@ function onLocationFound(geoData) {
         this.userMarker.circle.setLatLng(geoData.latlng);
         this.userMarker.circle.setRadius(radius);
 
-    } else {//create users position on Map, if not exist yet
+    } else { //create users position on Map, if not exist yet
         this.userMarker = {
-            marker: L.marker(geoData.latlng, {icon: this.markerStyle.user}).addTo(this.leafLetMap),
+            marker: L.marker(geoData.latlng, {icon: markerStyle.user}).addTo(this.leafLetMap),
+            arrow: L.marker(geoData.latlng, {icon: markerStyle.arrow}).addTo(this.leafLetMap),
             circle: L.circle(geoData.latlng, {radius}).addTo(this.leafLetMap)
         };
     }
@@ -225,5 +275,6 @@ function onLocationFound(geoData) {
         //and mark them as visited
         .forEach(component.props.onVisitLocation);
 }
+
 
 

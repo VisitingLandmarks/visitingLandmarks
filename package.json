@@ -50,6 +50,7 @@
     "grunt-nodemon": "^0.4.2",
     "grunt-webpack": "^1.0.14",
     "handlebars": "^4.0.5",
+    "leaflet-rotatedmarker": "^0.1.1",
     "material-ui": "^0.16.0",
     "memoizee": "^0.4.1",
     "mocha": "^3.0.2",
