@@ -59,19 +59,19 @@ export default (oldState = initialState, action) => {
         //login
         case loginType:
         {
-            return Object.assign({}, oldState, {actions: Object.assign({}, oldState.actions, {logginIn: 'inProgress'})});
+            return Object.assign({}, oldState, {actions: Object.assign({}, oldState.actions, {loggingIn: 'inProgress'})});
         }
         case loginSuccessType:
         {
             return Object.assign({}, oldState, {
                 user: action.user,
-                actions: Object.assign({}, oldState.actions, {logginIn: 'success'})
+                actions: Object.assign({}, oldState.actions, {loggingIn: 'success'})
             });
         }
         case loginFailureType:
         {
             return Object.assign({}, oldState, {
-                actions: Object.assign({}, oldState.actions, {logginIn: 'failure'})
+                actions: Object.assign({}, oldState.actions, {loggingIn: 'failure'})
             });
         }
 

@@ -12,6 +12,7 @@ export default class MainMap extends React.Component {
         this.latLng = {};
 
         this.updateOrientationMarker = this.updateOrientationMarker.bind(this);
+        this.updateMarkers = this.updateMarkers.bind(this);
 
     }
 
@@ -60,8 +61,7 @@ export default class MainMap extends React.Component {
 
         function onDeviceOrientation(e) {
             console.log('onDeviceOrientation', e);
-            // const alpha = e.webkitCompassHeading || e.absolute && e.alpha;
-            let alpha = e.webkitCompassHeading || e.alpha;
+            let alpha = e.webkitCompassHeading || e.absolute && e.alpha;
 
             if (typeof alpha !== 'number') {
                 return;
@@ -70,7 +70,6 @@ export default class MainMap extends React.Component {
             //normalize from -180/180 to 0/360
             alpha = (alpha + 360) % 360;
 
-            console.log(alpha);
             component.updateOrientationMarker(alpha);
         }
 
@@ -80,11 +79,6 @@ export default class MainMap extends React.Component {
         //PhoneGap
         document.addEventListener('deviceready', onDeviceReady, false);
 
-
-
-
-
-
         //first location and setting the view
         this.leafLetMap.locate({setView: true, enableHighAccuracy: true, maxZoom: 16});
 
@@ -93,10 +87,15 @@ export default class MainMap extends React.Component {
 
         //trigger the initial creation of markers
         this.leafLetMap.addLayer(createMarkers(this, this.props.locations, this.latLng, this.marker, this.popups));
+        this.updateMarkers();
     }
 
     updateOrientationMarker(deg) {
-        this.userMarker.arrow.setRotationAngle(deg);
+        this.userMarker.arrow.setRotationAngle(deg).setOpacity(1);
+    }
+
+    updateMarkers() {
+        updateMarkers(this.props.locations, this.props.visitedlocations, this.marker, this.popups);
     }
 
 
@@ -105,7 +104,7 @@ export default class MainMap extends React.Component {
      */
     componentDidUpdate() {
 
-        updateMarkers(this.props.locations, this.props.visitedlocations, this.marker, this.popups);
+        this.updateMarkers();
 
         setUserInteractivity(this.leafLetMap, !this.props.followUser);
 
@@ -146,13 +145,7 @@ function createMarkers(self, locations, latLng, marker, popups) {
         .map((locationId) => {
 
             const location = locations[locationId];
-            // const userVisit = self.props.visitedlocations[locationId];
-            latLng[location.originalId] = L.latLng(location.location.coordinates.reverse());
             const buildMarker = marker[location.originalId] = L.marker(latLng[location.originalId]);
-
-            // if (userVisit) {
-            //     marker.setIcon(self.markerStyle.visited);
-            // }
 
             popups[location.originalId] = L.popup({closeButton: false});
             buildMarker.bindPopup(popups[location.originalId]);
@@ -246,13 +239,14 @@ function onLocationFound(geoData) {
     //if there is already a user marker update it
     if (this.userMarker) {
         this.userMarker.marker.setLatLng(geoData.latlng);
+        this.userMarker.arrow.setLatLng(geoData.latlng);
         this.userMarker.circle.setLatLng(geoData.latlng);
         this.userMarker.circle.setRadius(radius);
 
     } else { //create users position on Map, if not exist yet
         this.userMarker = {
             marker: L.marker(geoData.latlng, {icon: markerStyle.user}).addTo(this.leafLetMap),
-            arrow: L.marker(geoData.latlng, {icon: markerStyle.arrow}).addTo(this.leafLetMap),
+            arrow: L.marker(geoData.latlng, {icon: markerStyle.arrow}).addTo(this.leafLetMap).setOpacity(0),
             circle: L.circle(geoData.latlng, {radius}).addTo(this.leafLetMap)
         };
     }

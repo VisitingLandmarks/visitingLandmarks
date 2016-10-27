@@ -1,55 +1,92 @@
-import reducer from '../../../../src/view/reducer/reducer.js';
-import loggedInAction, {type as typeLoggedIn} from '../../../../src/view/action/loggedIn';
-import failedLoginAction, {type as typeFailedLogin} from '../../../../src/view/action/failedLogIn';
+import reducer from '../../../../src/view/reducer/reducer';
+import initialState from '../../../../src/view/reducer/initialState';
+
+import loginAction, {type as loginType} from '../../../../src/view/action/request/login';
+import loginSuccessAction, {type as loginSuccessType} from '../../../../src/view/action/request/loginSuccess';
+import loginFailureAction, {type as loginFailureType} from '../../../../src/view/action/request/loginFailure';
+
 import visitedLocationsAction, {type as typeVisitedLocations} from '../../../../src/view/action/visitedLocations';
 import deepFreeze from 'deep-freeze';
 
 describe('reducer', ()=> {
-    it(typeLoggedIn, () => {
+    describe('thunks', ()=> {
+        describe('login', ()=> {
+            describe('actions', ()=> {
 
-        const userData = {
-            email: 'test@test.com'
-        };
+                it(loginType, () => {
 
-        const oldState = deepFreeze({});
-        const newState = {
-            user: Object.assign({}, userData)
-        };
+                    const userData = {
+                        email: 'test@test.com'
+                    };
 
-        assert.deepEqual(reducer(oldState, loggedInAction(userData)), newState);
+                    const oldState = deepFreeze(initialState);
+                    const newState = {
+                        ...initialState,
+                        actions: {
+                            ...initialState.actions,
+                            loggingIn: 'inProgress'
+                        }
+                    };
 
-    });
+                    assert.deepEqual(reducer(oldState, loginAction(userData)), newState);
 
-    it(typeFailedLogin, () => {
+                });
 
-        const oldState = deepFreeze({failedLogin: 1});
-        const newState = {
-            failedLogin: 2
-        };
+                it(loginSuccessType, () => {
 
-        assert.deepEqual(reducer(oldState, failedLoginAction()), newState);
+                    const userData = deepFreeze({
+                        email: 'test@test.com'
+                    });
 
-    });
+                    const oldState = deepFreeze(initialState);
+                    const newState = {
+                        ...initialState,
+                        actions: {
+                            ...initialState.actions,
+                            loggingIn: 'success'
+                        },
+                        user: userData
+                    };
 
-    it(typeVisitedLocations, () => {
+                    assert.deepEqual(reducer(oldState, loginSuccessAction(userData)), newState);
 
-        const dateA = new Date();
-        const dateB = new Date();
+                });
 
-        const oldState = deepFreeze({
-            visited : {
-                a : dateA
-            }
+                it(loginFailureType, () => {
+
+                    const oldState = deepFreeze({});
+                    const newState = {actions: {loggingIn: 'failure'}};
+
+                    assert.deepEqual(reducer(oldState, loginFailureAction()), newState);
+
+                });
+
+                it(typeVisitedLocations, () => {
+
+                    const dateA = new Date();
+                    const dateB = new Date();
+
+                    const oldState = deepFreeze({
+                        user: {
+                            visited: {
+                                a: dateA
+                            }
+                        }
+                    });
+
+                    const newState = deepFreeze({
+                        user: {
+                            visited: {
+                                a: dateA,
+                                b: dateB
+                            }
+                        }
+                    });
+                    assert.deepEqual(reducer(oldState, visitedLocationsAction({b: dateB})), newState);
+
+                });
+            });
         });
-
-        const newState = deepFreeze({
-            visited : {
-                a : dateA,
-                b : dateB
-            }
-        });
-        assert.deepEqual(reducer(oldState, visitedLocationsAction({b:dateB})), newState);
-
     });
 
 });
