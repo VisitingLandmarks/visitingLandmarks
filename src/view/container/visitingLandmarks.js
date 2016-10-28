@@ -11,6 +11,11 @@ import setFollowUserAction from '../action/setFollowUser';
 import dialogCloseAction from '../action/dialogClose';
 import dialogOpenAction from '../action/dialogOpen';
 
+import {dialogName as changePasswordDialogName} from '../presentational/dialog/changePassword.jsx';
+import {dialogName as loginDialogName} from '../presentational/dialog/login.jsx';
+import {dialogName as registerDialogName} from '../presentational/dialog/register.jsx';
+import {dialogName as profileDialogName} from '../presentational/dialog/profile.jsx';
+
 const mapStateToProps = (state) => {
     return {
         loggedIn: !!state.user,
@@ -21,11 +26,12 @@ const mapStateToProps = (state) => {
         //an object is easier to access and check
         //@todo: is this a good case for a virtual property in the mongodb model?
         //@todo: or maybe storying it as object anyway? with some tracking data as property like timestamp?
-        visitedlocations: state.user && state.user.visited,
+        visitedLocations: state.user && state.user.visited || {},
         openDialog: {
-            login: state.openDialog === 'login',
-            register: state.openDialog === 'register',
-            changePassword: state.openDialog === 'changePassword'
+            login: state.openDialog === loginDialogName,
+            profile: state.openDialog === profileDialogName,
+            register: state.openDialog === registerDialogName,
+            changePassword: state.openDialog === changePasswordDialogName //@todo: build dialog action to display
         }
     };
 };
@@ -40,8 +46,9 @@ const mapDispatchToProps = (dispatch) => {
         onToggleFollowUser: (newValue) =>dispatch(setFollowUserAction(newValue)),
 
         onCloseDialog: () => dispatch(dialogCloseAction()),
-        onOpenLoginDialog: () => dispatch(dialogOpenAction('login')),
-        onOpenRegisterDialog: () => dispatch(dialogOpenAction('register'))
+        onOpenLoginDialog: () => dispatch(dialogOpenAction(loginDialogName)),
+        onOpenProfileDialog: () => dispatch(dialogOpenAction(profileDialogName)),
+        onOpenRegisterDialog: () => dispatch(dialogOpenAction(registerDialogName))
     };
 };
 

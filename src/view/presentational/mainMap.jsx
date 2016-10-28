@@ -95,7 +95,7 @@ export default class MainMap extends React.Component {
     }
 
     updateMarkers() {
-        updateMarkers(this.props.locations, this.props.visitedlocations, this.marker, this.popups);
+        updateMarkers(this.props.locations, this.props.visitedLocations, this.marker, this.popups);
     }
 
 
@@ -167,13 +167,13 @@ function createMarkers(self, locations, latLng, marker, popups) {
  * @todo right now this just works for the title, not coordinations, removing or adding locations
  * @param self
  */
-function updateMarkers(locations, visitedlocations, marker, popups) {
+function updateMarkers(locations, visitedLocations, marker, popups) {
 
     Object.keys(locations)
         .forEach((locationId)=> {
 
             const location = locations[locationId];
-            const userVisit = visitedlocations[locationId];
+            const userVisit = visitedLocations[locationId];
 
             if (userVisit) {
                 marker[location.originalId].setIcon(markerStyle.visited);
@@ -182,7 +182,7 @@ function updateMarkers(locations, visitedlocations, marker, popups) {
             const title = `${location.originalId} (${location.constructionYear })<br/>
                 <a href="${location.originalUrl}">${location.originalUrl}</a><br/>
                 ${JSON.stringify(location.location)}<br/>
-                visited already: ${visitedlocations[locationId]}`;
+                visited already: ${visitedLocations[locationId]}`;
 
             popups[location.originalId].setContent(title);
 
@@ -259,7 +259,7 @@ function onLocationFound(geoData) {
 
             const location = component.props.locations[locationId];
             //distance is in meters and we want everything that is as 50m close to the user
-            return !component.props.visitedlocations[locationId] &&
+            return !component.props.visitedLocations[locationId] &&
                 component.latLng &&
                 component.latLng[location.originalId] &&
                 (Math.abs(geoData.latlng.lat - component.latLng[location.originalId].lat) < gameSettings.visitDistance.lat) &&

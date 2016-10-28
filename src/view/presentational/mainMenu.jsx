@@ -5,9 +5,10 @@ import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 import Divider from 'material-ui/Divider';
 
-import DialogLogin from './dialog/login.jsx';
-import DialogRegister from './dialog/register.jsx';
 import DialogChangePassword from './dialog/changePassword.jsx';
+import DialogLogin from './dialog/login.jsx';
+import DialogProfile from './dialog/profile.jsx';
+import DialogRegister from './dialog/register.jsx';
 import Toggle from 'material-ui/Toggle';
 
 
@@ -42,7 +43,7 @@ export default class MainMenu extends React.Component {
         let menuItems;
         if (this.props.loggedIn) {
             menuItems = [
-                <MenuItem key="userEmail" primaryText={this.props.userEmail}/>,
+                <MenuItem key="userEmail" primaryText={this.props.userEmail} onTouchTap={this.props.onOpenProfileDialog}/>,
                 <Divider key="userEmailDivider"/>,
                 <MenuItem key="logout" primaryText="Logout" onTouchTap={this.props.requestLogout}/>
             ];
@@ -65,6 +66,7 @@ export default class MainMenu extends React.Component {
                 <DialogLogin open={this.props.openDialog.login} onCloseDialog={this.props.onCloseDialog} requestLogin={this.props.requestLogin}/>
                 <DialogRegister open={this.props.openDialog.register} onCloseDialog={this.props.onCloseDialog} requestRegister={this.props.requestRegister}/>
                 <DialogChangePassword open={this.props.openDialog.changePassword} onCloseDialog={this.props.onCloseDialog} requestChangePassword={this.props.requestChangePassword}/>
+                <DialogProfile open={this.props.openDialog.profile} onCloseDialog={this.props.onCloseDialog} locations={this.props.locations} visitedLocations={this.props.visitedLocations} />
             </div>
         )
 

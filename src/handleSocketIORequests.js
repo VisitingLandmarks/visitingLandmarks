@@ -1,5 +1,5 @@
 import logger from './helper/logger';
-import visitedLocationAction from './view/action/visitedLocations';
+import visitedLocationAction from './view/action/visitedLocation';
 
 //@todo: too much logic in here. Buisness Logic should be abstracted from the interface
 export default module.exports = (sendActionToAllConnectionOfAUser, dataRepository) => {

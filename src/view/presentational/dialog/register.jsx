@@ -3,6 +3,8 @@ import React, {PropTypes} from 'react';
 import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
 
+export const dialogName = 'REGISTER';
+
 export default class DialogRegister extends React.Component {
 
     constructor(props) {

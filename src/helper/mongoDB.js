@@ -1,3 +1,5 @@
+import logger from '../helper/logger';
+
 /**
  *
  * @param config
@@ -16,8 +18,13 @@ var getMongoDB = (config) => {
         mongoose.set('debug', true);
     }
 
+    //log errors on DB level
+    mongoose.connection.on('error', (error) => {
+        logger.error(error, 'MongoDB Error');
+    });
+
     //first connection
-    mongoose.connect(config.connectURI);
+    mongoose.connect(config.connectURI, {server: {reconnectTries: Number.MAX_VALUE}});
 
     //rewrite the getter to just return the instance
     getMongoDB = () => mongoose;
@@ -40,7 +47,7 @@ const getModelFactory = (config) => {
      * @returns {undefined}
      */
     return (modelName) => {
-        return models[modelName] || (models[modelName] = require('./models/' + modelName + '.js')(getMongoDB(config)));
+        return models[modelName] || (models[modelName] = require('../models/' + modelName + '.js')(getMongoDB(config)));
     };
 };
 

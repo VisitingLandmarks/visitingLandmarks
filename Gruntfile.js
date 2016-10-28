@@ -6,6 +6,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-nodemon');
     grunt.loadNpmTasks('grunt-webpack');
     grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-contrib-watch');
 
     grunt.initConfig({
         mochaTest: {
@@ -17,6 +18,19 @@ module.exports = function (grunt) {
                     ignoreLeaks: false,
                     require: ['test/setup.js', 'babel-core/register']
                 }
+            }
+        },
+        watch: {
+            js: {
+                options: {
+                    spawn: true
+                },
+                files: [
+                    'src/**/*.js',
+                    'src/**/*.jsx',
+                    'test/**/*.js'
+                ],
+                tasks: ['all']
             }
         },
         eslint: {

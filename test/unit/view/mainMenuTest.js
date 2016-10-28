@@ -24,7 +24,13 @@ describe('MainMenu', ()=> {
     });
 
     const defaultProps = deepFreeze({
-        openDialog: {}
+        openDialog: {
+            changePassword : false,
+            login : false,
+            profile : false,
+            register : false
+        },
+        visitedLocations : {}
     });
 
 
@@ -71,6 +77,5 @@ describe('MainMenu', ()=> {
         assert.include(global.document.getElementById('testContainer').innerHTML, 'testy@macTesty.com');
 
     });
-
 
 });

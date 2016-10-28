@@ -1,3 +1,5 @@
+import deepFreeze from 'deep-freeze';
+
 import reducer from '../../../../src/view/reducer/reducer';
 import initialState from '../../../../src/view/reducer/initialState';
 
@@ -5,8 +7,11 @@ import loginAction, {type as loginType} from '../../../../src/view/action/reques
 import loginSuccessAction, {type as loginSuccessType} from '../../../../src/view/action/request/loginSuccess';
 import loginFailureAction, {type as loginFailureType} from '../../../../src/view/action/request/loginFailure';
 
-import visitedLocationsAction, {type as typeVisitedLocations} from '../../../../src/view/action/visitedLocations';
-import deepFreeze from 'deep-freeze';
+import dialogCloseAction, {type as typeDialogClose} from '../../../../src/view/action/dialogClose';
+import dialogOpenAction, {type as typeDialogOpen} from '../../../../src/view/action/dialogOpen';
+import setFollowUserAction, {type as typeSetFollowUser} from '../../../../src/view/action/setFollowUser';
+import visitedLocationAction, {type as typeVisitedLocation} from '../../../../src/view/action/visitedLocation';
+import setLocationsAction, {type as typeSetLocations} from '../../../../src/view/action/setLocations';
 
 describe('reducer', ()=> {
     describe('thunks', ()=> {
@@ -61,32 +66,84 @@ describe('reducer', ()=> {
 
                 });
 
-                it(typeVisitedLocations, () => {
-
-                    const dateA = new Date();
-                    const dateB = new Date();
-
-                    const oldState = deepFreeze({
-                        user: {
-                            visited: {
-                                a: dateA
-                            }
-                        }
-                    });
-
-                    const newState = deepFreeze({
-                        user: {
-                            visited: {
-                                a: dateA,
-                                b: dateB
-                            }
-                        }
-                    });
-                    assert.deepEqual(reducer(oldState, visitedLocationsAction({b: dateB})), newState);
-
-                });
             });
         });
     });
 
+    it(typeDialogOpen, () => {
+
+        const oldState = deepFreeze({
+            ...initialState
+        });
+
+        const dialogName = 'TEST';
+        const newState = deepFreeze({
+            ...initialState,
+            openDialog: dialogName
+        });
+
+        assert.deepEqual(reducer(oldState, dialogOpenAction(dialogName)), newState);
+
+    });
+
+    it(typeSetFollowUser, () => {
+
+        const oldState = deepFreeze({
+            ...initialState,
+            followUser: false
+        });
+
+        const newState = deepFreeze({
+            ...initialState,
+            followUser: true
+        });
+
+        assert.deepEqual(reducer(oldState, setFollowUserAction(true)), newState);
+
+    });
+
+    it(typeSetLocations, () => {
+
+        const oldState = deepFreeze({
+            ...initialState
+        });
+
+        const locations = [];
+
+        const newState = deepFreeze({
+            ...initialState,
+            locations
+        });
+
+        assert.deepEqual(reducer(oldState, setLocationsAction(locations)), newState);
+
+    });
+
+    it(typeVisitedLocation, () => {
+
+        const dateA = new Date();
+        const dateB = new Date();
+
+        const oldState = deepFreeze({
+            ...initialState,
+            user: {
+                visited: {
+                    a: dateA
+                }
+            }
+        });
+
+        const newState = deepFreeze({
+            ...initialState,
+            user: {
+                visited: {
+                    a: dateA,
+                    b: dateB
+                }
+            }
+        });
+
+        assert.deepEqual(reducer(oldState, visitedLocationAction({b: dateB})), newState);
+
+    });
 });

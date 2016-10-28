@@ -23,7 +23,7 @@ class VisitingLandmarks extends React.Component {
             <div className="mainContainer">
                 <MainMap
                     followUser={this.props.followUser}
-                    visitedlocations={this.props.visitedlocations}
+                    visitedLocations={this.props.visitedLocations}
                     locations={this.props.locations}
                     onToggleFollowUser={this.props.onToggleFollowUser}
                     onVisitLocation={onVisitLocation}

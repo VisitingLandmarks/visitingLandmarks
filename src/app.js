@@ -9,7 +9,7 @@ const {app, server} = require('./express.js')(express, config.port);
 app.use('/static', express.static('static'));
 
 //setup mongoDB and datarepository
-const getModel = require('./mongoDB.js')(config.mongoDB);
+const getModel = require('./helper/mongoDB.js')(config.mongoDB);
 const dataRepository = require('./dataRepository.js')(getModel);
 
 const passportSocketIo = require('passport.socketio');
@@ -34,7 +34,3 @@ require('./authentication/main.js')(app, io, getModel('user'));
 
 //and now handle requests
 require('./handleHTTPRequests.js')(app, getConnectionByUserId, sendActionToAllConnectionOfAUser, dataRepository);
-
-// an example to add a user during development
-// const UserModel = getModel('user');
-// UserModel.register('admin@test.com', 'admin', 'admin', true);
