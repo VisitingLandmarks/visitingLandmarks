@@ -86,7 +86,7 @@ export default class MainMap extends React.Component {
         window.addEventListener('deviceorientation', function onDeviceOrientation(e) {
 
             const compassHeading = e.webkitCompassHeading || e.absolute && e.alpha !== null && compassHeading(e.alpha, e.beta, e.gamma);
-            
+
             if (compassHeading === false) {
                 return;
             }
@@ -231,7 +231,6 @@ function setUserInteractivity(map, userIsAllowedToMoveMap) {
  * @param geoData
  */
 function onLocationFound(geoData) {
-    console.log('onLocationFound', geoData);
 
     const component = this;
 
