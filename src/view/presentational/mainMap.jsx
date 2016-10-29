@@ -1,9 +1,49 @@
 import React from 'react';
 import gameSettings from '../../../config/gameSettings';
 import markerStyle from '../../client/map/markerStyle';
+import {log} from  '../../client/toServer';
 
+var degtorad = Math.PI / 180; // Degree-to-Radian conversion
+
+function compassHeading(alpha, beta, gamma) {
+
+    var _x = beta ? beta * degtorad : 0; // beta value
+    var _y = gamma ? gamma * degtorad : 0; // gamma value
+    var _z = alpha ? alpha * degtorad : 0; // alpha value
+
+    var cX = Math.cos(_x);
+    var cY = Math.cos(_y);
+    var cZ = Math.cos(_z);
+    var sX = Math.sin(_x);
+    var sY = Math.sin(_y);
+    var sZ = Math.sin(_z);
+
+    // Calculate Vx and Vy components
+    var Vx = -cZ * sY - sZ * sX * cY;
+    var Vy = -sZ * sY + cZ * sX * cY;
+
+    // Calculate compass heading
+    var compassHeading = Math.atan(Vx / Vy);
+
+    // Convert compass heading to use whole unit circle
+    if (Vy < 0) {
+        compassHeading += Math.PI;
+    } else if (Vx < 0) {
+        compassHeading += 2 * Math.PI;
+    }
+
+    return compassHeading * ( 180 / Math.PI ); // Compass Heading (in degrees)
+
+}
+
+
+/**
+ * the underlying map
+ */
 export default class MainMap extends React.Component {
+
     constructor(props) {
+
         super(props);
 
         //marker and popup
@@ -41,43 +81,18 @@ export default class MainMap extends React.Component {
 
         // orientation Events
 
-// device APIs are available
-        function onDeviceReady() {
-            console.log('ready');
-            window.removeEventListener('deviceorientation', onDeviceOrientation, false);
-            navigator.compass.getCurrentHeading(onSuccess, onError);
-        }
 
-// onSuccess: Get the current heading
-        function onSuccess(heading) {
-            console.log('Heading: ' + heading.magneticHeading);
-            component.updateOrientationMarker(heading.magneticHeading);
-        }
+        //get event for orie
+        window.addEventListener('deviceorientation', function onDeviceOrientation(e) {
 
-// onError: Failed to get the heading
-        function onError(compassError) {
-            console.log('Compass Error: ' + compassError.code);
-        }
-
-        function onDeviceOrientation(e) {
-            console.log('onDeviceOrientation', e);
-            let alpha = e.webkitCompassHeading || e.absolute && e.alpha;
-
-            if (typeof alpha !== 'number') {
+            const compassHeading = e.webkitCompassHeading || e.absolute && e.alpha !== null && compassHeading(e.alpha, e.beta, e.gamma);
+            
+            if (compassHeading === false) {
                 return;
             }
 
-            //normalize from -180/180 to 0/360
-            alpha = (alpha + 360) % 360;
-
-            component.updateOrientationMarker(alpha);
-        }
-
-        //native browsers
-        window.addEventListener('deviceorientation', onDeviceOrientation, false);
-
-        //PhoneGap
-        document.addEventListener('deviceready', onDeviceReady, false);
+            component.updateOrientationMarker();
+        }, false);
 
         //first location and setting the view
         this.leafLetMap.locate({setView: true, enableHighAccuracy: true, maxZoom: 16});
@@ -86,7 +101,7 @@ export default class MainMap extends React.Component {
         createCoordinates(this.latLng, this.props.locations);
 
         //trigger the initial creation of markers
-        this.leafLetMap.addLayer(createMarkers(this, this.props.locations, this.latLng, this.marker, this.popups));
+        this.leafLetMap.addLayer(createMarkersAndCluster(this.props.locations, this.latLng, this.marker, this.popups, this.props.onToggleFollowUser));
         this.updateMarkers();
     }
 
@@ -130,7 +145,7 @@ const createCoordinates = (latLng, locations) => {
     Object.keys(locations)
         .forEach((locationId) => {
             const location = locations[locationId];
-            latLng[location.originalId] = L.latLng(location.location.coordinates.reverse());
+            latLng[locationId] = L.latLng(location.location.coordinates.reverse());
         });
 };
 
@@ -139,16 +154,16 @@ const createCoordinates = (latLng, locations) => {
  * create the markers and store a reference to the popups and the precalculated latLng for later
  * @param self
  */
-function createMarkers(self, locations, latLng, marker, popups) {
+function createMarkersAndCluster(locations, latLng, marker, popups, onToggleFollowUser) {
 
     const markers = Object.keys(locations)
         .map((locationId) => {
 
-            const location = locations[locationId];
-            const buildMarker = marker[location.originalId] = L.marker(latLng[location.originalId]);
+            // const location = locations[locationId];
+            const buildMarker = marker[locationId] = L.marker(latLng[locationId]);
 
-            popups[location.originalId] = L.popup({closeButton: false});
-            buildMarker.bindPopup(popups[location.originalId]);
+            popups[locationId] = L.popup({closeButton: false});
+            buildMarker.bindPopup(popups[locationId]);
 
             return buildMarker;
 
@@ -157,6 +172,11 @@ function createMarkers(self, locations, latLng, marker, popups) {
     //create the cluster layer and add the markers
     const markerClusterGroup = L.markerClusterGroup();
     markerClusterGroup.addLayers(markers);
+
+    //ensure that the follow user is switched off, when a user clicks on a cluster
+    markerClusterGroup.on('clusterclick', function (a) {
+        onToggleFollowUser(false);
+    });
 
     return markerClusterGroup;
 }
@@ -176,15 +196,15 @@ function updateMarkers(locations, visitedLocations, marker, popups) {
             const userVisit = visitedLocations[locationId];
 
             if (userVisit) {
-                marker[location.originalId].setIcon(markerStyle.visited);
+                marker[locationId].setIcon(markerStyle.visited);
             }
 
-            const title = `${location.originalId} (${location.constructionYear })<br/>
+            const title = `${locationId} (${location.constructionYear })<br/>
                 <a href="${location.originalUrl}">${location.originalUrl}</a><br/>
                 ${JSON.stringify(location.location)}<br/>
                 visited already: ${visitedLocations[locationId]}`;
 
-            popups[location.originalId].setContent(title);
+            popups[locationId].setContent(title);
 
         });
 
@@ -211,6 +231,7 @@ function setUserInteractivity(map, userIsAllowedToMoveMap) {
  * @param geoData
  */
 function onLocationFound(geoData) {
+    console.log('onLocationFound', geoData);
 
     const component = this;
 
@@ -261,10 +282,10 @@ function onLocationFound(geoData) {
             //distance is in meters and we want everything that is as 50m close to the user
             return !component.props.visitedLocations[locationId] &&
                 component.latLng &&
-                component.latLng[location.originalId] &&
-                (Math.abs(geoData.latlng.lat - component.latLng[location.originalId].lat) < gameSettings.visitDistance.lat) &&
-                (Math.abs(geoData.latlng.lng - component.latLng[location.originalId].lng) < gameSettings.visitDistance.lng) &&
-                component.latLng[location.originalId].distanceTo(geoData.latlng) <= gameSettings.visitDistance.meters;
+                component.latLng[locationId] &&
+                (Math.abs(geoData.latlng.lat - component.latLng[locationId].lat) < gameSettings.visitDistance.lat) &&
+                (Math.abs(geoData.latlng.lng - component.latLng[locationId].lng) < gameSettings.visitDistance.lng) &&
+                component.latLng[locationId].distanceTo(geoData.latlng) <= gameSettings.visitDistance.meters;
         })
         //and mark them as visited
         .forEach(component.props.onVisitLocation);

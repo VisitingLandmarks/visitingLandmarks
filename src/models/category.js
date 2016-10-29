@@ -7,8 +7,8 @@ export default module.exports = function (mongoDB) {
 
     const categorySchema = new mongoDB.Schema({
             name: {
-                en : String,
-                dk : String
+                type: String,
+                unique: true
             },
             items: [mongoDB.Schema.ObjectId]
         },
@@ -16,13 +16,30 @@ export default module.exports = function (mongoDB) {
             timestamps: true
         });
 
+    //safe data we want to use on the map
+    const getForUserWhitelist = {
+        _id: 1,
+        name: 1,
+        items: 1
+    };
+
+
     /**
-     * return a random user and ignore a array of uuid for the result
-     * @param ignoreUUIDs
+     * get all locations
+     * as object with the object id as key
      * @returns {Promise.<TResult>}
      */
-    categorySchema.statics.findAll = ()=> {
-        return CategoryModel.find().exec();
+    categorySchema.statics.getAllAsObject = () => {
+        return CategoryModel.find({}, getForUserWhitelist).exec()
+            .then((cateogies) => {
+                return cateogies.reduce(function (obj, category) {
+                    category = category.toObject();
+                    const id = category._id;
+                    delete category._id;
+                    obj[id] = category;
+                    return obj;
+                }, {});
+            });
     };
 
 

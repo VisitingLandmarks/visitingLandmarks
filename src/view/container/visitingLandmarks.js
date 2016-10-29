@@ -22,6 +22,7 @@ const mapStateToProps = (state) => {
         userEmail: state.user && state.user.email,
         userEmailConfirmed: state.user && state.user.isConfirmed,
         followUser: state.followUser,
+        categories: state.categories,
         locations: state.locations,
         //an object is easier to access and check
         //@todo: is this a good case for a virtual property in the mongodb model?

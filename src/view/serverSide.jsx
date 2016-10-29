@@ -9,6 +9,7 @@ import VisitingLandmarks from './container/visitingLandmarks';
 import reducer from './reducer/reducer';
 
 import loginSuccessfulAction from './action/request/loginSuccess';
+import setCategoriesAction from './action/setCategories';
 import setLocationsAction from './action/setLocations';
 import openDialogAction from './action/dialogOpen';
 
@@ -16,13 +17,17 @@ import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
-export default (user, locations, userAgent, openDialog) => {
+export default (user, categories, locations, userAgent, openDialog) => {
 
     // Create a new Redux store instance
     const store = createStore(reducer,applyMiddleware(thunk));
 
     if (user) {
         store.dispatch(loginSuccessfulAction(user));
+    }
+
+    if (categories) {
+        store.dispatch(setCategoriesAction(categories));
     }
 
     if (locations) {

@@ -11,6 +11,9 @@ import MainMenu from './mainMenu.jsx';
 
 import {onVisitLocation} from '../../client/toServer.js';
 
+/**
+ * the whole frontend
+ */
 class VisitingLandmarks extends React.Component {
 
     constructor(props) {

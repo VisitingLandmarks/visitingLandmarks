@@ -26,6 +26,7 @@ import {type as dialogCloseType} from '../action/dialogClose';
 import {type as dialogOpenType} from '../action/dialogOpen';
 
 //locations
+import {type as setCategoriesType} from '../action/setCategories';
 import {type as setLocationsType} from '../action/setLocations';
 import {type as visitedLocationsType} from '../action/visitedLocation';
 
@@ -188,6 +189,13 @@ export default (oldState = initialState, action) => {
         }
 
         //locations
+        case setCategoriesType:
+        {
+            return {
+                ...oldState,
+                categories: action.categories
+            };
+        }
         case setLocationsType:
         {
             return {

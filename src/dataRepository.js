@@ -10,14 +10,32 @@ import logger from './helper/logger';
  */
 export default module.exports = (getModel) => {
 
+    const Category = getModel('category');
     const Location = getModel('location');
     const User = getModel('user');
 
     //caching is in the responsibility of the dataRepository
     const cache = {
+        Category: {
+            getAllAsObject: memoize(Category.getAllAsObject, {maxAge: 60 * 60 * 1000})
+        },
         Location: {
-            getAllAsObject: memoize(Location.getAllAsObject, {maxAge: 15 * 60 * 1000})
+            getAllAsObject: memoize(Location.getAllAsObject, {maxAge: 60 * 60 * 1000})
         }
+    };
+
+
+    /**
+     * we need all locations with the individual sugar of a given user
+     * @param user
+     * @returns {Promise|Promise.<T>}
+     */
+    const getAllCategories = () => {
+        return cache.Category.getAllAsObject()
+            .catch((e)=> {
+                logger.error(e);
+            });
+
     };
 
 
@@ -62,8 +80,10 @@ export default module.exports = (getModel) => {
 
 
     return {
+        Category,
         Location,
         User,
+        getAllCategories,
         getAllLocations,
         findUserById,
         findUserByEmail,

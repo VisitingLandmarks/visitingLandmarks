@@ -30,6 +30,7 @@ describe('MainMenu', ()=> {
             profile : false,
             register : false
         },
+        categories : {},
         visitedLocations : {}
     });
 

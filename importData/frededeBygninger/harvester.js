@@ -11,8 +11,8 @@ const promisify = require("es6-promisify");
 const parseXMLString = promisify(require('xml2js').parseString);
 
 //setup target DB
-const config = require('../config');
-const getModel = require('../src/mongoDB.js')(config.mongoDB);
+const config = require('../../config');
+const getModel = require('../../src/helper/mongoDB.js')(config.mongoDB);
 const LocationModel = getModel('location');
 
 //arguments that are identical for all calls

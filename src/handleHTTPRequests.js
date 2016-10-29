@@ -29,6 +29,7 @@ export default module.exports = (app, getConnectionByUserId, sendActionToAllConn
         Promise.all([
             //which data is required for rendering?
             params.user, //the user
+            dataRepository.getAllCategories(), //all categories
             dataRepository.getAllLocations(), //all locations
             res.req.headers['user-agent'],//the user agent,
             params.openDialog

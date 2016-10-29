@@ -10,7 +10,8 @@ export default module.exports = function (mongoDB) {
             originalId: {
                 type: String,
                 unique: true,
-                trim: true
+                trim: true,
+                select : false
             },
             //tricky
             // longitute -> x -> easting
@@ -67,7 +68,6 @@ export default module.exports = function (mongoDB) {
     const getForUserWhitelist = {
         _id: 1,
         originalUrl: 1,
-        originalId: 1,
         constructionYear: 1,
         location: 1
     };
@@ -84,12 +84,12 @@ export default module.exports = function (mongoDB) {
     locationSchema.statics.getAllAsObject = () => {
         return LocationModel.find({}, getForUserWhitelist).exec()
             .then((locations) => {
-                return locations.reduce(function(o, v) {
-                    v = v.toObject();
-                    const id = v._id;
-                    delete v._id;
-                    o[id] = v;
-                    return o;
+                return locations.reduce(function(obj, location) {
+                    location = location.toObject();
+                    const id = location._id;
+                    delete location._id;
+                    obj[id] = location;
+                    return obj;
                 }, {});
             });
     };

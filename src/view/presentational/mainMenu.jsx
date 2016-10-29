@@ -34,6 +34,13 @@ export default class MainMenu extends React.Component {
 
     }
 
+
+    /**
+     * handle a user switch in the follow user menu item
+     * @param event
+     * @param value
+     * @returns {*}
+     */
     onToggleFollowUser(event, value) {
         return this.props.onToggleFollowUser(value);
     }
@@ -41,6 +48,7 @@ export default class MainMenu extends React.Component {
     render() {
 
         let menuItems;
+
         if (this.props.loggedIn) {
             menuItems = [
                 <MenuItem key="userEmail" primaryText={this.props.userEmail} onTouchTap={this.props.onOpenProfileDialog}/>,
@@ -66,7 +74,7 @@ export default class MainMenu extends React.Component {
                 <DialogLogin open={this.props.openDialog.login} onCloseDialog={this.props.onCloseDialog} requestLogin={this.props.requestLogin}/>
                 <DialogRegister open={this.props.openDialog.register} onCloseDialog={this.props.onCloseDialog} requestRegister={this.props.requestRegister}/>
                 <DialogChangePassword open={this.props.openDialog.changePassword} onCloseDialog={this.props.onCloseDialog} requestChangePassword={this.props.requestChangePassword}/>
-                <DialogProfile open={this.props.openDialog.profile} onCloseDialog={this.props.onCloseDialog} locations={this.props.locations} visitedLocations={this.props.visitedLocations} />
+                <DialogProfile open={this.props.openDialog.profile} onCloseDialog={this.props.onCloseDialog} categories={this.props.categories} locations={this.props.locations} visitedLocations={this.props.visitedLocations} />
             </div>
         )
 

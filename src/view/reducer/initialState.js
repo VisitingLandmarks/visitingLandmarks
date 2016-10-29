@@ -1,6 +1,7 @@
 export default {
     user: false,
     followUser: true,
+    categories: {},
     locations: {},
     openDialog: false,
     actions: {

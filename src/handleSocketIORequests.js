@@ -6,6 +6,10 @@ export default module.exports = (sendActionToAllConnectionOfAUser, dataRepositor
 
     return (userSocket) => {
 
+        userSocket.on('log', (message) => {
+            console.log(message);
+        });
+
         //@todo: a wrapper that ensures that the user is really logged in by checking userSocket.request.user
         userSocket.on('visitedLocation', (visitedLocation) => {
 
