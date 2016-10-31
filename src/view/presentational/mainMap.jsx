@@ -3,27 +3,35 @@ import gameSettings from '../../../config/gameSettings';
 import markerStyle from '../../client/map/markerStyle';
 import {log} from  '../../client/toServer';
 
-var degtorad = Math.PI / 180; // Degree-to-Radian conversion
+const degtorad = Math.PI / 180; // Degree-to-Radian conversion
 
-function compassHeading(alpha, beta, gamma) {
+function orientationToCompassHeading(alpha, beta, gamma) {
 
-    var _x = beta ? beta * degtorad : 0; // beta value
-    var _y = gamma ? gamma * degtorad : 0; // gamma value
-    var _z = alpha ? alpha * degtorad : 0; // alpha value
+    if (
+        alpha === null ||
+        beta === null ||
+        gamma === null
+    ) {
+        return false;
+    }
 
-    var cX = Math.cos(_x);
-    var cY = Math.cos(_y);
-    var cZ = Math.cos(_z);
-    var sX = Math.sin(_x);
-    var sY = Math.sin(_y);
-    var sZ = Math.sin(_z);
+    const _x = beta ? beta * degtorad : 0; // beta value
+    const _y = gamma ? gamma * degtorad : 0; // gamma value
+    const _z = alpha ? alpha * degtorad : 0; // alpha value
+
+    // const cX = Math.cos(_x);
+    const cY = Math.cos(_y);
+    const cZ = Math.cos(_z);
+    const sX = Math.sin(_x);
+    const sY = Math.sin(_y);
+    const sZ = Math.sin(_z);
 
     // Calculate Vx and Vy components
-    var Vx = -cZ * sY - sZ * sX * cY;
-    var Vy = -sZ * sY + cZ * sX * cY;
+    const Vx = -cZ * sY - sZ * sX * cY;
+    const Vy = -sZ * sY + cZ * sX * cY;
 
     // Calculate compass heading
-    var compassHeading = Math.atan(Vx / Vy);
+    let compassHeading = Math.atan(Vx / Vy);
 
     // Convert compass heading to use whole unit circle
     if (Vy < 0) {
@@ -85,13 +93,13 @@ export default class MainMap extends React.Component {
         //get event for orie
         window.addEventListener('deviceorientation', function onDeviceOrientation(e) {
 
-            const compassHeading = e.webkitCompassHeading || e.absolute && e.alpha !== null && compassHeading(e.alpha, e.beta, e.gamma);
+            const compassHeading = e.webkitCompassHeading || e.absolute && orientationToCompassHeading(e.alpha, e.beta, e.gamma);
 
             if (compassHeading === false) {
                 return;
             }
 
-            component.updateOrientationMarker();
+            component.updateOrientationMarker(compassHeading);
         }, false);
 
         //first location and setting the view

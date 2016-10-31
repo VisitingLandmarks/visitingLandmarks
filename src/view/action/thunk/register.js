@@ -15,7 +15,7 @@ export function registerThunk(registerData) {
                 dispatch(requestRegisterActionSuccess(response.data.user));
             })
 
-            //delay the closing of the register to display some positive feedback to the user
+            //delay the closing of the dialog to display some positive feedback to the user
             .then(() => {
                 return new Promise((resolve) => {
                     setTimeout(resolve, 500);

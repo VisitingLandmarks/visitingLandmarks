@@ -15,7 +15,7 @@ export function loginThunk(loginData) {
                 dispatch(requestLoginActionSuccess(response.data.user));
             })
 
-            //delay the closing of the login to display some positive feedback to the user
+            //delay the closing of the dialog to display some positive feedback to the user
             .then(() => {
                 return new Promise((resolve) => {
                     setTimeout(resolve, 500);

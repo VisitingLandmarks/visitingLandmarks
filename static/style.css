@@ -5,19 +5,14 @@ body {
     padding: 0;
     margin: 0;
 }
+
 html, body, #root, .mainContainer, #mainMap {
     height: 100%;
 }
 
 .MainMenu {
     position: fixed;
-    top: 100px;
-    right:100px;
-    z-index:50000;
-}
-.LoginArea {
-    position: fixed;
-    bottom: 100px;
-    right:100px;
-    z-index:50000;
+    top: 4%;
+    right: 4%;
+    z-index: 50000;
 }

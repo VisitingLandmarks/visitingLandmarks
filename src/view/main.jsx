@@ -25,7 +25,7 @@ delete window.__INITIAL_STATE__;
 ReactDOM.render(
     <Provider store={store}>
         <MuiThemeProvider muiTheme={getMuiTheme({userAgent: navigator.userAgent}, darkBaseTheme)}>
-            <VisitingLandmarks radiumConfig={{userAgent: navigator.userAgent}}/>
+            <VisitingLandmarks />
         </MuiThemeProvider>
     </Provider>
     , document.getElementById('root'));

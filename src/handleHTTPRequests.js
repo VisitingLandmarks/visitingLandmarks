@@ -2,28 +2,22 @@
 import serverSide  from './view/serverSide.jsx';
 import passport from 'passport';
 import logger from './helper/logger';
+import onlyLoggedInUsers from './helper/middleware/onlyLoggedInUsers';
+import sendUser from './helper/middleware/sendUser';
+
 import {sendEmailConfirmed, sendUserRegistered, sendUserResetPassword} from './email';
 
-//@todo: too much logic in here. Buisness Logic should be abstracted from the interface
+/**
+ * wire the app, routes and data together
+ */
 export default module.exports = (app, getConnectionByUserId, sendActionToAllConnectionOfAUser, dataRepository) => {
 
 
-    function sendUser(req, res) {
-
-        const user = req.user;
-        res.json({user});
-
-    }
-
-    const onlyLoggedInUsers = (req, res, next)=> {
-        if (!req.user) {
-            res.status(403).send();
-            return;
-        }
-
-        next();
-    };
-
+    /**
+     * fetch all data and render it server-side
+     * @param params
+     * @param res
+     */
     const handleMainAppRequests = (params, res) => {
 
         Promise.all([
@@ -31,7 +25,7 @@ export default module.exports = (app, getConnectionByUserId, sendActionToAllConn
             params.user, //the user
             dataRepository.getAllCategories(), //all categories
             dataRepository.getAllLocations(), //all locations
-            res.req.headers['user-agent'],//the user agent,
+            params.userAgent,//the user agent,
             params.openDialog
         ]).then(values => {
             // Send the rendered page back to the client
@@ -42,12 +36,14 @@ export default module.exports = (app, getConnectionByUserId, sendActionToAllConn
 
     };
 
+
     /**
      * handle all get requests on the main address, in short deliver the app
      */
     app.get('/', (req, res) => {
         handleMainAppRequests({
             user: req.user,
+            userAgent: res.req.headers['user-agent']
         }, res);
     });
 
@@ -104,7 +100,10 @@ export default module.exports = (app, getConnectionByUserId, sendActionToAllConn
     }, passport.authenticate('local'), sendUser);
 
 
-    app.post('/requestResetPassword', (req, res) => {
+    /**
+     * request a password reset
+     */
+    app.post('/resetPassword', (req, res) => {
 
         //resetPassword is only possible if not logged in
         if (req.user) {
@@ -115,13 +114,17 @@ export default module.exports = (app, getConnectionByUserId, sendActionToAllConn
             res.status(403).send();
             return;
         }
-
+        
         dataRepository.findUserByEmail(req.body.username)
             .then((user)=> {
                 if (!user) {
                     throw 'user during request does not exist';
                 }
-                return user.newPasswordResetToken().then(sendUserResetPassword);
+                return user.newPasswordResetToken()
+                    .then(sendUserResetPassword)
+                    .then(()=> {
+                        res.send();
+                    });
             })
             .catch((err)=> {
                 logger.error(err, 'unable to handle resetPassword request');
@@ -160,6 +163,10 @@ export default module.exports = (app, getConnectionByUserId, sendActionToAllConn
 
     });
 
+
+    /**
+     * change the password of a logged in user
+     */
     app.post('/changePassword', onlyLoggedInUsers, (req, res)=> {
 
         const newPassword = req.body.password;
@@ -173,6 +180,7 @@ export default module.exports = (app, getConnectionByUserId, sendActionToAllConn
             });
 
     });
+
 
     /**
      * handle a post on the login route
