@@ -7,12 +7,6 @@ export default module.exports = function (mongoDB) {
 
     const locationSchema = new mongoDB.Schema({
             originalUrl: String,
-            originalId: {
-                type: String,
-                unique: true,
-                trim: true,
-                select : false
-            },
             //tricky
             // longitute -> x -> easting
             // latitutde -> y -> northing
@@ -30,6 +24,21 @@ export default module.exports = function (mongoDB) {
                     default: [0, 0]
                 }
             },
+
+            address: {
+                streetNumber: Number,
+                streetName: String,
+                house_no: String,
+                post_code: Number,
+                postal_district: String
+            },
+
+            name: String,
+
+            extent: String,
+
+            propertyNumber: Number,
+            buildingNumber: Number,
 
             postCode: Number,
             postDistrict: String,
@@ -84,7 +93,7 @@ export default module.exports = function (mongoDB) {
     locationSchema.statics.getAllAsObject = () => {
         return LocationModel.find({}, getForUserWhitelist).exec()
             .then((locations) => {
-                return locations.reduce(function(obj, location) {
+                return locations.reduce(function (obj, location) {
                     location = location.toObject();
                     const id = location._id;
                     delete location._id;

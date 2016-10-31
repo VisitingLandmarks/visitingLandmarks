@@ -75,9 +75,17 @@ function prepareRecord(record) {
         var data = {
 
             originalUrl: building['fbb:id'][0],
-            originalId: BBR['fbb:id'][0],
 
-            name: caseStudy['fbb:name'][0] || caseStudy['fbb:caseLocation'][0],
+            name: caseStudy['fbb:name'] && caseStudy['fbb:name'][0] ||  caseStudy['fbb:caseLocation'] && caseStudy['fbb:caseLocation'][0],
+            extent: caseStudy['fbb:extent'] && caseStudy['fbb:extent'][0],
+
+            address : {
+                streetNumber: primaryAdress['fbb:streetNumber'] && primaryAdress['fbb:streetNumber'][0],
+                streetName: primaryAdress['fbb:streetName'] && primaryAdress['fbb:streetName'][0],
+                house_no: primaryAdress['fbb:house_no'] && primaryAdress['fbb:house_no'][0],
+                post_code: primaryAdress['fbb:post_code'] && primaryAdress['fbb:post_code'][0],
+                postal_district: primaryAdress['fbb:postal_district'] && primaryAdress['fbb:postal_district'][0]
+            },
 
             location: {coordinates},
 
@@ -111,6 +119,7 @@ function prepareRecord(record) {
             usageTerm: BBR['fbb:usage'] && BBR['fbb:usage'][0] && BBR['fbb:usage'][0]['fbb:term'] && BBR['fbb:usage'][0]['fbb:term'][0]
 
         };
+
     } catch (e) {
         console.log('cannot extract data from record', e, JSON.stringify(record));
     }

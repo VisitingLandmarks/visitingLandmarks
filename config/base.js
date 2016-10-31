@@ -8,7 +8,7 @@ module.exports = {
         leafLetMarkerCluster: 'https://unpkg.com/leaflet.markercluster@1.0.0-rc.1.0/dist/'
     },
     mongoDB: {
-        debug: true,
+        debug: false,
         connectURI: 'mongodb://localhost' //overwrite mongoDB connection stream
     },
     email: {
