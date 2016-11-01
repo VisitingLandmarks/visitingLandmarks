@@ -75,7 +75,7 @@ describe('MainMenu', ()=> {
             </MuiThemeProvider>, document.getElementById('testContainer'));
 
         assert.include(global.document.getElementById('testContainer').innerHTML, 'Logout');
-        assert.include(global.document.getElementById('testContainer').innerHTML, 'testy@macTesty.com');
+        assert.include(global.document.getElementById('testContainer').innerHTML, 'Profile');
 
     });
 

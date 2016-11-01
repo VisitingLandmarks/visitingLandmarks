@@ -4,7 +4,6 @@ import Paper from 'material-ui/Paper';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 import Divider from 'material-ui/Divider';
-
 import Toggle from 'material-ui/Toggle';
 
 
@@ -59,7 +58,7 @@ export default class MainMenu extends React.Component {
 
         if (this.props.loggedIn) {
             menuItems = [
-                <MenuItem key="userEmail" primaryText={this.props.userEmail} onTouchTap={this.props.onOpenProfileDialog}/>,
+                <MenuItem key="userEmail" primaryText="Profile" onTouchTap={this.props.onOpenProfileDialog}/>,
                 <Divider key="userEmailDivider"/>,
                 <MenuItem key="logout" primaryText="Logout" onTouchTap={this.props.requestLogout}/>
             ];
@@ -80,7 +79,7 @@ export default class MainMenu extends React.Component {
                     </Menu>
                     <Toggle label="Follow me" onToggle={this.onToggleFollowUser} defaultToggled={this.props.followUser} labelStyle={toggleLabelStyle} iconStyle={toggleIconStyle}/>
                 </Paper>
-                
+
             </div>
         )
 

@@ -6,6 +6,7 @@
 export default module.exports = function (mongoDB) {
 
     const categorySchema = new mongoDB.Schema({
+            description: String,
             name: {
                 type: String,
                 unique: true
@@ -19,6 +20,7 @@ export default module.exports = function (mongoDB) {
     //safe data we want to use on the map
     const getForUserWhitelist = {
         _id: 1,
+        description: 1,
         name: 1,
         items: 1
     };

@@ -46,7 +46,6 @@ export default class VisitingLandmarks extends React.Component {
                     onOpenRegisterDialog={this.props.onOpenRegisterDialog}
                     onOpenResetPasswordDialog={this.props.onOpenResetPasswordDialog}
                     onToggleFollowUser={this.props.onToggleFollowUser}
-                    userEmail={this.props.userEmail}
                     requestLogout={this.props.requestLogout}
                 />
 

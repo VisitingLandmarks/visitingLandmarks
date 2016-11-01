@@ -2,9 +2,20 @@ import React, {PropTypes} from 'react';
 
 import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
+import DoneIcon from 'material-ui/svg-icons/action/done';
 
-export const dialogName = 'PROFILE';
+import getSortScore from '../../../helper/getCategorySortScore';
+import countVisitedLocationsInCategory from '../../../helper/countVisitedLocationsInCategory';
 
+export const dialogName = 'Profile';
+
+
+/**
+ * format the visited locations for the profile
+ * @param locations
+ * @param visitedLocations
+ * @returns {Array}
+ */
 const formatVisitedLocations = (locations, visitedLocations) => {
 
     return Object.keys(visitedLocations)
@@ -23,6 +34,13 @@ const formatVisitedLocations = (locations, visitedLocations) => {
         });
 };
 
+
+/**
+ * format the categories for the profile
+ * @param categories
+ * @param visitedLocations
+ * @returns {Array}
+ */
 const formatCategories = (categories, visitedLocations) => {
 
     return Object.keys(categories)
@@ -33,23 +51,23 @@ const formatCategories = (categories, visitedLocations) => {
                 total: categories[key].items.length
             };
         })
+        .sort((a, b)=> {
+            return getSortScore(a) - getSortScore(b);
+        })
         .map((element) => {
-            return <li key={element.name}>{element.name} ({element.visited} / {element.total})</li>;
+            const done = (element.total === element.visited ? <DoneIcon /> : null);
+            return <li key={element.name}>{element.name} ({element.visited} / {element.total}){done}</li>;
         });
 
 };
 
-const countVisitedLocationsInCategory = (categoryItems, visitedLocations) => {
 
-    return categoryItems.reduce((count, id)=> {
-        if (visitedLocations[id]) {
-            count++;
-        }
-        return count;
-    }, 0);
 
-}
 
+
+/**
+ * the profile dialog
+ */
 export default class DialogProfile extends React.Component {
 
     constructor(props) {
@@ -68,10 +86,10 @@ export default class DialogProfile extends React.Component {
 
         const formatedVisitedLocations = formatVisitedLocations(this.props.locations, this.props.visitedLocations);
         const formatedCategories = formatCategories(this.props.categories, this.props.visitedLocations);
-        
+
         return (
             <Dialog
-                title="Login"
+                title={dialogName}
                 actions={actions}
                 open={this.props.open}
             >

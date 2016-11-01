@@ -37,7 +37,6 @@ export default module.exports = function (mongoDB) {
             },
             resetPasswordToken: {
                 type: String,
-                unique: true,
                 select: false
             },
             // resetPasswordExpires: Date,
@@ -149,11 +148,13 @@ export default module.exports = function (mongoDB) {
                 const passwordHash = passwordData.passwordHash;
                 const passwordSalt = passwordData.passwordSalt;
                 const confirmationToken = generateRandomString();
+                const resetPasswordToken = generateRandomString();
 
                 return new UserModel({
                     passwordHash,
                     passwordSalt,
                     confirmationToken,
+                    resetPasswordToken,
                     email,
                     isAdmin,
                     visited: {}
@@ -194,7 +195,7 @@ export default module.exports = function (mongoDB) {
             .then((passwordData) => {
                 this.passwordHash = passwordData.passwordHash;
                 this.passwordSalt = passwordData.passwordSalt;
-                this.passwordResetToken = undefined;
+                this.passwordResetToken = generateRandomString();
                 return this.save();
             })
             .catch((message)=> {
