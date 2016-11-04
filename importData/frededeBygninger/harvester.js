@@ -116,7 +116,9 @@ function prepareRecord(record) {
             },
 
             usageId: BBR['fbb:usage'] && BBR['fbb:usage'][0] && BBR['fbb:usage'][0]['fbb:conceptID'] && BBR['fbb:usage'][0]['fbb:conceptID'][0],
-            usageTerm: BBR['fbb:usage'] && BBR['fbb:usage'][0] && BBR['fbb:usage'][0]['fbb:term'] && BBR['fbb:usage'][0]['fbb:term'][0]
+            usageTerm: BBR['fbb:usage'] && BBR['fbb:usage'][0] && BBR['fbb:usage'][0]['fbb:term'] && BBR['fbb:usage'][0]['fbb:term'][0],
+
+            source : 'frededeBygninger'
 
         };
 

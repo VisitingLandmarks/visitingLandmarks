@@ -37,7 +37,7 @@ You can find the lateast stable build at http://visitinglandmarks.com
 7. Start the server
 
     ```
-    node server
+    npm start
     ```
     
 8. Point your browser to http://localhost:8001

@@ -58,7 +58,7 @@ const betweenFactory = (low, high)=> {
 };
 
 
-LocationModel.find().exec()
+LocationModel.find({source: 'frededeBygninger'}).exec()
     .then((locations)=> {
         return locations.map((location)=> {
             return location.toObject();

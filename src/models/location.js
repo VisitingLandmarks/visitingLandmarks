@@ -67,7 +67,9 @@ export default module.exports = function (mongoDB) {
             },
 
             usageId: Number,
-            usageTerm: String
+            usageTerm: String,
+
+            source: String
         },
         {
             timestamps: true
@@ -76,9 +78,12 @@ export default module.exports = function (mongoDB) {
     //safe data we want to use on the map
     const getForUserWhitelist = {
         _id: 1,
+        extent: 1,
+        name: 1,
         originalUrl: 1,
         constructionYear: 1,
-        location: 1
+        location: 1,
+        usageTerm: 1
     };
 
     //fancy index for geo distance calculation
@@ -105,7 +110,7 @@ export default module.exports = function (mongoDB) {
 
 
     //build model based on scheme
-    const LocationModel = mongoDB.model('Item', locationSchema);
+    const LocationModel = mongoDB.model('Item2', locationSchema);
 
     return LocationModel;
 

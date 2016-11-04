@@ -62,9 +62,6 @@ const formatCategories = (categories, visitedLocations) => {
 };
 
 
-
-
-
 /**
  * the profile dialog
  */

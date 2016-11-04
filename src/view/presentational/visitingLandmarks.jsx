@@ -8,7 +8,6 @@ injectTapEventPlugin();
 import MainMap from './mainMap.jsx';
 import MainMenu from './mainMenu.jsx';
 
-import DialogChangePassword from './dialog/changePassword.jsx';
 import DialogResetPassword from './dialog/resetPassword.jsx';
 import DialogLogin from './dialog/login.jsx';
 import DialogProfile from './dialog/profile.jsx';
@@ -48,32 +47,28 @@ export default class VisitingLandmarks extends React.Component {
                     onToggleFollowUser={this.props.onToggleFollowUser}
                     requestLogout={this.props.requestLogout}
                 />
-
-                <DialogChangePassword
-                    open={this.props.openDialog.changePassword}
-                    onCloseDialog={this.props.onCloseDialog}
-                    requestChangePassword={this.props.requestChangePassword}
-                />
+                
                 <DialogLogin
                     open={this.props.openDialog.login}
                     onCloseDialog={this.props.onCloseDialog}
-                    requestLogin={this.props.requestLogin}
+                    onSubmit={this.props.requestLogin}
                 />
-                <DialogProfile open={this.props.openDialog.profile}
-                               onCloseDialog={this.props.onCloseDialog}
-                               categories={this.props.categories}
-                               locations={this.props.locations}
-                               visitedLocations={this.props.visitedLocations}
+                <DialogProfile
+                    open={this.props.openDialog.profile}
+                    onCloseDialog={this.props.onCloseDialog}
+                    categories={this.props.categories}
+                    locations={this.props.locations}
+                    visitedLocations={this.props.visitedLocations}
                 />
                 <DialogRegister
                     open={this.props.openDialog.register}
                     onCloseDialog={this.props.onCloseDialog}
-                    requestRegister={this.props.requestRegister}
+                    onSubmit={this.props.requestRegister}
                 />
                 <DialogResetPassword
                     open={this.props.openDialog.resetPassword}
                     onCloseDialog={this.props.onCloseDialog}
-                    requestResetPassword={this.props.requestResetPassword}
+                    onSubmit={this.props.requestResetPassword}
                 />
             </div>
         )

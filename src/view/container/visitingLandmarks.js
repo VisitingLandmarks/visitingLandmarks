@@ -12,7 +12,6 @@ import setFollowUserAction from '../action/setFollowUser';
 import dialogCloseAction from '../action/dialogClose';
 import dialogOpenAction from '../action/dialogOpen';
 
-import {dialogName as changePasswordDialogName} from '../presentational/dialog/changePassword.jsx';
 import {dialogName as resetPasswordDialogName} from '../presentational/dialog/resetPassword.jsx';
 import {dialogName as loginDialogName} from '../presentational/dialog/login.jsx';
 import {dialogName as registerDialogName} from '../presentational/dialog/register.jsx';
@@ -29,7 +28,6 @@ const mapStateToProps = (state) => {
         //an object is easier to access and check
         visitedLocations: state.user && state.user.visited || {},
         openDialog: {
-            changePassword: state.openDialog === changePasswordDialogName, //@todo: build dialog action to display
             resetPassword: state.openDialog === resetPasswordDialogName,
             login: state.openDialog === loginDialogName,
             profile: state.openDialog === profileDialogName,

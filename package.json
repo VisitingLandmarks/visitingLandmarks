@@ -6,6 +6,7 @@
   "scripts": {
     "heroku-postbuild": "grunt postinstall",
     "start": "node server.js",
+    "startdev": "grunt nodemon | ./node_modules/bunyan/bin/bunyan",
     "test": "grunt"
   },
   "repository": {

@@ -207,10 +207,12 @@ function updateMarkers(locations, visitedLocations, marker, popups) {
                 marker[locationId].setIcon(markerStyle.visited);
             }
 
-            const title = `${locationId} (${location.constructionYear })<br/>
-                <a href="${location.originalUrl}">${location.originalUrl}</a><br/>
-                ${JSON.stringify(location.location)}<br/>
-                visited already: ${visitedLocations[locationId]}`;
+            const title = `${location.usageTerm}<br/>
+                ${(location.originalUrl ? `<a href="${location.originalUrl}">`: '')}
+                ${location.name} (${location.constructionYear })<br/>
+                ${(location.originalUrl ? `</a>`: '')}
+                ${location.extent}<br/>
+                visited already: ${(visitedLocations[locationId] ? visitedLocations[locationId]: 'No')}`;
 
             popups[locationId].setContent(title);
 
