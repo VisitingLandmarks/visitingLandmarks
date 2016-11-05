@@ -150,7 +150,6 @@ export default class MainMap extends React.Component {
 function createMarkersAndCluster(locations, marker, popups) {
 
 
-
     const markers = Object.keys(locations)
         .map((locationId) => {
 
@@ -193,7 +192,7 @@ function updateMarkers(locations, visitedLocations, marker, popups) {
 
             const title = `${location.usageTerm}<br/>
                 ${(location.originalUrl ? `<a href="${location.originalUrl}">` : '')}
-                ${location.name} (${location.constructionYear })<br/>
+                ${location.name}${(location.originalUrl ? ' (' + location.constructionYear + ')' : '')}<br/>
                 ${(location.originalUrl ? `</a>` : '')}
                 ${location.extent}<br/>
                 visited already: ${(visitedLocations[locationId] ? visitedLocations[locationId] : 'No')}`;
@@ -222,8 +221,7 @@ function setUserInteractivity(map, userIsAllowedToMoveMap) {
 function onDeviceOrientation(e) {
 
     //checking for null and undefined in one check using ==
-    if (e.webkitCompassHeading == null &&
-        !e.absolute || //if absolute is false, null or undefined stop here
+    if (e.webkitCompassHeading == null && !e.absolute || //if absolute is false, null or undefined stop here
         e.alpha == null ||
         e.beta == null ||
         e.gamma == null
