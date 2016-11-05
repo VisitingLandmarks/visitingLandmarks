@@ -7,6 +7,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-webpack');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-complexity');
 
     grunt.initConfig({
         mochaTest: {
@@ -20,12 +21,28 @@ module.exports = function (grunt) {
                 }
             }
         },
+        complexity: {
+            generic: {
+                src: ['src/**/*.js'],
+                exclude: [],
+                options: {
+                    breakOnErrors: false,
+                    errorsOnly: false,              // show only maintainability errors
+                    cyclomatic: [7, 12],            // or optionally a single value, like 3
+                    halstead: [13, 20],             // or optionally a single value, like 8
+                    maintainability: 100,
+                    hideComplexFunctions: false,    // only display maintainability
+                    broadcast: false                // broadcast data over event-bus
+                }
+            }
+        },
         watch: {
             js: {
                 options: {
                     spawn: true
                 },
                 files: [
+                    'Gruntfile.js',
                     'src/**/*.js',
                     'src/**/*.jsx',
                     'test/**/*.js'
@@ -143,6 +160,6 @@ module.exports = function (grunt) {
     grunt.registerTask('unit', ['mochaTest:build']);
     grunt.registerTask('monitor', ['nodemon:build']);
     grunt.registerTask('hint', ['eslint']);
-    grunt.registerTask('all', ['hint', 'unit']);
+    grunt.registerTask('all', ['hint', 'unit', 'complexity']);
     grunt.registerTask('default', ['all']);
 };

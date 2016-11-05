@@ -1,5 +1,8 @@
 /*global L */
 
+/**
+ * definition of markers used in the application
+ */
 export default module.exports = (typeof L === 'undefined' ? {} : {
     user: L.icon({
         iconUrl: '/static/img/marker/user.png',

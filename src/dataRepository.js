@@ -1,4 +1,4 @@
-var memoize = require('memoizee');
+const memoize = require('memoizee');
 import logger from './helper/logger';
 
 
