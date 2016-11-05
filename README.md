@@ -2,6 +2,7 @@
 
 ## Demo
 You can find the lateast stable build at http://visitinglandmarks.com
+Or install the native app at http://app.visitinglandmarks.com
 
 ## Run It
 1. Install node.js (>=6.0.0)
