@@ -107,7 +107,6 @@ export default class DialogUserPassword extends React.Component {
                 <form>
                     <table>
                         <tbody>
-
                         {(this.props.showUsernameLine ? usernameLine : null)}
                         {(this.props.showPasswordLine ? passwordLine : null)}
                         </tbody>

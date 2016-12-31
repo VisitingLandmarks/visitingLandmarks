@@ -4,7 +4,6 @@ import VisitingLandmarks from './container/visitingLandmarks.js';
 import {Provider} from 'react-redux';
 import {createStore, applyMiddleware, compose} from 'redux';
 import thunk from 'redux-thunk';
-import createLogger from 'redux-logger';
 import reducer from './reducer/reducer';
 import clientSocket from '../client/clientSocket.js';
 
@@ -13,7 +12,7 @@ import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
-let enhancer = applyMiddleware(thunk, createLogger());
+let enhancer = applyMiddleware(thunk);
 if (window.devToolsExtension) {
     enhancer = compose(enhancer, window.devToolsExtension && window.devToolsExtension());
 }

@@ -1,3 +1,5 @@
+export const collectionName = 'Category';
+
 /**
  * returns a mongoose model representing a category
  * @param mongoDB
@@ -46,7 +48,7 @@ export default module.exports = function (mongoDB) {
 
 
     //build model based on scheme
-    const CategoryModel = mongoDB.model('Category', categorySchema);
+    const CategoryModel = mongoDB.model(collectionName, categorySchema);
 
     return CategoryModel;
 

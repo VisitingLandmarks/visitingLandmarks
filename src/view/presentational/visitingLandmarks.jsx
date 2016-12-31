@@ -59,6 +59,7 @@ export default class VisitingLandmarks extends React.Component {
                     categories={this.props.categories}
                     locations={this.props.locations}
                     visitedLocations={this.props.visitedLocations}
+                    userEmailConfirmed={this.props.userEmailConfirmed}
                 />
                 <DialogRegister
                     open={this.props.openDialog.register}

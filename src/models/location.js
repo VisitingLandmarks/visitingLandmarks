@@ -1,3 +1,5 @@
+export const collectionName = 'Item2';
+
 /**
  * returns a mongoose model representing a category
  * @param mongoDB
@@ -110,7 +112,7 @@ export default module.exports = function (mongoDB) {
 
 
     //build model based on scheme
-    const LocationModel = mongoDB.model('Item2', locationSchema);
+    const LocationModel = mongoDB.model(collectionName, locationSchema);
 
     return LocationModel;
 

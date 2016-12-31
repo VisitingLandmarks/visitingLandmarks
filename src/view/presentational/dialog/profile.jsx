@@ -91,6 +91,9 @@ export default class DialogProfile extends React.Component {
                 open={this.props.open}
             >
                 <div>
+                    <label>Confirmed: </label>{this.props.userEmailConfirmed ? <DoneIcon /> : null}
+                </div>
+                <div>
                     <label>Visited Locations:</label>
                     <ul>{formatedVisitedLocations}</ul>
                 </div>

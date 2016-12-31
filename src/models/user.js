@@ -1,6 +1,6 @@
 import applicationLogic from './user/applicationLogic';
 import lifetimeManagement from './user/lifetimeManagement';
-
+export const collectionName = 'User';
 
 /**
  * returns a mongoose model representing a User
@@ -68,7 +68,7 @@ export default module.exports = function (mongoDB) {
     const extensions = [applicationLogic(userSchema), lifetimeManagement(userSchema)];
 
     //build model based on scheme
-    const UserModel = mongoDB.model('User', userSchema);
+    const UserModel = mongoDB.model(collectionName, userSchema);
     extensions.forEach((extension)=> {
         extension && extension(UserModel);
     });

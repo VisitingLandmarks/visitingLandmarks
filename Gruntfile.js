@@ -160,6 +160,6 @@ module.exports = function (grunt) {
     grunt.registerTask('unit', ['mochaTest:build']);
     grunt.registerTask('monitor', ['nodemon:build']);
     grunt.registerTask('hint', ['eslint']);
-    grunt.registerTask('all', ['hint', 'unit', 'complexity']);
-    grunt.registerTask('default', ['all']);
+    grunt.registerTask('test', ['hint', 'unit', 'complexity']);
+    grunt.registerTask('default', ['test']);
 };
