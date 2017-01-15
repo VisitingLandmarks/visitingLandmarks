@@ -77,7 +77,7 @@ module.exports = function (grunt) {
             build: {
                 script: 'server.js',
                 options: {
-                    ext: 'js,jsx,handlebars',
+                    ext: 'js,jsx,json,handlebars',
                     delay: 1000,
                     ignore: ['node_modules/**']
                 }
@@ -181,7 +181,8 @@ module.exports = function (grunt) {
 
     //Build
     grunt.registerTask('git', ['githash', 'json_generator']);
-    grunt.registerTask('postinstall', ['git', 'copy:build', 'webpack:build']);
+    // grunt.registerTask('postinstall', ['git', 'copy:build', 'webpack:build']);
+    grunt.registerTask('postinstall', ['copy:build', 'webpack:build']);
 
     //Dev
     grunt.registerTask('monitor', ['nodemon:build']);
