@@ -8,8 +8,27 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-complexity');
+    grunt.loadNpmTasks('grunt-githash');
+    grunt.loadNpmTasks('grunt-json-generator');
+
 
     grunt.initConfig({
+        githash: {
+            main: {
+                options: {}
+            }
+        },
+        json_generator: {
+            build: {
+                dest: './config/git.json',
+                options: {
+                    version: {
+                        tag: '<%= githash.main.tag %>',
+                        branch: '<%= githash.main.branch %>'
+                    }
+                }
+            }
+        },
         mochaTest: {
             build: {
                 src: ['test/unit/**/*.js'],
@@ -155,11 +174,18 @@ module.exports = function (grunt) {
         }
     });
 
-
-    grunt.registerTask('postinstall', ['copy:build', 'webpack:build']);
+    //QA
     grunt.registerTask('unit', ['mochaTest:build']);
-    grunt.registerTask('monitor', ['nodemon:build']);
     grunt.registerTask('hint', ['eslint']);
     grunt.registerTask('test', ['hint', 'unit', 'complexity']);
+
+    //Build
+    grunt.registerTask('git', ['githash', 'json_generator']);
+    grunt.registerTask('postinstall', ['git', 'copy:build', 'webpack:build']);
+
+    //Dev
+    grunt.registerTask('monitor', ['nodemon:build']);
+
+    //default
     grunt.registerTask('default', ['test']);
 };
