@@ -1,5 +1,5 @@
-import applicationLogic from './user/applicationLogic';
-import lifetimeManagement from './user/lifetimeManagement';
+import applicationLogic from './applicationLogic';
+import lifetimeManagement from './lifetimeManagement';
 export const collectionName = 'User';
 
 /**

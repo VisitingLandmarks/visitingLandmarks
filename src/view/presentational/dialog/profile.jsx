@@ -4,8 +4,8 @@ import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
 import DoneIcon from 'material-ui/svg-icons/action/done';
 
-import getSortScore from '../../../helper/getCategorySortScore';
-import countVisitedLocationsInCategory from '../../../helper/countVisitedLocationsInCategory';
+import getSortScore from '../../../modules/getCategorySortScore';
+import countVisitedLocationsInCategory from '../../../modules/countVisitedLocationsInCategory';
 
 export const dialogName = 'Profile';
 

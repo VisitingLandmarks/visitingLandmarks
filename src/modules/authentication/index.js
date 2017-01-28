@@ -1,9 +1,9 @@
-import localStrategy from './local.js';
-import config from '../../config';
+import localStrategy from './local';
+import config from '../../../config';
 
-module.exports = (app, io, User)=> {
+module.exports = (app, io, serializeUser, deserializeUser, authenticate)=> {
 
-    const logger = require('../helper/logger.js');
+    const logger = require('../../modules/logger');
     const passport = require('passport');
     const passportSocketIo = require('passport.socketio');
     const session = require('express-session');
@@ -13,8 +13,8 @@ module.exports = (app, io, User)=> {
     const cookieName = 'session';
 
     //serializing and deserializing a user to a more compact format
-    passport.serializeUser(User.serializeUser);
-    passport.deserializeUser(User.deserializeUser);
+    passport.serializeUser(serializeUser);
+    passport.deserializeUser(deserializeUser);
 
     //setting up session and passport. ORDER IS IMPORTANT for the next app.use commands and the strategy
     app.use(session({
@@ -30,7 +30,7 @@ module.exports = (app, io, User)=> {
     app.use(passport.session());
 
     //setup strategies
-    localStrategy(app, passport, User.authenticate);
+    localStrategy(app, passport, authenticate);
 
     const onAuthorizeSuccess = (data, accept) => {
         logger.info({userId : data.user._id}, 'socket connection authorized');

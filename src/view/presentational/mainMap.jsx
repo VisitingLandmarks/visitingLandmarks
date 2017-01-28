@@ -1,8 +1,8 @@
 import React from 'react';
 import gameSettings from '../../../config/gameSettings';
 import markerStyle from '../../client/map/markerStyle';
-import orientationToCompassHeading from '../../helper/orientationToCompassHeading';
-import antiHammer from '../../helper/antiHammer';
+import orientationToCompassHeading from '../../modules/orientationToCompassHeading';
+import antiHammer from '../../modules/antiHammer';
 const memoize = require('memoizee');
 // import {log} from  '../../client/toServer';
 

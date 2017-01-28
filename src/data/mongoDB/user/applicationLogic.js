@@ -1,4 +1,4 @@
-import logger from '../../helper/logger.js';
+import logger from '../../../modules/logger';
 
 export default module.exports = (userSchema) => {
 

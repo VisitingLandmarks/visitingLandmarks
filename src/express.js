@@ -1,8 +1,8 @@
-const bodyParser = require('body-parser');
-const http = require('http');
-const bunyanMiddleware = require('bunyan-middleware');
-import logger from './helper/logger.js';
-
+import bodyParser  from 'body-parser';
+import http from 'http';
+import bunyanMiddleware from 'bunyan-middleware';
+import logger from './modules/logger';
+import express from 'express';
 
 /**
  *
@@ -10,7 +10,7 @@ import logger from './helper/logger.js';
  * @param port - numerical port to open
  * @returns {{app: *, server: *}}
  */
-export default module.exports = (express = require('express'), port = 80) => {
+export default module.exports = (port = 80) => {
 
     const app = express();
     const server = http.Server(app);
@@ -26,7 +26,6 @@ export default module.exports = (express = require('express'), port = 80) => {
         obscureHeaders: [],
         logger: logger
     }));
-
 
     /**
      * error handling during request

@@ -1,4 +1,6 @@
-import logger from '../helper/logger';
+import logger from '../../modules/logger';
+import config from '../../../config';
+
 
 /**
  *
@@ -33,22 +35,13 @@ var getMongoDB = (config) => {
 };
 
 
+const models = {};
+
 /**
- * establish a mongo connection
- * @param config object
- * @returns {function()}
+ * this function initializes the model
+ * @param {string} modelName
+ * @returns {undefined}
  */
-const getModelFactory = (config) => {
-    const models = {};
-
-    /**
-     * this function initializes the model
-     * @param {string} modelName
-     * @returns {undefined}
-     */
-    return (modelName) => {
-        return models[modelName] || (models[modelName] = require('../models/' + modelName + '.js')(getMongoDB(config)));
-    };
+export default module.exports = (modelName) => {
+    return models[modelName] || (models[modelName] = require('./' + modelName)(getMongoDB(config.mongoDB)));
 };
-
-export default module.exports = getModelFactory;

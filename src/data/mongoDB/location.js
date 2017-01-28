@@ -1,5 +1,6 @@
 export const collectionName = 'Item2';
 
+
 /**
  * returns a mongoose model representing a category
  * @param mongoDB

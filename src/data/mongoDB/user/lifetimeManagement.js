@@ -1,7 +1,7 @@
-import {verify as verifyPassword, generate as generatePasswordHash} from '../../helper/password';
-import generateRandomString from '../../helper/generateRandomString';
+import {verify as verifyPassword, generate as generatePasswordHash} from '../../../modules/password';
+import generateRandomString from '../../../modules/generateRandomString';
 
-import logger from '../../helper/logger.js';
+import logger from '../../../modules/logger';
 
 export default module.exports = (userSchema) => {
 

@@ -24,7 +24,10 @@ module.exports = function (grunt) {
                 options: {
                     version: {
                         tag: '<%= githash.main.tag %>',
-                        branch: '<%= githash.main.branch %>'
+                        branch: '<%= githash.main.branch %>',
+                        short: '<%= githash.main.short %>',
+                        hash: '<%= githash.main.hash %>'
+
                     }
                 }
             }
@@ -66,7 +69,7 @@ module.exports = function (grunt) {
                     'src/**/*.jsx',
                     'test/**/*.js'
                 ],
-                tasks: ['all']
+                tasks: ['test']
             }
         },
         eslint: {
@@ -181,7 +184,6 @@ module.exports = function (grunt) {
 
     //Build
     grunt.registerTask('git', ['githash', 'json_generator']);
-    // grunt.registerTask('postinstall', ['git', 'copy:build', 'webpack:build']);
     grunt.registerTask('postinstall', ['copy:build', 'webpack:build']);
 
     //Dev

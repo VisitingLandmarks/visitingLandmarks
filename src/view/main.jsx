@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import VisitingLandmarks from './container/visitingLandmarks.js';
+import VisitingLandmarks from './container/visitingLandmarks';
 import {Provider} from 'react-redux';
 import {createStore, applyMiddleware, compose} from 'redux';
 import thunk from 'redux-thunk';
 import reducer from './reducer/reducer';
-import clientSocket from '../client/clientSocket.js';
+import clientSocket from '../client/clientSocket';
 
 //Material UI
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';

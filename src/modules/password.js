@@ -1,6 +1,6 @@
 const crypto = require('crypto');
-import logger from './logger.js';
-import generateRandomString from './generateRandomString.js';
+import logger from './logger';
+import generateRandomString from './generateRandomString';
 
 
 /**

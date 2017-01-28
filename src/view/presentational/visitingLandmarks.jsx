@@ -13,7 +13,7 @@ import DialogLogin from './dialog/login.jsx';
 import DialogProfile from './dialog/profile.jsx';
 import DialogRegister from './dialog/register.jsx';
 
-import {onVisitLocation} from '../../client/toServer.js';
+import {onVisitLocation} from '../../client/toServer';
 
 /**
  * the whole frontend
