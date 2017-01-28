@@ -25,4 +25,6 @@ export const setupIO = (server) => {
     
     //handle socket.io requests of the user
     ioApp.on('connection', require('../handleSocketIORequests')(sendActionToAllConnectionOfAUser, data));
+
+    return ioApp;
 };

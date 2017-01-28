@@ -9,7 +9,7 @@ const {app, server} = require('./modules/express')(config.port);
 const data = require('./data');
 
 //setup io
-setupIO(server);
+const io = setupIO(server);
 
 //setup routes
 setupRoutes(app);
