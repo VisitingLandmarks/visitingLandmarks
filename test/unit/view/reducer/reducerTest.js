@@ -7,7 +7,7 @@ import loginAction, {type as loginType} from '../../../../src/view/action/reques
 import loginSuccessAction, {type as loginSuccessType} from '../../../../src/view/action/request/loginSuccess';
 import loginFailureAction, {type as loginFailureType} from '../../../../src/view/action/request/loginFailure';
 
-import dialogCloseAction, {type as typeDialogClose} from '../../../../src/view/action/dialogClose';
+// import dialogCloseAction, {type as typeDialogClose} from '../../../../src/view/action/dialogClose';
 import dialogOpenAction, {type as typeDialogOpen} from '../../../../src/view/action/dialogOpen';
 import setFollowUserAction, {type as typeSetFollowUser} from '../../../../src/view/action/setFollowUser';
 import visitedLocationAction, {type as typeVisitedLocation} from '../../../../src/view/action/visitedLocation';

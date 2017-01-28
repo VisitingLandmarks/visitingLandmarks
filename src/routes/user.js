@@ -50,4 +50,4 @@ export default (app) => {
      * reset the password of a user with a token send to a second channel
      */
     app.get(routes.resetPassword, controller.resetPassword);
-}
+};

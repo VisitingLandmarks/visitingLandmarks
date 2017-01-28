@@ -22,7 +22,7 @@ export default (req, res) => {
     //     user: req.user,
     //     userAgent: res.req.headers['user-agent']
     // }, res);
-}
+};
 
 /**
  * fetch all data and render it server-side

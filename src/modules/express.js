@@ -1,7 +1,7 @@
 import bodyParser  from 'body-parser';
 import http from 'http';
 import bunyanMiddleware from 'bunyan-middleware';
-import logger from './modules/logger';
+import logger from './logger';
 import express from 'express';
 
 /**
@@ -24,7 +24,7 @@ export default module.exports = (port = 80) => {
         propertyName: 'reqId',
         logName: 'req_id',
         obscureHeaders: [],
-        logger: logger
+        logger
     }));
 
     /**

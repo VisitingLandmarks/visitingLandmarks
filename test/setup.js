@@ -6,4 +6,6 @@ sinon = require('sinon');
 
 //configure chai
 chai.config.includeStack = true;
-assert = Object.assign({}, chai.assert, sinon.assert);
+sinon.assert.expose(chai.assert, { prefix: '' });
+
+assert = chai.assert;

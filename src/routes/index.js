@@ -9,4 +9,4 @@ export default (app) => {
     home(app);
     user(app);
 
-}
+};
