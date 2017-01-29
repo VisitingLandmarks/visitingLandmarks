@@ -2,7 +2,7 @@ const webpack = require('webpack');
 module.exports = function (grunt) {
 
     const shared = {
-        entry: './src/view/main.jsx',
+        entry: './src/view/main.js',
         output: {
             path: './static/',
             filename: 'all.js'
@@ -10,7 +10,7 @@ module.exports = function (grunt) {
         module: {
             loaders: [
                 {
-                    test: /.jsx?$/,
+                    test: /.js?$/,
                     loader: 'babel-loader',
                     exclude: /node_modules/,
                     query: {

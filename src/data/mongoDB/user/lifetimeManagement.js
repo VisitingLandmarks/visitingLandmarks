@@ -15,7 +15,11 @@ export default module.exports = (userSchema) => {
      */
     userSchema.statics.authenticate = (email, password, callback) => {
 
-        UserModel.findOne({email: email.toLowerCase()}).select('+passwordHash +passwordSalt').exec(function (err, user) {
+        email = email.toLowerCase();
+
+        logger.debug({email}, 'authenticate user');
+
+        UserModel.findOne({email}).select('+passwordHash +passwordSalt').exec(function (err, user) {
 
             if (err) {
                 logger.error({email}, 'db error during user authenticate');
@@ -25,7 +29,7 @@ export default module.exports = (userSchema) => {
             // no user found just return the empty user
             if (!user) {
                 logger.info({email}, 'email not found during user authenticate');
-                return callback(err, user);
+                return callback(null, false, {message: 'Incorrect login'});
             }
 
             verifyPassword(password, user.passwordHash, user.passwordSalt)
@@ -40,8 +44,9 @@ export default module.exports = (userSchema) => {
                     // return user representing object, not the user model! if everything is ok
                     callback(err, user);
                 })
-                .catch(()=> {
-                    callback(null, false, {message: 'Incorrect username.'});
+                .catch((err)=> {
+                    logger.info({email, err}, 'wrong password during login');
+                    callback(null, false, {message: 'Incorrect login'});
                 });
 
         });

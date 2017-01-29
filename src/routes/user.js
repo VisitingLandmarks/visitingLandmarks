@@ -1,14 +1,7 @@
 import passport from 'passport';
 import * as controller from '../controller/user';
-
-export const routes = Object.freeze({
-    confirm: '/confirm/:token',
-    login: '/login',
-    logout: '/logout',
-    register: '/register',
-    requestPasswordReset: '/requestPasswordReset',
-    resetPassword: '/resetPassword/:resetPasswordToken'
-});
+import routes from '../../config/routes';
+const authenticationStrategy = 'local';
 
 export default (app) => {
 
@@ -17,37 +10,37 @@ export default (app) => {
      * handle a post on the login route
      * send back the user if successful
      */
-    app.post(routes.login, passport.authenticate('local'), controller.sendUser);
+    app.post(routes.user.login, passport.authenticate(authenticationStrategy), controller.sendUser);
 
 
     /**
      * logout - post only, get is a bad idea -> prefetch
      */
-    app.post(routes.logout, controller.restrictLoginUser, controller.logout);
+    app.post(routes.user.logout, controller.restrictLoginUser, controller.logout);
 
 
     /**
      * handle an confirmation url for an email with is send to the user in an email
      * the reason why this is a get
      */
-    app.get(routes.confirm, controller.confirm);
+    app.get(routes.user.confirm, controller.confirm);
 
 
     /**
      * handle a post on the login route
      * send back the user if successful
      */
-    app.post(routes.register, controller.register, passport.authenticate('local'), controller.sendUser);
+    app.post(routes.user.register, controller.register, passport.authenticate(authenticationStrategy), controller.sendUser);
 
 
     /**
      * request a password reset
      */
-    app.post(routes.requestPasswordReset, controller.requestPasswordReset);
+    app.post(routes.user.passwordResetRequest, controller.passwordResetRequest);
 
 
     /**
      * reset the password of a user with a token send to a second channel
      */
-    app.get(routes.resetPassword, controller.resetPassword);
+    app.get(routes.user.passwordReset, controller.passwordReset);
 };

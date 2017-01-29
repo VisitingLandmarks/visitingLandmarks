@@ -1,5 +1,5 @@
 import logger from './modules/logger';
-import visitedLocationAction from './view/action/visitedLocation';
+import {locationsVisit} from './redux/action/locations';
 
 //@todo: too much logic in here. Buisness Logic should be abstracted from the interface
 export default module.exports = (sendActionToAllConnectionOfAUser, dataRepository) => {
@@ -27,7 +27,7 @@ export default module.exports = (sendActionToAllConnectionOfAUser, dataRepositor
                         visitedLocationLogger.info('User visited new location');
 
                     }
-                    sendActionToAllConnectionOfAUser(userId, visitedLocationAction({[visitedLocation]: newVisit}));
+                    sendActionToAllConnectionOfAUser(userId, locationsVisit({[visitedLocation]: newVisit}));
                 })
                 .catch((err)=> {
                     visitedLocationLogger.error(err);

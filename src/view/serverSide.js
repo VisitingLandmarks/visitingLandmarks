@@ -1,41 +1,41 @@
 import config from '../../config';
 
 import React from 'react';
-import {Provider} from 'react-redux';
-import { createStore, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
 import {renderToString} from 'react-dom/server';
 import VisitingLandmarks from './container/visitingLandmarks';
-import reducer from './reducer/reducer';
-
-import loginSuccessfulAction from './action/request/loginSuccess';
-import setCategoriesAction from './action/setCategories';
-import setLocationsAction from './action/setLocations';
-import openDialogAction from './action/dialogOpen';
-
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
+import { createStore, applyMiddleware } from 'redux';
+import {Provider} from 'react-redux';
+import thunk from 'redux-thunk';
+import reducer from '../redux/reducer';
+
+import {login} from '../redux/action/thunk/login';
+import {categoriesSet} from '../redux/action/categories';
+import {locationsSet} from '../redux/action/locations';
+import {dialogOpen} from '../redux/action/ui';
+
 export default (user, categories, locations, userAgent, openDialog) => {
 
     // Create a new Redux store instance
-    const store = createStore(reducer,applyMiddleware(thunk));
+    const store = createStore(reducer, applyMiddleware(thunk));
 
     if (user) {
-        store.dispatch(loginSuccessfulAction(user));
+        store.dispatch(login(user));
     }
 
     if (categories) {
-        store.dispatch(setCategoriesAction(categories));
+        store.dispatch(categoriesSet(categories));
     }
 
     if (locations) {
-        store.dispatch(setLocationsAction(locations));
+        store.dispatch(locationsSet(locations));
     }
 
     if (openDialog) {
-        store.dispatch(openDialogAction(openDialog));
+        store.dispatch(dialogOpen(openDialog));
     }
 
     // Render the component to a string

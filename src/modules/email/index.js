@@ -68,7 +68,7 @@ export const sendEmailConfirmed = (user) => {
  * send a email when a user registered his emailadress
  * @param user
  */
-export const sendUserRegistered = (user) => {
+export const sendEmailUserRegistered = (user) => {
     return addLogging(templates.userRegistered({
         to: user.email
     }, extendTemplateData({user})), logger.child({template: 'userRegistered'}));
@@ -79,7 +79,7 @@ export const sendUserRegistered = (user) => {
  * send a email when a user registered his emailadress
  * @param user
  */
-export const sendUserResetPassword = (user) => {
+export const sendEmailUserResetPassword = (user) => {
     return addLogging(templates.userResetPassword({
         to: user.email
     }, extendTemplateData({user})), logger.child({template: 'userResetPassword'}));

@@ -1,5 +1,5 @@
 import React, {PropTypes} from 'react';
-import DialogUserPassword from './userPassword.jsx';
+import DialogUserPassword from './userPassword';
 
 export const dialogName = 'Register';
 

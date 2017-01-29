@@ -1,7 +1,6 @@
-import logger from '../modules/logger';
-import {sendEmailConfirmed, sendUserRegistered, sendUserResetPassword} from '../modules/email';
+import {sendEmailConfirmed, sendEmailUserRegistered, sendEmailUserResetPassword} from '../modules/email';
 import * as dataRepository from '../data';
-import getConnectionByUserId from '../modules/getConnectionByUserId';
+import {disconnectAllSocketsOfUser} from '../modules/sendActionToAllConnectionOfAUser';
 
 
 export const confirm = (req, res) => {
@@ -28,14 +27,9 @@ export const confirm = (req, res) => {
 
 export const logout = (req, res) => {
 
-    const sockets = getConnectionByUserId(req.user._id);
-    const numberOfSockets = sockets.length;
+    const numberOfSockets = disconnectAllSocketsOfUser(req.user._id);
 
-    sockets.forEach((socket)=> {
-        socket.disconnect();
-    });
-
-    logger.info({numberOfSockets, userId: req.user._id}, 'user disconnected');
+    req.log.info({numberOfSockets, userId: req.user._id}, 'user disconnected');
 
     req.logout();
     res.redirect('/');
@@ -47,7 +41,7 @@ export const register = (req, res, next) => {
 
     //register is only possible if not logged in
     if (req.user) {
-        logger.warn({
+        req.log.warn({
             registeredUser: req.user.email,
             triedToRegister: req.body.username
         }, 'user who is logged in tried to register');
@@ -55,21 +49,28 @@ export const register = (req, res, next) => {
         return;
     }
 
+    req.log.debug({email: req.body.username, password: req.body.password}, 'new user registered');
     dataRepository.User.register(req.body.username, req.body.password)
-        .then((user)=> { //invoke next middleware, which will authenticate the new registered user
+        .then((user)=> {
             if (user) {
-                sendUserRegistered(user);
+                sendEmailUserRegistered(user)
+                    .then(()=> {
+                        //invoke next middleware, which will authenticate the new registered user
+                        next();
+                    });
             }
-            next();
+        })
+        .catch((err) => {
+            next(err);
         });
 
 };
 
-export const requestPasswordReset = (req, res) => {
+export const passwordResetRequest = (req, res) => {
 
     //resetPassword is only possible if not logged in
     if (req.user) {
-        logger.warn({
+        req.log.warn({
             registeredUser: req.user.email,
             triedToReset: req.body.username
         }, 'user who is logged in tried to reset password');
@@ -83,20 +84,20 @@ export const requestPasswordReset = (req, res) => {
                 throw 'user during request does not exist';
             }
             return user.newPasswordResetToken()
-                .then(sendUserResetPassword)
+                .then(sendEmailUserResetPassword)
                 .then(()=> {
                     res.send();
                 });
         })
         .catch((err)=> {
-            logger.error(err, 'unable to handle resetPassword request');
+            req.log.error(err, 'unable to handle resetPassword request');
             res.status(403).send();
         });
 
 };
 
 
-export const resetPassword = (req, res, next) => {
+export const passwordReset = (req, res, next) => {
 
     const resetPasswordToken = req.params.resetPasswordToken;
 
@@ -108,12 +109,8 @@ export const resetPassword = (req, res, next) => {
             }
 
             req.login(user, function (err) {
-                // logger.error(err, 'cant login user manually during password reset');
-                // handleMainAppRequests({
-                //     user: !err && user,
-                //     openDialog: 'changePassword'
-                // }, res);
                 if (err) {
+                    req.log.error(err, 'cant login user manually during password reset');
                     next(err);
                 }
 

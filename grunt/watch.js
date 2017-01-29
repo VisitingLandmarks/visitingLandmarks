@@ -8,7 +8,6 @@ module.exports = function (grunt) {
             files: [
                 'Gruntfile.js',
                 'src/**/*.js',
-                'src/**/*.jsx',
                 'test/**/*.js'
             ],
             tasks: ['test']

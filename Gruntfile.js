@@ -11,7 +11,9 @@ module.exports = function (grunt) {
 
     //Build
     grunt.registerTask('git', ['githash', 'json_generator']);
-    grunt.registerTask('postinstall', ['copy:build', 'webpack:build']);
+    grunt.registerTask('build:dev', ['webpack:dev']);
+    grunt.registerTask('build:prod', ['webpack:build']);
+    grunt.registerTask('postinstall', ['copy:build', 'build:prod']);
 
     //Dev
     grunt.registerTask('monitor', ['nodemon:build']);

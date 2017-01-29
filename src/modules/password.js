@@ -1,4 +1,4 @@
-const crypto = require('crypto');
+import crypto from 'crypto';
 import logger from './logger';
 import generateRandomString from './generateRandomString';
 
@@ -30,7 +30,7 @@ export const generate = (password, passwordSalt = generateRandomString()) => {
     password = password.toString();
 
     return new Promise((resolve, reject) => {
-        crypto.pbkdf2(password, new Buffer(passwordSalt,'binary'), 100000, 512, 'sha512', (err, key) => { // eslint-disable-line no-undef
+        crypto.pbkdf2(password, new Buffer(passwordSalt, 'binary'), 100000, 512, 'sha512', (err, key) => { // eslint-disable-line no-undef
             if (err) {
                 logger.error('error during generation of Hash');
                 return reject(err);

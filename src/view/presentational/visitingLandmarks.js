@@ -5,13 +5,13 @@ import React from 'react';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
 
-import MainMap from './mainMap.jsx';
-import MainMenu from './mainMenu.jsx';
+import MainMap from './mainMap';
+import MainMenu from './mainMenu';
 
-import DialogResetPassword from './dialog/resetPassword.jsx';
-import DialogLogin from './dialog/login.jsx';
-import DialogProfile from './dialog/profile.jsx';
-import DialogRegister from './dialog/register.jsx';
+import DialogResetPassword from './dialog/resetPassword';
+import DialogLogin from './dialog/login';
+import DialogProfile from './dialog/profile';
+import DialogRegister from './dialog/register';
 
 import {onVisitLocation} from '../../client/toServer';
 
@@ -67,7 +67,7 @@ export default class VisitingLandmarks extends React.Component {
                     onSubmit={this.props.requestRegister}
                 />
                 <DialogResetPassword
-                    open={this.props.openDialog.resetPassword}
+                    open={this.props.openDialog.passwordReset}
                     onCloseDialog={this.props.onCloseDialog}
                     onSubmit={this.props.requestResetPassword}
                 />

@@ -1,35 +1,27 @@
 //user management
 //login
-import {type as registerType} from '../action/request/register';
-import {type as registerSuccessType} from '../action/request/registerSuccess';
-import {type as registerFailureType} from '../action/request/registerFailure';
+import {REGISTER, REGISTER_FAILURE, REGISTER_SUCCESS} from '../action/thunk/register';
 
 //login
-import {type as loginType} from '../action/request/login';
-import {type as loginSuccessType} from '../action/request/loginSuccess';
-import {type as loginFailureType} from '../action/request/loginFailure';
+import {LOGIN, LOGIN_FAILURE, LOGIN_SUCCESS} from '../action/thunk/login';
 
 //logout
-import {type as logoutType} from '../action/request/logout';
-import {type as logoutSuccessType} from '../action/request/logoutSuccess';
-import {type as logoutFailureType} from '../action/request/logoutFailure';
+import {LOGOUT, LOGOUT_FAILURE, LOGOUT_SUCCESS} from '../action/thunk/logout';
 
 //change Password
-import {type as changePasswordType} from '../action/request/changePassword';
-import {type as changePasswordSuccessType} from '../action/request/changePasswordSuccess';
-import {type as changePasswordFailureType} from '../action/request/changePasswordFailure';
+import {PASSWORD_CHANGE, PASSWORD_CHANGE_FAILURE, PASSWORD_CHANGE_SUCCESS} from '../action/thunk/changePassword';
 
 //UI management
-import {type as setFollowUserType} from '../action/setFollowUser';
+import {DIALOG_OPEN, DIALOG_CLOSE, FOLLOW_USER_SET} from '../action/ui';
 
-import {type as dialogCloseType} from '../action/dialogClose';
-import {type as dialogOpenType} from '../action/dialogOpen';
+//content management
+//categories
+import {CATEGORIES_SET} from '../action/categories';
 
 //locations
-import {type as setCategoriesType} from '../action/setCategories';
-import {type as setLocationsType} from '../action/setLocations';
-import {type as visitedLocationsType} from '../action/visitedLocation';
+import {LOCATIONS_SET, LOCATIONS_VISIT} from '../action/locations';
 
+// initial state
 import initialState from './initialState';
 
 export default (oldState = initialState, action) => {
@@ -38,7 +30,7 @@ export default (oldState = initialState, action) => {
         //user management
 
         //register
-        case registerType:
+        case REGISTER:
         {
             return {
                 ...oldState,
@@ -48,7 +40,17 @@ export default (oldState = initialState, action) => {
                 }
             };
         }
-        case registerSuccessType:
+        case REGISTER_FAILURE:
+        {
+            return {
+                ...oldState,
+                actions: {
+                    ...oldState.actions,
+                    registering: 'failure'
+                }
+            };
+        }
+        case REGISTER_SUCCESS:
         {
             return {
                 ...oldState,
@@ -59,19 +61,9 @@ export default (oldState = initialState, action) => {
                 }
             };
         }
-        case registerFailureType:
-        {
-            return {
-                ...oldState,
-                actions: {
-                    ...oldState.actions,
-                    registering: 'failure'
-                }
-            };
-        }
 
         //login
-        case loginType:
+        case LOGIN:
         {
             return {
                 ...oldState,
@@ -81,7 +73,17 @@ export default (oldState = initialState, action) => {
                 }
             };
         }
-        case loginSuccessType:
+        case LOGIN_FAILURE:
+        {
+            return {
+                ...oldState,
+                actions: {
+                    ...oldState.actions,
+                    loggingIn: 'failure'
+                }
+            };
+        }
+        case LOGIN_SUCCESS:
         {
             return {
                 ...oldState,
@@ -92,19 +94,9 @@ export default (oldState = initialState, action) => {
                 }
             };
         }
-        case loginFailureType:
-        {
-            return {
-                ...oldState,
-                actions: {
-                    ...oldState.actions,
-                    loggingIn: 'failure'
-                }
-            };
-        }
 
         //logout
-        case logoutType:
+        case LOGOUT:
         {
             return {
                 ...oldState,
@@ -114,14 +106,7 @@ export default (oldState = initialState, action) => {
                 }
             };
         }
-        case logoutSuccessType:
-        {
-            return { //@todo: bad idea -> removes all locations -> sugar the initial state with the correct locations
-                ...oldState,
-                initialState
-            };
-        }
-        case logoutFailureType:
+        case LOGOUT_FAILURE:
         {
             return {
                 ...oldState,
@@ -131,9 +116,16 @@ export default (oldState = initialState, action) => {
                 }
             };
         }
+        case LOGOUT_SUCCESS:
+        {
+            return {
+                ...initialState,
+                locations : oldState.locations
+            };
+        }
 
         //changePassword
-        case changePasswordType:
+        case PASSWORD_CHANGE:
         {
             return {
                 ...oldState,
@@ -143,17 +135,7 @@ export default (oldState = initialState, action) => {
                 }
             };
         }
-        case changePasswordSuccessType:
-        {
-            return {
-                ...oldState,
-                actions: {
-                    ...oldState.actions,
-                    changingPassword: 'success'
-                }
-            };
-        }
-        case changePasswordFailureType:
+        case PASSWORD_CHANGE_FAILURE:
         {
             return {
                 ...oldState,
@@ -163,47 +145,59 @@ export default (oldState = initialState, action) => {
                 }
             };
         }
-
-
-        //UI management
-        case setFollowUserType:
+        case PASSWORD_CHANGE_SUCCESS:
         {
             return {
                 ...oldState,
-                followUser: action.value
+                actions: {
+                    ...oldState.actions,
+                    changingPassword: 'success'
+                }
             };
         }
-        case dialogCloseType:
+
+
+        //UI management
+        case DIALOG_CLOSE:
         {
             return {
                 ...oldState,
                 openDialog: false
             };
         }
-        case dialogOpenType:
+        case DIALOG_OPEN:
         {
             return {
                 ...oldState,
                 openDialog: action.dialog
             };
         }
+        case FOLLOW_USER_SET:
+        {
+            return {
+                ...oldState,
+                followUser: action.value
+            };
+        }
 
-        //locations
-        case setCategoriesType:
+        //categories
+        case CATEGORIES_SET:
         {
             return {
                 ...oldState,
                 categories: action.categories
             };
         }
-        case setLocationsType:
+
+        //locations
+        case LOCATIONS_SET:
         {
             return {
                 ...oldState,
                 locations: action.locations
             };
         }
-        case visitedLocationsType:
+        case LOCATIONS_VISIT:
         {
             return {
                 ...oldState,

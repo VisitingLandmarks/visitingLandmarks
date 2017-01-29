@@ -4,7 +4,7 @@ module.exports = function (grunt) {
         build: {
             script: 'server.js',
             options: {
-                ext: 'js,jsx,json,handlebars',
+                ext: 'js,json,handlebars',
                 delay: 500,
                 ignore: ['node_modules/**']
             }

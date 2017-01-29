@@ -28,3 +28,14 @@ export const setupIO = (server) => {
 
     return ioApp;
 };
+
+export const disconnectAllSocketsOfUser = (userId) => {
+    const sockets = getConnectionByUserId(userId);
+    const numberOfSockets = sockets.length;
+
+    sockets.forEach((socket)=> {
+        socket.disconnect();
+    });
+    
+    return numberOfSockets;
+};

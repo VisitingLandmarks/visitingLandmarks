@@ -1,21 +1,19 @@
 import {connect} from 'react-redux';
 
-import VisitingLandmarks from '../presentational/visitingLandmarks.jsx';
+import VisitingLandmarks from '../presentational/visitingLandmarks';
 
-import {changePasswordThunk} from '../action/thunk/changePassword';
-import {resetPasswordThunk} from '../action/thunk/resetPassword';
-import {loginThunk} from '../action/thunk/login';
-import {logoutThunk} from '../action/thunk/logout';
-import {registerThunk} from '../action/thunk/register';
+import {changePasswordThunk} from '../../redux/action/thunk/changePassword';
+import {resetPasswordThunk} from '../../redux/action/thunk/resetPassword';
+import {loginThunk} from '../../redux/action/thunk/login';
+import {logoutThunk} from '../../redux/action/thunk/logout';
+import {registerThunk} from '../../redux/action/thunk/register';
 
-import setFollowUserAction from '../action/setFollowUser';
-import dialogCloseAction from '../action/dialogClose';
-import dialogOpenAction from '../action/dialogOpen';
+import {dialogClose, dialogOpen, followUserSet} from '../../redux/action/ui';
 
-import {dialogName as resetPasswordDialogName} from '../presentational/dialog/resetPassword.jsx';
-import {dialogName as loginDialogName} from '../presentational/dialog/login.jsx';
-import {dialogName as registerDialogName} from '../presentational/dialog/register.jsx';
-import {dialogName as profileDialogName} from '../presentational/dialog/profile.jsx';
+import {dialogName as resetPasswordDialogName} from '../presentational/dialog/resetPassword';
+import {dialogName as loginDialogName} from '../presentational/dialog/login';
+import {dialogName as registerDialogName} from '../presentational/dialog/register';
+import {dialogName as profileDialogName} from '../presentational/dialog/profile';
 
 const mapStateToProps = (state) => {
     return {
@@ -28,7 +26,7 @@ const mapStateToProps = (state) => {
         //an object is easier to access and check
         visitedLocations: state.user && state.user.visited || {},
         openDialog: {
-            resetPassword: state.openDialog === resetPasswordDialogName,
+            passwordReset: state.openDialog === resetPasswordDialogName,
             login: state.openDialog === loginDialogName,
             profile: state.openDialog === profileDialogName,
             register: state.openDialog === registerDialogName
@@ -44,13 +42,13 @@ const mapDispatchToProps = (dispatch) => {
         requestLogin: (username, password) => dispatch(loginThunk({username, password})),
         requestLogout: () => dispatch(logoutThunk()),
 
-        onToggleFollowUser: (newValue) =>dispatch(setFollowUserAction(newValue)),
+        onToggleFollowUser: (newValue) =>dispatch(followUserSet(newValue)),
 
-        onCloseDialog: () => dispatch(dialogCloseAction()),
-        onOpenLoginDialog: () => dispatch(dialogOpenAction(loginDialogName)),
-        onOpenProfileDialog: () => dispatch(dialogOpenAction(profileDialogName)),
-        onOpenRegisterDialog: () => dispatch(dialogOpenAction(registerDialogName)),
-        onOpenResetPasswordDialog: () => dispatch(dialogOpenAction(resetPasswordDialogName))
+        onCloseDialog: () => dispatch(dialogClose()),
+        onOpenLoginDialog: () => dispatch(dialogOpen(loginDialogName)),
+        onOpenProfileDialog: () => dispatch(dialogOpen(profileDialogName)),
+        onOpenRegisterDialog: () => dispatch(dialogOpen(registerDialogName)),
+        onOpenResetPasswordDialog: () => dispatch(dialogOpen(resetPasswordDialogName))
     };
 };
 

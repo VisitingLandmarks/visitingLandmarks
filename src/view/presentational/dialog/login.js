@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react';
-import DialogUserPassword from './userPassword.jsx';
+import DialogUserPassword from './userPassword';
 
-export const dialogName = 'Reset Password';
+export const dialogName = 'Login';
 
 export default class DialogLogin extends React.Component {
 
@@ -13,7 +13,6 @@ export default class DialogLogin extends React.Component {
         return (
             <DialogUserPassword
                 dialogName={dialogName}
-                showPasswordLine={false}
                 {...this.props}
             />
         );
