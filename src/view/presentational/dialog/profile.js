@@ -22,7 +22,7 @@ const formatVisitedLocations = (locations, visitedLocations) => {
         .map((key)=> {
             return {
                 ...locations[key],
-                dateTimeOfVisit: new Date(visitedLocations[key])
+                dateTimeOfVisit: new Date(visitedLocations[key]),
             };
 
         })
@@ -48,7 +48,7 @@ const formatCategories = (categories, visitedLocations) => {
             return {
                 name: categories[key].name,
                 visited: countVisitedLocationsInCategory(categories[key].items, visitedLocations),
-                total: categories[key].items.length
+                total: categories[key].items.length,
             };
         })
         .sort((a, b)=> {
@@ -78,7 +78,7 @@ export default class DialogProfile extends React.Component {
                 label="Close"
                 primary={true}
                 onTouchTap={this.props.onCloseDialog}
-            />
+            />,
         ];
 
         const formatedVisitedLocations = formatVisitedLocations(this.props.locations, this.props.visitedLocations);
@@ -105,3 +105,12 @@ export default class DialogProfile extends React.Component {
         );
     }
 }
+
+DialogProfile.propTypes = {
+    onCloseDialog: PropTypes.func.isRequired,
+    userEmailConfirmed: PropTypes.bool.isRequired,
+    open: PropTypes.bool.isRequired,
+    locations: PropTypes.object.isRequired,
+    categories: PropTypes.object.isRequired,
+    visitedLocations: PropTypes.object.isRequired,
+};

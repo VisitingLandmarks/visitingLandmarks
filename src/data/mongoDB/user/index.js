@@ -17,48 +17,48 @@ export default module.exports = function (mongoDB) {
                 unique: true,
                 lowercase: true,
                 required: 'Email address is required',
-                match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,8})+$/, 'Please fill a valid email address']
+                match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,8})+$/, 'Please fill a valid email address'],
             },
             isAdmin: {
                 type: Boolean,
                 required: true,
-                default: false
+                default: false,
             },
             isConfirmed: {
                 type: Boolean,
                 required: true,
-                default: false
+                default: false,
             },
             confirmationToken: {
                 type: String,
                 unique: true,
-                select: false
+                select: false,
             },
             resetPasswordToken: {
                 type: String,
-                select: false
+                select: false,
             },
             // resetPasswordExpires: Date,
             passwordHash: {
                 type: String,
                 required: true,
-                select: false
+                select: false,
             },
             passwordSalt: {
                 type: String,
                 required: true,
-                select: false
+                select: false,
             },
             //and now the game based information
             visited: {
                 type: mongoDB.Schema.Types.Object,
                 required: true,
-                default: {}
-            }
+                default: {},
+            },
         },
         {
             timestamps: true,
-            minimize: false
+            minimize: false,
         });
 
     //making sure that the combination of user und visited objects is unique - he either visited or not

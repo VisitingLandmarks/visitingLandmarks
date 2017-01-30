@@ -1,0 +1,22 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500');
+
+body {
+  font-family: 'Roboto', sans-serif;
+  padding: 0;
+  margin: 0;
+}
+
+html, body, #root, .mainContainer, #mainMap {
+  height: 100%;
+}
+
+.MainMenu {
+  position: fixed;
+  top: 3%;
+  right: 3%;
+  z-index: 50000;
+}
+
+form table td:first-child {
+  padding-top: 16px;
+}

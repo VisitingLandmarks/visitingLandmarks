@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {PropTypes} from 'react';
 
 // Needed for onTouchTap
 // http://stackoverflow.com/a/34015469/988941
@@ -72,7 +72,27 @@ export default class VisitingLandmarks extends React.Component {
                     onSubmit={this.props.requestResetPassword}
                 />
             </div>
-        )
+        );
 
     }
 }
+
+VisitingLandmarks.propTypes = {
+    categories : PropTypes.object.isRequired,
+    followUser : PropTypes.bool.isRequired,
+    locations : PropTypes.object.isRequired,
+    loggedIn : PropTypes.bool.isRequired,
+    onCloseDialog : PropTypes.func.isRequired,
+    onOpenLoginDialog : PropTypes.func.isRequired,
+    onOpenProfileDialog : PropTypes.func.isRequired,
+    onOpenRegisterDialog : PropTypes.func.isRequired,
+    onOpenResetPasswordDialog : PropTypes.func.isRequired,
+    onToggleFollowUser : PropTypes.func.isRequired,
+    openDialog : PropTypes.object.isRequired,
+    requestLogin : PropTypes.func.isRequired,
+    requestLogout : PropTypes.func.isRequired,
+    requestRegister : PropTypes.func.isRequired,
+    requestResetPassword : PropTypes.func.isRequired,
+    userEmailConfirmed : PropTypes.bool.isRequired,
+    visitedLocations : PropTypes.object.isRequired,
+};

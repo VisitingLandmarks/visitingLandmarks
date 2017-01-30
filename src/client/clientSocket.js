@@ -33,7 +33,7 @@ export default (store) => {
         false: () => {
             currentState = false;
             window.socket.disconnect();
-        }
+        },
     };
 
     store.subscribe(changeState);

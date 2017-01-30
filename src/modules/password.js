@@ -37,7 +37,7 @@ export const generate = (password, passwordSalt = generateRandomString()) => {
             }
             resolve({
                 passwordHash: key.toString('hex'),
-                passwordSalt: passwordSalt.toString('hex')
+                passwordSalt: passwordSalt.toString('hex'),
             });
         });
     });

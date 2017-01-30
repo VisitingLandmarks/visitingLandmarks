@@ -23,7 +23,7 @@ module.exports = (app, io, serializeUser, deserializeUser, authenticate)=> {
         saveUninitialized : false,
         store,
         secret,
-        cookie: { maxAge : 604800000 }
+        cookie: { maxAge : 604800000 },
     }));
 
     app.use(passport.initialize());
@@ -54,7 +54,7 @@ module.exports = (app, io, serializeUser, deserializeUser, authenticate)=> {
         secret,
         store,
         success:      onAuthorizeSuccess,  // *optional* callback on success - read more below
-        fail:         onAuthorizeFail     // *optional* callback on fail/error - read more below
+        fail:         onAuthorizeFail,     // *optional* callback on fail/error - read more below
     }));
 
 

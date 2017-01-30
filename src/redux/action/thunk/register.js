@@ -13,7 +13,7 @@ export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
 export const registerSuccess = (user) => {
     return {
         type: REGISTER_SUCCESS,
-        user
+        user,
     };
 };
 

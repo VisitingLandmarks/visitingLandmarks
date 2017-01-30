@@ -17,15 +17,15 @@ export default module.exports = function (mongoDB) {
                 type: {
                     type: String,
                     enum: 'Point',
-                    default: 'Point'
+                    default: 'Point',
                 },
                 coordinates: {
                     type: [Number],
                     //https://docs.mongodb.com/v3.0/applications/geospatial-indexes
                     //Store your location data as GeoJSON objects with this coordinate-axis order: longitude, latitude
                     //Leaflet, the frontend uses latitude, longitude... what a mess.
-                    default: [0, 0]
-                }
+                    default: [0, 0],
+                },
             },
 
             address: {
@@ -33,7 +33,7 @@ export default module.exports = function (mongoDB) {
                 streetName: String,
                 house_no: String,
                 post_code: Number,
-                postal_district: String
+                postal_district: String,
             },
 
             name: String,
@@ -66,16 +66,16 @@ export default module.exports = function (mongoDB) {
                 materialsSourceId: Number,
                 materialsSourceTerm: String,
                 areaSourceId: Number,
-                areaSourceTerm: String
+                areaSourceTerm: String,
             },
 
             usageId: Number,
             usageTerm: String,
 
-            source: String
+            source: String,
         },
         {
-            timestamps: true
+            timestamps: true,
         });
 
     //safe data we want to use on the map
@@ -86,7 +86,7 @@ export default module.exports = function (mongoDB) {
         originalUrl: 1,
         constructionYear: 1,
         location: 1,
-        usageTerm: 1
+        usageTerm: 1,
     };
 
     //fancy index for geo distance calculation

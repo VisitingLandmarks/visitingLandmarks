@@ -12,14 +12,14 @@ export default module.exports = (typeof L === 'undefined' ? {} : {
         shadowAnchor: [11, 41],
         iconSize: [64, 64],
         iconAnchor: [32, 64],
-        popupAnchor: [32, -10]
+        popupAnchor: [32, -10],
     }),
     arrow: L.icon({
         iconUrl: '/static/img/marker/arrow.png',
         iconRetinaUrl: '/static/img/marker/arrow-2x.png',
         iconSize: [32, 32],
         iconAnchor: [16, 100],
-        popupAnchor: [0, 0]
+        popupAnchor: [0, 0],
     }),
     visited: L.icon({
         iconUrl: '/static/img/marker/grey.png',
@@ -28,6 +28,6 @@ export default module.exports = (typeof L === 'undefined' ? {} : {
         iconSize: [25, 41],
         iconAnchor: [12, 41],
         popupAnchor: [1, -34],
-        shadowSize: [41, 41]
-    })
+        shadowSize: [41, 41],
+    }),
 });

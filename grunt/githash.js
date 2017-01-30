@@ -2,8 +2,8 @@ module.exports = function (grunt) {
 
     grunt.config('githash', {
         main: {
-            options: {}
-        }
+            options: {},
+        },
     });
 
     grunt.loadNpmTasks('grunt-githash');

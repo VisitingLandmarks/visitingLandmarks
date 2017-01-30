@@ -50,7 +50,7 @@ export default (user, categories, locations, userAgent, openDialog) => {
     // Grab the initial state from our Redux store
     const initialState = store.getState();
     return renderFullPage(html, initialState);
-}
+};
 
 //@todo: move to template
 function renderFullPage(html, initialState) {
@@ -75,5 +75,5 @@ function renderFullPage(html, initialState) {
          <script src="/static/all.js"></script>
       </body>
     </html>
-    `
+    `;
 }

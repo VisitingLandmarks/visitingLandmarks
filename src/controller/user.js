@@ -43,7 +43,7 @@ export const register = (req, res, next) => {
     if (req.user) {
         req.log.warn({
             registeredUser: req.user.email,
-            triedToRegister: req.body.username
+            triedToRegister: req.body.username,
         }, 'user who is logged in tried to register');
         res.status(403).send();
         return;
@@ -72,7 +72,7 @@ export const passwordResetRequest = (req, res) => {
     if (req.user) {
         req.log.warn({
             registeredUser: req.user.email,
-            triedToReset: req.body.username
+            triedToReset: req.body.username,
         }, 'user who is logged in tried to reset password');
         res.status(403).send();
         return;

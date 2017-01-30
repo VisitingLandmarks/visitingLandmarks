@@ -29,8 +29,8 @@ const mapStateToProps = (state) => {
             passwordReset: state.openDialog === resetPasswordDialogName,
             login: state.openDialog === loginDialogName,
             profile: state.openDialog === profileDialogName,
-            register: state.openDialog === registerDialogName
-        }
+            register: state.openDialog === registerDialogName,
+        },
     };
 };
 
@@ -48,7 +48,7 @@ const mapDispatchToProps = (dispatch) => {
         onOpenLoginDialog: () => dispatch(dialogOpen(loginDialogName)),
         onOpenProfileDialog: () => dispatch(dialogOpen(profileDialogName)),
         onOpenRegisterDialog: () => dispatch(dialogOpen(registerDialogName)),
-        onOpenResetPasswordDialog: () => dispatch(dialogOpen(resetPasswordDialogName))
+        onOpenResetPasswordDialog: () => dispatch(dialogOpen(resetPasswordDialogName)),
     };
 };
 

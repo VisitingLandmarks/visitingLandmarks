@@ -4,11 +4,12 @@ module.exports = function (grunt) {
         build: {
             script: 'server.js',
             options: {
+                nodeArgs: ['--inspect'],
                 ext: 'js,json,handlebars',
                 delay: 500,
-                ignore: ['node_modules/**']
-            }
-        }
+                ignore: ['node_modules/**'],
+            },
+        },
     });
 
     grunt.loadNpmTasks('grunt-nodemon');

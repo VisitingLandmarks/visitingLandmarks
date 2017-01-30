@@ -16,7 +16,7 @@ describe('reducer', ()=> {
             it(LOGIN, () => {
 
                 const userData = {
-                    email: 'test@test.com'
+                    email: 'test@test.com',
                 };
 
                 const oldState = deepFreeze(initialState);
@@ -24,8 +24,8 @@ describe('reducer', ()=> {
                     ...initialState,
                     actions: {
                         ...initialState.actions,
-                        loggingIn: 'inProgress'
-                    }
+                        loggingIn: 'inProgress',
+                    },
                 };
 
                 assert.deepEqual(reducer(oldState, login(userData)), newState);
@@ -35,7 +35,7 @@ describe('reducer', ()=> {
             it(LOGIN_SUCCESS, () => {
 
                 const userData = deepFreeze({
-                    email: 'test@test.com'
+                    email: 'test@test.com',
                 });
 
                 const oldState = deepFreeze(initialState);
@@ -43,9 +43,9 @@ describe('reducer', ()=> {
                     ...initialState,
                     actions: {
                         ...initialState.actions,
-                        loggingIn: 'success'
+                        loggingIn: 'success',
                     },
-                    user: userData
+                    user: userData,
                 };
 
                 assert.deepEqual(reducer(oldState, loginSuccess(userData)), newState);
@@ -64,16 +64,32 @@ describe('reducer', ()=> {
         });
     });
 
+    it(DIALOG_CLOSE, () => {
+
+        const oldState = deepFreeze({
+            ...initialState,
+            openDialog: 'TEST',
+        });
+
+        const newState = deepFreeze({
+            ...initialState,
+            openDialog: false,
+        });
+
+        assert.deepEqual(reducer(oldState, dialogClose()), newState);
+
+    });
+
     it(DIALOG_OPEN, () => {
 
         const oldState = deepFreeze({
-            ...initialState
+            ...initialState,
         });
 
         const dialogName = 'TEST';
         const newState = deepFreeze({
             ...initialState,
-            openDialog: dialogName
+            openDialog: dialogName,
         });
 
         assert.deepEqual(reducer(oldState, dialogOpen(dialogName)), newState);
@@ -84,29 +100,46 @@ describe('reducer', ()=> {
 
         const oldState = deepFreeze({
             ...initialState,
-            followUser: false
+            followUser: false,
         });
 
         const newState = deepFreeze({
             ...initialState,
-            followUser: true
+            followUser: true,
         });
 
         assert.deepEqual(reducer(oldState, followUserSet(true)), newState);
 
     });
 
+    it(CATEGORIES_SET, () => {
+
+        const oldState = deepFreeze({
+            ...initialState,
+        });
+
+        const categories = {a: 'a'};
+
+        const newState = deepFreeze({
+            ...initialState,
+            categories,
+        });
+
+        assert.deepEqual(reducer(oldState, categoriesSet(categories)), newState);
+
+    });
+
     it(LOCATIONS_SET, () => {
 
         const oldState = deepFreeze({
-            ...initialState
+            ...initialState,
         });
 
         const locations = {a: 'a'};
 
         const newState = deepFreeze({
             ...initialState,
-            locations
+            locations,
         });
 
         assert.deepEqual(reducer(oldState, locationsSet(locations)), newState);
@@ -122,9 +155,9 @@ describe('reducer', ()=> {
             ...initialState,
             user: {
                 visited: {
-                    a: dateA
-                }
-            }
+                    a: dateA,
+                },
+            },
         });
 
         const newState = deepFreeze({
@@ -132,9 +165,9 @@ describe('reducer', ()=> {
             user: {
                 visited: {
                     a: dateA,
-                    b: dateB
-                }
-            }
+                    b: dateB,
+                },
+            },
         });
 
         assert.deepEqual(reducer(oldState, locationsVisit({b: dateB})), newState);

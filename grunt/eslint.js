@@ -2,9 +2,9 @@ module.exports = function (grunt) {
 
     grunt.config('eslint', {
         options: {
-            fix: true
+            fix: true,
         },
-        all: ['Gruntfile.js', 'src', 'test', 'grunt']
+        all: ['Gruntfile.js', 'src', 'test', 'grunt'],
     });
 
     grunt.loadNpmTasks('grunt-eslint');

@@ -1,11 +1,17 @@
 const webpack = require('webpack');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const autoprefixer = require('autoprefixer');
+
 module.exports = function (grunt) {
 
     const shared = {
-        entry: './src/view/main.js',
+        entry: [
+            './src/view/main.js',
+            './src/style/main.scss',
+            ],
         output: {
             path: './static/',
-            filename: 'all.js'
+            filename: 'all.js',
         },
         module: {
             loaders: [
@@ -15,23 +21,43 @@ module.exports = function (grunt) {
                     exclude: /node_modules/,
                     query: {
                         presets: ['react', 'es2017'],
-                        plugins: ['transform-runtime', 'transform-object-rest-spread']
-                    }
-                }
-            ]
+                        plugins: ['transform-runtime', 'transform-object-rest-spread'],
+                    },
+                },
+                {
+                    test: /\.scss$/,
+                    loaders: ['style', ExtractTextPlugin.extract('css!postcss!sass')],
+                },
+                {
+                    test: /\.(png|gif)$/,
+                    loader: 'url-loader',
+                },
+                {
+                    test: /\.(eot|svg|ttf|woff|woff2)$/,
+                    loader: 'file?name=fonts/[name].[ext]',
+                },
+            ],
+        },
+        postcss: function () {
+            return [autoprefixer({
+                browsers: ['ie 9', 'last 3 versions'],
+            })];
         },
         plugins: [
             new webpack.DefinePlugin({
                 'process.env': {
-                    'NODE_ENV': JSON.stringify(process.env.NODE_ENV)
-                }
-            })
+                    'NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+                },
+            }),
+            new ExtractTextPlugin('style.css', {
+                allChunks: true,
+            }),
         ],
         stats: {
             colors: false,
             modules: false,
-            reasons: true
-        }
+            reasons: true,
+        },
     };
 
 
@@ -42,14 +68,14 @@ module.exports = function (grunt) {
                 new webpack.optimize.DedupePlugin(),
                 new webpack.optimize.UglifyJsPlugin({
                     compress: {
-                        warnings: false
-                    }
-                })
+                        warnings: false,
+                    },
+                }),
             ],
             progress: false,
             failOnError: true,
             watch: false,
-            keepalive: false
+            keepalive: false,
         },
 
         dev: {
@@ -58,8 +84,8 @@ module.exports = function (grunt) {
             progress: true,
             failOnError: false,
             watch: true,
-            keepalive: true
-        }
+            keepalive: true,
+        },
     });
 
     grunt.loadNpmTasks('grunt-webpack');

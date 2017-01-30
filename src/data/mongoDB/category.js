@@ -11,12 +11,12 @@ export default module.exports = function (mongoDB) {
             description: String,
             name: {
                 type: String,
-                unique: true
+                unique: true,
             },
-            items: [mongoDB.Schema.ObjectId]
+            items: [mongoDB.Schema.ObjectId],
         },
         {
-            timestamps: true
+            timestamps: true,
         });
 
     //safe data we want to use on the map
@@ -24,7 +24,7 @@ export default module.exports = function (mongoDB) {
         _id: 1,
         description: 1,
         name: 1,
-        items: 1
+        items: 1,
     };
 
 

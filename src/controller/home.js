@@ -9,7 +9,7 @@ export default (req, res) => {
         dataRepository.getAllCategories(), //all categories
         dataRepository.getAllLocations(), //all locations
         req.headers['user-agent'],//the user agent,
-        res.locals.openDialog
+        res.locals.openDialog,
     ]).then(values => {
         // Send the rendered page back to the client
         res.send(serverSideView(...values));

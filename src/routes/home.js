@@ -1,7 +1,7 @@
 import controller from '../controller/home';
 
 export const routes = Object.freeze({
-    home: '/'
+    home: '/',
 });
 
 export default (app) => {

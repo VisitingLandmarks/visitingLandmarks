@@ -6,11 +6,11 @@ module.exports = function (grunt) {
             checkLeaks: true,
             ignoreLeaks: false,
             clearRequireCache: true,
-            require: ['test/setup']
+            require: ['test/setup'],
         },
         build: {
-            src: './test/unit/**/*.js'
-        }
+            src: './test/unit/**/*.js',
+        },
     });
 
     grunt.loadNpmTasks('grunt-mocha-test');

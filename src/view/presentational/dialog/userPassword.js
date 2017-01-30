@@ -5,12 +5,12 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 
 const buttonStyle = {
-    margin: 12
+    margin: 12,
 };
 
 const dialogStyle = {
     width: '100%',
-    maxWidth: '400px'
+    maxWidth: '400px',
 };
 
 
@@ -24,7 +24,7 @@ export default class DialogUserPassword extends React.Component {
         super(props);
         this.state = {
             username: '',
-            password: ''
+            password: '',
         };
 
         this.handleUsernameChange = this.handleUsernameChange.bind(this);
@@ -118,7 +118,17 @@ export default class DialogUserPassword extends React.Component {
     }
 }
 
+
+DialogUserPassword.propTypes = {
+    dialogName: PropTypes.string.isRequired,
+    onCloseDialog: PropTypes.func.isRequired,
+    onSubmit: PropTypes.func.isRequired,
+    open: PropTypes.bool.isRequired,
+    showUsernameLine: PropTypes.bool.isRequired,
+    showPasswordLine: PropTypes.bool.isRequired,
+};
+
 DialogUserPassword.defaultProps = {
     showUsernameLine: true,
-    showPasswordLine: true
+    showPasswordLine: true,
 };

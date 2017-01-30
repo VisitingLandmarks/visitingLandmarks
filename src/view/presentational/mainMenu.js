@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {PropTypes}  from 'react';
 
 import Paper from 'material-ui/Paper';
 import Menu from 'material-ui/Menu';
@@ -9,22 +9,22 @@ import Toggle from 'material-ui/Toggle';
 
 const menuStyle = {
     display: 'inline-block',
-    padding: 0
+    padding: 0,
 };
 
 const menuListStyle = {
     paddingBottom: 0,
-    paddingTop: 0
+    paddingTop: 0,
 };
 
 const toggleLabelStyle = {
     marginLeft: 16,
-    lineHeight: '48px'
+    lineHeight: '48px',
 };
 
 const toggleIconStyle = {
     marginRight: 16,
-    marginTop: 12
+    marginTop: 12,
 };
 
 
@@ -60,13 +60,13 @@ export default class MainMenu extends React.Component {
             menuItems = [
                 <MenuItem key="userEmail" primaryText="Profile" onTouchTap={this.props.onOpenProfileDialog}/>,
                 <Divider key="userEmailDivider"/>,
-                <MenuItem key="logout" primaryText="Logout" onTouchTap={this.props.requestLogout}/>
+                <MenuItem key="logout" primaryText="Logout" onTouchTap={this.props.requestLogout}/>,
             ];
         } else {
             menuItems = [
                 <MenuItem key="register" primaryText="Register" onTouchTap={this.props.onOpenRegisterDialog}/>,
                 <MenuItem key="login" primaryText="Login" onTouchTap={this.props.onOpenLoginDialog}/>,
-                <MenuItem key="resetPassword" primaryText="Forgot Password?" onTouchTap={this.props.onOpenResetPasswordDialog}/>
+                <MenuItem key="resetPassword" primaryText="Forgot Password?" onTouchTap={this.props.onOpenResetPasswordDialog}/>,
             ];
         }
 
@@ -81,7 +81,18 @@ export default class MainMenu extends React.Component {
                 </Paper>
 
             </div>
-        )
+        );
 
     }
 }
+
+MainMenu.propTypes = {
+    followUser: PropTypes.bool.isRequired,
+    onOpenLoginDialog: PropTypes.func.isRequired,
+    onOpenProfileDialog: PropTypes.func.isRequired,
+    onOpenRegisterDialog: PropTypes.func.isRequired,
+    onOpenResetPasswordDialog: PropTypes.func.isRequired,
+    onToggleFollowUser: PropTypes.func.isRequired,
+    loggedIn: PropTypes.bool.isRequired,
+    requestLogout: PropTypes.func.isRequired,
+};

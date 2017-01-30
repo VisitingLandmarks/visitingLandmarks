@@ -16,11 +16,11 @@ export const User = getMongoModel('user');
 //caching is in the responsibility of the dataRepository
 const cache = {
     Category: {
-        getAllAsObject: memoize(Category.getAllAsObject, {maxAge: 60 * 60 * 1000})
+        getAllAsObject: memoize(Category.getAllAsObject, {maxAge: 60 * 60 * 1000}),
     },
     Location: {
-        getAllAsObject: memoize(Location.getAllAsObject, {maxAge: 60 * 60 * 1000})
-    }
+        getAllAsObject: memoize(Location.getAllAsObject, {maxAge: 60 * 60 * 1000}),
+    },
 };
 
 

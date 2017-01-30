@@ -8,11 +8,11 @@ module.exports = function (grunt) {
                     tag: '<%= githash.main.tag %>',
                     branch: '<%= githash.main.branch %>',
                     short: '<%= githash.main.short %>',
-                    hash: '<%= githash.main.hash %>'
+                    hash: '<%= githash.main.hash %>',
 
-                }
-            }
-        }
+                },
+            },
+        },
     });
 
     grunt.loadNpmTasks('grunt-json-generator');

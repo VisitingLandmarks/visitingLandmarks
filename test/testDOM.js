@@ -6,7 +6,7 @@ if (typeof document !== 'undefined') {
         global.document = require('jsdom').jsdom(markup || '<html><body></body></html>');
         global.window = document.defaultView;
         global.navigator = {
-            userAgent: 'node.js'
+            userAgent: 'node.js',
         };
         return global.window;
     };

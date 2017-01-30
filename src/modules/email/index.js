@@ -59,7 +59,7 @@ const addLogging = (promise, logger) => {
  */
 export const sendEmailConfirmed = (user) => {
     return addLogging(templates.userEmailConfirmed({
-        to: user.email
+        to: user.email,
     }, extendTemplateData({user})), logger.child({toEmail: user.email, template: 'userEmailConfirmed'}));
 };
 
@@ -70,7 +70,7 @@ export const sendEmailConfirmed = (user) => {
  */
 export const sendEmailUserRegistered = (user) => {
     return addLogging(templates.userRegistered({
-        to: user.email
+        to: user.email,
     }, extendTemplateData({user})), logger.child({template: 'userRegistered'}));
 };
 
@@ -81,7 +81,7 @@ export const sendEmailUserRegistered = (user) => {
  */
 export const sendEmailUserResetPassword = (user) => {
     return addLogging(templates.userResetPassword({
-        to: user.email
+        to: user.email,
     }, extendTemplateData({user})), logger.child({template: 'userResetPassword'}));
 };
 

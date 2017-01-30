@@ -1,26 +1,18 @@
-@import 'https://fonts.googleapis.com/css?family=Roboto:300,400,500';
-
-body {
-    font-family: 'Roboto', sans-serif;
-    padding: 0;
-    margin: 0;
-}
+@import url(https://fonts.googleapis.com/css?family=Roboto:300,400,500);body {
+  font-family: 'Roboto', sans-serif;
+  padding: 0;
+  margin: 0; }
 
 html, body, #root, .mainContainer, #mainMap {
-    height: 100%;
-}
+  height: 100%; }
 
 .MainMenu {
-    position: fixed;
-    top: 3%;
-    right: 3%;
-    z-index: 50000;
-}
+  position: fixed;
+  top: 3%;
+  right: 3%;
+  z-index: 50000; }
 
 form table td:first-child {
-    padding-top: 16px;
-}
+  padding-top: 16px; }
 
-img.leaflet-marker-icon.leaflet-zoom-animated.leaflet-interactive {
-    transition-duration: 0.5s;
-}
+/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzdHlsZS5jc3MiLCJzb3VyY2VSb290IjoiIn0=*/

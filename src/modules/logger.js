@@ -6,5 +6,5 @@ import config from '../../config';
  */
 export default module.exports = bunyan.createLogger({
     name: config.name,
-    level : config.logLevel
+    level : config.logLevel,
 });

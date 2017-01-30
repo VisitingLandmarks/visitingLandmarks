@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {PropTypes} from 'react';
 import gameSettings from '../../../config/gameSettings';
 import markerStyle from '../../client/map/markerStyle';
 import orientationToCompassHeading from '../../modules/orientationToCompassHeading';
@@ -41,14 +41,13 @@ export default class MainMap extends React.Component {
      */
     componentDidMount() {
 
-        const component = this;
         require('leaflet-rotatedmarker');
 
         this.leafLetMap = L.map('mainMap', {
             dragging: !this.props.followUser, //this could also be done with the setUserInteractivity method
             doubleClickZoom: false,
             scrollWheelZoom: 'center',
-            touchZoom: 'center'
+            touchZoom: 'center',
         });
 
         L.tileLayer('https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png').addTo(this.leafLetMap);
@@ -106,7 +105,7 @@ export default class MainMap extends React.Component {
 
         //only on first run
         if (this.userMarker.arrow.lastValue === undefined) {
-            this.userMarker.arrow.setOpacity(1)
+            this.userMarker.arrow.setOpacity(1);
         }
 
         this.userMarker.arrow.lastValue = best;
@@ -193,7 +192,7 @@ function updateMarkers(locations, visitedLocations, marker, popups) {
             const title = `${location.usageTerm}<br/>
                 ${(location.originalUrl ? `<a href="${location.originalUrl}">` : '')}
                 ${location.name}${(location.originalUrl ? ' (' + location.constructionYear + ')' : '')}<br/>
-                ${(location.originalUrl ? `</a>` : '')}
+                ${(location.originalUrl ? '</a>' : '')}
                 ${location.extent}<br/>
                 visited already: ${(visitedLocations[locationId] ? visitedLocations[locationId] : 'No')}`;
 
@@ -274,7 +273,7 @@ function onLocationFound(geoData) {
         this.userMarker = {
             marker: L.marker(geoData.latlng, {icon: markerStyle.user}).addTo(this.leafLetMap),
             arrow: L.marker(geoData.latlng, {icon: markerStyle.arrow}).addTo(this.leafLetMap).setOpacity(0),
-            circle: L.circle(geoData.latlng, {radius}).addTo(this.leafLetMap)
+            circle: L.circle(geoData.latlng, {radius}).addTo(this.leafLetMap),
         };
     }
 
@@ -299,5 +298,10 @@ function onLocationFound(geoData) {
         .forEach(component.props.onVisitLocation);
 }
 
-
+MainMap.propTypes = {
+    followUser: PropTypes.bool.isRequired,
+    locations: PropTypes.object.isRequired,
+    onToggleFollowUser: PropTypes.func.isRequired,
+    visitedLocations: PropTypes.object.isRequired,
+};
 

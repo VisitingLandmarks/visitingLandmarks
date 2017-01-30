@@ -13,7 +13,7 @@ export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const loginSuccess = (user) => {
     return {
         type: LOGIN_SUCCESS,
-        user
+        user,
     };
 };
 

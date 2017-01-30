@@ -78,7 +78,7 @@ export default module.exports = (userSchema) => {
                     resetPasswordToken,
                     email,
                     isAdmin,
-                    visited: {}
+                    visited: {},
                 })
                     .save()
                     .then((user)=> {

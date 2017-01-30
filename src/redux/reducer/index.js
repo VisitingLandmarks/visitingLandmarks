@@ -36,8 +36,8 @@ export default (oldState = initialState, action) => {
                 ...oldState,
                 actions: {
                     ...oldState.actions,
-                    registering: 'inProgress'
-                }
+                    registering: 'inProgress',
+                },
             };
         }
         case REGISTER_FAILURE:
@@ -46,8 +46,8 @@ export default (oldState = initialState, action) => {
                 ...oldState,
                 actions: {
                     ...oldState.actions,
-                    registering: 'failure'
-                }
+                    registering: 'failure',
+                },
             };
         }
         case REGISTER_SUCCESS:
@@ -57,8 +57,8 @@ export default (oldState = initialState, action) => {
                 user: action.user,
                 actions: {
                     ...oldState.actions,
-                    registering: 'success'
-                }
+                    registering: 'success',
+                },
             };
         }
 
@@ -69,8 +69,8 @@ export default (oldState = initialState, action) => {
                 ...oldState,
                 actions: {
                     ...oldState.actions,
-                    loggingIn: 'inProgress'
-                }
+                    loggingIn: 'inProgress',
+                },
             };
         }
         case LOGIN_FAILURE:
@@ -79,8 +79,8 @@ export default (oldState = initialState, action) => {
                 ...oldState,
                 actions: {
                     ...oldState.actions,
-                    loggingIn: 'failure'
-                }
+                    loggingIn: 'failure',
+                },
             };
         }
         case LOGIN_SUCCESS:
@@ -90,8 +90,8 @@ export default (oldState = initialState, action) => {
                 user: action.user,
                 actions: {
                     ...oldState.actions,
-                    loggingIn: 'success'
-                }
+                    loggingIn: 'success',
+                },
             };
         }
 
@@ -102,8 +102,8 @@ export default (oldState = initialState, action) => {
                 ...oldState,
                 actions: {
                     ...oldState.actions,
-                    loggingOut: 'inProgress'
-                }
+                    loggingOut: 'inProgress',
+                },
             };
         }
         case LOGOUT_FAILURE:
@@ -112,15 +112,15 @@ export default (oldState = initialState, action) => {
                 ...oldState,
                 actions: {
                     ...oldState.actions,
-                    loggingOut: 'failure'
-                }
+                    loggingOut: 'failure',
+                },
             };
         }
         case LOGOUT_SUCCESS:
         {
             return {
                 ...initialState,
-                locations : oldState.locations
+                locations : oldState.locations,
             };
         }
 
@@ -131,8 +131,8 @@ export default (oldState = initialState, action) => {
                 ...oldState,
                 actions: {
                     ...oldState.actions,
-                    changingPassword: 'inProgress'
-                }
+                    changingPassword: 'inProgress',
+                },
             };
         }
         case PASSWORD_CHANGE_FAILURE:
@@ -141,8 +141,8 @@ export default (oldState = initialState, action) => {
                 ...oldState,
                 actions: {
                     ...oldState.actions,
-                    changingPassword: 'failure'
-                }
+                    changingPassword: 'failure',
+                },
             };
         }
         case PASSWORD_CHANGE_SUCCESS:
@@ -151,8 +151,8 @@ export default (oldState = initialState, action) => {
                 ...oldState,
                 actions: {
                     ...oldState.actions,
-                    changingPassword: 'success'
-                }
+                    changingPassword: 'success',
+                },
             };
         }
 
@@ -162,21 +162,21 @@ export default (oldState = initialState, action) => {
         {
             return {
                 ...oldState,
-                openDialog: false
+                openDialog: false,
             };
         }
         case DIALOG_OPEN:
         {
             return {
                 ...oldState,
-                openDialog: action.dialog
+                openDialog: action.dialog,
             };
         }
         case FOLLOW_USER_SET:
         {
             return {
                 ...oldState,
-                followUser: action.value
+                followUser: action.value,
             };
         }
 
@@ -185,7 +185,7 @@ export default (oldState = initialState, action) => {
         {
             return {
                 ...oldState,
-                categories: action.categories
+                categories: action.categories,
             };
         }
 
@@ -194,7 +194,7 @@ export default (oldState = initialState, action) => {
         {
             return {
                 ...oldState,
-                locations: action.locations
+                locations: action.locations,
             };
         }
         case LOCATIONS_VISIT:
@@ -205,9 +205,9 @@ export default (oldState = initialState, action) => {
                     ...oldState.user,
                     visited: {
                         ...oldState.user.visited,
-                        ...action.visitedLocation
-                    }
-                }
+                        ...action.visitedLocation,
+                    },
+                },
             };
         }
 
