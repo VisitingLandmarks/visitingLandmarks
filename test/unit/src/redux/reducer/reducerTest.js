@@ -1,13 +1,46 @@
 import deepFreeze from 'deep-freeze';
 
-import reducer from '../../../../../src/redux/reducer';
+import reducer, {inProgress, failure, success} from '../../../../../src/redux/reducer';
 import initialState from '../../../../../src/redux/reducer/initialState';
 
-import {LOGIN, login, LOGIN_FAILURE, loginFailure, LOGIN_SUCCESS, loginSuccess} from '../../../../../src/redux/action/thunk/login';
+import {
+    LOGIN,
+    login,
+    LOGIN_FAILURE,
+    loginFailure,
+    LOGIN_SUCCESS,
+    loginSuccess,
+} from '../../../../../src/redux/action/thunk/login';
 
-import {DIALOG_CLOSE, dialogClose, DIALOG_OPEN, dialogOpen, FOLLOW_USER_SET, followUserSet} from '../../../../../src/redux/action/ui';
-import {CATEGORIES_SET, categoriesSet} from '../../../../../src/redux/action/categories';
-import {LOCATIONS_SET, locationsSet, LOCATIONS_VISIT, locationsVisit} from '../../../../../src/redux/action/locations';
+import {
+    LOGOUT,
+    logout,
+    LOGOUT_FAILURE,
+    logoutFailure,
+    LOGOUT_SUCCESS,
+    logoutSuccess,
+} from '../../../../../src/redux/action/thunk/logout';
+
+import {
+    DIALOG_CLOSE,
+    dialogClose,
+    DIALOG_OPEN,
+    dialogOpen,
+    FOLLOW_USER_SET,
+    followUserSet,
+} from '../../../../../src/redux/action/ui';
+
+import {
+    CATEGORIES_SET,
+    categoriesSet,
+} from '../../../../../src/redux/action/categories';
+
+import {
+    LOCATIONS_SET,
+    locationsSet,
+    LOCATIONS_VISIT,
+    locationsVisit,
+} from '../../../../../src/redux/action/locations';
 
 
 describe('reducer', ()=> {
@@ -24,7 +57,7 @@ describe('reducer', ()=> {
                     ...initialState,
                     actions: {
                         ...initialState.actions,
-                        loggingIn: 'inProgress',
+                        loggingIn: inProgress,
                     },
                 };
 
@@ -43,7 +76,7 @@ describe('reducer', ()=> {
                     ...initialState,
                     actions: {
                         ...initialState.actions,
-                        loggingIn: 'success',
+                        loggingIn: success,
                     },
                     user: userData,
                 };
@@ -55,9 +88,57 @@ describe('reducer', ()=> {
             it(LOGIN_FAILURE, () => {
 
                 const oldState = deepFreeze({});
-                const newState = {actions: {loggingIn: 'failure'}};
+                const newState = {actions: {loggingIn: failure}};
 
                 assert.deepEqual(reducer(oldState, loginFailure()), newState);
+
+            });
+
+        });
+        describe(LOGOUT, ()=> {
+            it(LOGOUT, () => {
+
+                const userData = {
+                    email: 'test@test.com',
+                };
+
+                const oldState = deepFreeze(initialState);
+                const newState = {
+                    ...initialState,
+                    actions: {
+                        ...initialState.actions,
+                        loggingOut: inProgress,
+                    },
+                };
+
+                assert.deepEqual(reducer(oldState, logout(userData)), newState);
+
+            });
+
+            it(LOGOUT_SUCCESS, () => {
+
+                const oldState = deepFreeze({...initialState, locations: {a: 'a'}});
+                const newState = {
+                    ...initialState,
+                    locations: oldState.locations,
+                };
+
+                assert.deepEqual(reducer(oldState, logoutSuccess()), newState);
+
+            });
+
+            it(LOGOUT_FAILURE, () => {
+
+                const oldState = deepFreeze(initialState);
+                const newState = {
+                    ...initialState,
+                    actions: {
+                        ...oldState.actions,
+                        loggingOut: failure,
+                    },
+                };
+
+                assert.deepEqual(reducer(oldState, logoutFailure()), newState);
 
             });
 

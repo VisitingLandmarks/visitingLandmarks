@@ -5,7 +5,7 @@ export default module.exports = require('deepmerge').all(
     [
         require('./base.js'),
         requireIfExists('./local.js'),
-        requireIfExists('./git.json')
+        requireIfExists('./git.json'),
     ]
 );
 

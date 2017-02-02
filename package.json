@@ -6,7 +6,7 @@
   "scripts": {
     "heroku-postbuild": "./node_modules/grunt-cli/bin/grunt postinstall",
     "start": "node server.js",
-    "startdev": "./node_modules/grunt-cli/bin/grunt monitor | ./node_modules/bunyan/bin/bunyan",
+    "startdev": "DEBUG=express-session ./node_modules/grunt-cli/bin/grunt monitor | ./node_modules/bunyan/bin/bunyan",
     "test": "./node_modules/grunt-cli/bin/grunt"
   },
   "repository": {

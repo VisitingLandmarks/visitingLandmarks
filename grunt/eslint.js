@@ -4,7 +4,13 @@ module.exports = function (grunt) {
         options: {
             fix: true,
         },
-        all: ['Gruntfile.js', 'src', 'test', 'grunt'],
+        all: [
+            'Gruntfile.js',
+            'config',
+            'grunt',
+            'src',
+            'test',
+        ],
     });
 
     grunt.loadNpmTasks('grunt-eslint');

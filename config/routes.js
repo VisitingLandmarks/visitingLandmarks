@@ -8,6 +8,6 @@ export default deepFreeze({
         passwordChange: '/passwordChange', //@todo implement
         passwordResetRequest: '/requestPasswordReset',
         passwordReset: '/resetPassword/:resetPasswordToken',
-        register: '/register'
-    }
+        register: '/register',
+    },
 });

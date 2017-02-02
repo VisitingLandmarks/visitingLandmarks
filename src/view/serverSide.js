@@ -12,7 +12,7 @@ import {Provider} from 'react-redux';
 import thunk from 'redux-thunk';
 import reducer from '../redux/reducer';
 
-import {login} from '../redux/action/thunk/login';
+import {loginSuccess} from '../redux/action/thunk/login';
 import {categoriesSet} from '../redux/action/categories';
 import {locationsSet} from '../redux/action/locations';
 import {dialogOpen} from '../redux/action/ui';
@@ -21,9 +21,9 @@ export default (user, categories, locations, userAgent, openDialog) => {
 
     // Create a new Redux store instance
     const store = createStore(reducer, applyMiddleware(thunk));
-
+console.log('user:',user);
     if (user) {
-        store.dispatch(login(user));
+        store.dispatch(loginSuccess(user));
     }
 
     if (categories) {

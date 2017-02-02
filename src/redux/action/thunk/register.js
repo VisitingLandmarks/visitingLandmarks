@@ -34,7 +34,7 @@ export function registerThunk(registerData) {
             })
 
             .then(() => {
-                dispatch(dialogClose);
+                dispatch(dialogClose());
             })
 
             .catch((response) => dispatch(registerFailure(response)));

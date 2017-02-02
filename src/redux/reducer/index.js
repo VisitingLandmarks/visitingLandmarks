@@ -24,6 +24,10 @@ import {LOCATIONS_SET, LOCATIONS_VISIT} from '../action/locations';
 // initial state
 import initialState from './initialState';
 
+export const inProgress = 'inProgress';
+export const failure = 'failure';
+export const success = 'success';
+
 export default (oldState = initialState, action) => {
 
     switch (action.type) {
@@ -36,7 +40,7 @@ export default (oldState = initialState, action) => {
                 ...oldState,
                 actions: {
                     ...oldState.actions,
-                    registering: 'inProgress',
+                    registering: inProgress,
                 },
             };
         }
@@ -46,7 +50,7 @@ export default (oldState = initialState, action) => {
                 ...oldState,
                 actions: {
                     ...oldState.actions,
-                    registering: 'failure',
+                    registering: failure,
                 },
             };
         }
@@ -57,7 +61,7 @@ export default (oldState = initialState, action) => {
                 user: action.user,
                 actions: {
                     ...oldState.actions,
-                    registering: 'success',
+                    registering: success,
                 },
             };
         }
@@ -69,7 +73,7 @@ export default (oldState = initialState, action) => {
                 ...oldState,
                 actions: {
                     ...oldState.actions,
-                    loggingIn: 'inProgress',
+                    loggingIn: inProgress,
                 },
             };
         }
@@ -79,7 +83,7 @@ export default (oldState = initialState, action) => {
                 ...oldState,
                 actions: {
                     ...oldState.actions,
-                    loggingIn: 'failure',
+                    loggingIn: failure,
                 },
             };
         }
@@ -90,7 +94,7 @@ export default (oldState = initialState, action) => {
                 user: action.user,
                 actions: {
                     ...oldState.actions,
-                    loggingIn: 'success',
+                    loggingIn: success,
                 },
             };
         }
@@ -102,7 +106,7 @@ export default (oldState = initialState, action) => {
                 ...oldState,
                 actions: {
                     ...oldState.actions,
-                    loggingOut: 'inProgress',
+                    loggingOut: inProgress,
                 },
             };
         }
@@ -112,7 +116,7 @@ export default (oldState = initialState, action) => {
                 ...oldState,
                 actions: {
                     ...oldState.actions,
-                    loggingOut: 'failure',
+                    loggingOut: failure,
                 },
             };
         }
@@ -131,7 +135,7 @@ export default (oldState = initialState, action) => {
                 ...oldState,
                 actions: {
                     ...oldState.actions,
-                    changingPassword: 'inProgress',
+                    changingPassword: inProgress,
                 },
             };
         }
@@ -141,7 +145,7 @@ export default (oldState = initialState, action) => {
                 ...oldState,
                 actions: {
                     ...oldState.actions,
-                    changingPassword: 'failure',
+                    changingPassword: failure,
                 },
             };
         }
@@ -151,7 +155,7 @@ export default (oldState = initialState, action) => {
                 ...oldState,
                 actions: {
                     ...oldState.actions,
-                    changingPassword: 'success',
+                    changingPassword: success,
                 },
             };
         }
