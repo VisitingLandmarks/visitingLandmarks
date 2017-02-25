@@ -8,7 +8,7 @@
     "grunt": "./node_modules/grunt-cli/bin/grunt",
     "start": "node server.js",
     "start:dev": "./node_modules/grunt-cli/bin/grunt monitor | ./node_modules/bunyan/bin/bunyan",
-    "test": "./node_modules/grunt-cli/bin/grunt"
+    "test": "./node_modules/grunt-cli/bin/grunt test"
   },
   "repository": {
     "type": "git",
