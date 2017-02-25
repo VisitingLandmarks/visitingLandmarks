@@ -4,10 +4,14 @@ module.exports = function (grunt) {
         build: {
             script: 'server.js',
             options: {
-                nodeArgs: ['--inspect'],
+                // nodeArgs: ['--inspect'],
                 ext: 'js,json,handlebars',
-                delay: 500,
-                ignore: ['node_modules/**'],
+                delay: 1000,
+                ignore: [
+                    'node_modules/**/*',
+                    'static/**/*',
+                    'test/**/*',
+                ],
             },
         },
     });

@@ -21,7 +21,7 @@ export default (user, categories, locations, userAgent, openDialog) => {
 
     // Create a new Redux store instance
     const store = createStore(reducer, applyMiddleware(thunk));
-console.log('user:',user);
+
     if (user) {
         store.dispatch(loginSuccess(user));
     }

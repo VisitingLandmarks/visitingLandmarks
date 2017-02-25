@@ -3,7 +3,7 @@ module.exports = {
     name: 'visitingLandmarks',
     logLevel: 'error',
     port: 8000,
-    baseDomain: 'http://localhost:8001',
+    baseDomain: 'http://localhost:8000',
     frontendPath: {
         leafLet: 'https://unpkg.com/leaflet@1.0.1/dist/',
         leafLetMarkerCluster: 'https://unpkg.com/leaflet.markercluster@1.0.0-rc.1.0/dist/',
