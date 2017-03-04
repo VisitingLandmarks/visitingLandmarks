@@ -20,7 +20,7 @@ module.exports = function (grunt) {
                     loader: 'babel-loader',
                     exclude: /node_modules/,
                     query: {
-                        presets: ['react', 'es2017'],
+                        presets: ['react', 'latest'],
                         plugins: ['transform-runtime', 'transform-object-rest-spread'],
                     },
                 },

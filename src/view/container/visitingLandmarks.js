@@ -17,19 +17,19 @@ import {dialogName as profileDialogName} from '../presentational/dialog/profile'
 
 const mapStateToProps = (state) => {
     return {
-        loggedIn: !!state.user,
-        userEmail: state.user && state.user.email,
-        userEmailConfirmed: state.user && state.user.isConfirmed,
-        followUser: state.followUser,
-        categories: state.categories,
-        locations: state.locations,
+        loggedIn: !!state.session.user,
+        userEmail: state.session.user && state.session.user.email,
+        userEmailConfirmed: state.session.user && state.session.user.isConfirmed,
+        followUser: state.control.followUser,
+        categories: state.data.categories,
+        locations: state.data.locations,
         //an object is easier to access and check
-        visitedLocations: state.user && state.user.visited || {},
+        visitedLocations: state.session.user && state.session.user.visited || {},
         openDialog: {
-            passwordReset: state.openDialog === resetPasswordDialogName,
-            login: state.openDialog === loginDialogName,
-            profile: state.openDialog === profileDialogName,
-            register: state.openDialog === registerDialogName,
+            passwordReset: state.control.openDialog === resetPasswordDialogName,
+            login: state.control.openDialog === loginDialogName,
+            profile: state.control.openDialog === profileDialogName,
+            register: state.control.openDialog === registerDialogName,
         },
     };
 };

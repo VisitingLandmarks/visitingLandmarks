@@ -7,36 +7,13 @@ import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
-import { createStore, applyMiddleware } from 'redux';
 import {Provider} from 'react-redux';
-import thunk from 'redux-thunk';
-import reducer from '../redux/reducer';
 
-import {loginSuccess} from '../redux/action/thunk/login';
-import {categoriesSet} from '../redux/action/categories';
-import {locationsSet} from '../redux/action/locations';
-import {dialogOpen} from '../redux/action/ui';
-
-export default (user, categories, locations, userAgent, openDialog) => {
+export default (store, userAgent) => {
 
     // Create a new Redux store instance
-    const store = createStore(reducer, applyMiddleware(thunk));
+    // const store = createStore(reducer, applyMiddleware(thunk));
 
-    if (user) {
-        store.dispatch(loginSuccess(user));
-    }
-
-    if (categories) {
-        store.dispatch(categoriesSet(categories));
-    }
-
-    if (locations) {
-        store.dispatch(locationsSet(locations));
-    }
-
-    if (openDialog) {
-        store.dispatch(dialogOpen(openDialog));
-    }
 
     // Render the component to a string
     const html = renderToString(

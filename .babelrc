@@ -1,6 +1,12 @@
 {
-  "presets": [ "react", "es2017",  "es2015" ],
-  "plugins": ["transform-runtime", "transform-object-rest-spread"],
+  "presets": [
+    "react",
+    "latest"
+  ],
+  "plugins": [
+    "transform-runtime",
+    "transform-object-rest-spread"
+  ],
   "ignore": [
     "test/setup.js"
   ]
