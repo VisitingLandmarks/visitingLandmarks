@@ -1,8 +1,8 @@
 import React, {PropTypes} from 'react';
-import gameSettings from '../../../config/gameSettings';
-import markerStyle from '../../client/map/markerStyle';
-import orientationToCompassHeading from '../../modules/orientationToCompassHeading';
-import antiHammer from '../../modules/antiHammer';
+import gameSettings from '../../config/gameSettings';
+import markerStyle from '../client/map/markerStyle';
+import orientationToCompassHeading from '../modules/orientationToCompassHeading';
+import antiHammer from '../modules/antiHammer';
 const memoize = require('memoizee');
 // import {log} from  '../../client/toServer';
 
@@ -10,7 +10,7 @@ const memoize = require('memoizee');
 /**
  * translate numerical coordinates to leafLet Map coordinates
  */
-const getLatLng = memoize((coordinates)=> {
+const getLatLng = memoize((coordinates) => {
     return L.latLng(coordinates[1], coordinates[0]);
 });
 
@@ -66,9 +66,7 @@ export default class MainMap extends React.Component {
         const markerClusterGroup = createMarkersAndCluster(this.props.locations, this.marker, this.popups, this.props.onToggleFollowUser);
 
         //ensure that the follow user is switched off, when a user clicks on a cluster
-        const onMapMove = ()=> {
-            this.props.onToggleFollowUser(false);
-        };
+        const onMapMove = () => this.props.onToggleFollowUser(false);
         markerClusterGroup.on('clusterclick', onMapMove);
         this.leafLetMap.on('popupopen', onMapMove);
 
@@ -88,14 +86,14 @@ export default class MainMap extends React.Component {
 
         if (this.userMarker.arrow.lastValue !== undefined) {
 
-            //handle multiple rotions in one direction
+            //handle multiple rotations in one direction
             best = best + 360 * Math.floor(this.userMarker.arrow.lastValue / 360);
 
-            //get the closest rotaion variation
+            //get the closest rotation variation
             const minus360 = best - 360;
             const plus360 = best + 360;
 
-            best = [best, minus360, plus360].sort((a, b)=> {
+            best = [best, minus360, plus360].sort((a, b) => {
                 return Math.abs(a - this.userMarker.arrow.lastValue) - Math.abs(b - this.userMarker.arrow.lastValue);
             })[0];
 
@@ -153,8 +151,6 @@ function createMarkersAndCluster(locations, marker, popups) {
         .map((locationId) => {
 
             const location = locations[locationId];
-
-            // const location = locations[locationId];
             const buildMarker = marker[locationId] = L.marker(getLatLng(location.location.coordinates));
 
             popups[locationId] = L.popup({closeButton: false});
@@ -180,7 +176,7 @@ function createMarkersAndCluster(locations, marker, popups) {
 function updateMarkers(locations, visitedLocations, marker, popups) {
 
     Object.keys(locations)
-        .forEach((locationId)=> {
+        .forEach((locationId) => {
 
             const location = locations[locationId];
             const userVisit = visitedLocations[locationId];
@@ -281,7 +277,7 @@ function onLocationFound(geoData) {
     //iterate over all locations
     Object.keys(component.props.locations)
     //find all close locations that are not collected by the user yet
-        .filter((locationId)=> {
+        .filter((locationId) => {
 
             const location = component.props.locations[locationId];
             const latLng = getLatLng(location.location.coordinates);

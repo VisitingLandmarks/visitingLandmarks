@@ -4,8 +4,8 @@ import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
 import DoneIcon from 'material-ui/svg-icons/action/done';
 
-import getSortScore from '../../../modules/getCategorySortScore';
-import countVisitedLocationsInCategory from '../../../modules/countVisitedLocationsInCategory';
+import getSortScore from '../../modules/getCategorySortScore';
+import countVisitedLocationsInCategory from '../../modules/countVisitedLocationsInCategory';
 
 export const dialogName = 'Profile';
 
@@ -22,6 +22,7 @@ const formatVisitedLocations = (locations, visitedLocations) => {
         .map((key)=> {
             return {
                 ...locations[key],
+                id : key,
                 dateTimeOfVisit: new Date(visitedLocations[key]),
             };
 
@@ -30,7 +31,7 @@ const formatVisitedLocations = (locations, visitedLocations) => {
             return a.dateTimeOfVisit - b.dateTimeOfVisit;
         })
         .map((element) => {
-            return <li key={element.originalUrl}>{element.dateTimeOfVisit.toString()} : {element.originalUrl}</li>;
+            return <li key={element.id}>{element.dateTimeOfVisit.toString()} : {element.name} {element.originalUrl}</li>;
         });
 };
 

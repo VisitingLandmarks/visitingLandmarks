@@ -1,6 +1,5 @@
 import passportSocketIo from 'passport.socketio';
 let getConnectionByUserId;
-import data from '../data';
 
 /**
  * a helper that will send a redux action to all connections of a user
@@ -24,7 +23,7 @@ export const setupIO = (server) => {
     };
     
     //handle socket.io requests of the user
-    ioApp.on('connection', require('../handleSocketIORequests')(sendActionToAllConnectionOfAUser, data));
+    ioApp.on('connection', require('../handleSocketIORequests')(sendActionToAllConnectionOfAUser));
 
     return ioApp;
 };

@@ -1,3 +1,5 @@
+//@todo: like reducer -> control
+
 export const DIALOG_OPEN = 'DIALOG_OPEN';
 export const dialogOpen = (dialog) => {
     return {

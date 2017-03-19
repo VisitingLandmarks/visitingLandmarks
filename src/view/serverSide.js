@@ -2,7 +2,7 @@ import config from '../../config';
 
 import React from 'react';
 import {renderToString} from 'react-dom/server';
-import VisitingLandmarks from './container/visitingLandmarks';
+import VisitingLandmarks from './visitingLandmarks';
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';

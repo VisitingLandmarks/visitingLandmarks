@@ -1,4 +1,4 @@
 export default {
-    followUser: false,
+    followUser: true,
     openDialog: false,
 };

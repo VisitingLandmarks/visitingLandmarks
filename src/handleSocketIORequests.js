@@ -1,8 +1,9 @@
 import logger from './modules/logger';
-import {locationsVisit} from './redux/action/locations';
+import {locationsVisit} from './redux/action/session';
+import {findUserById} from './data';
 
-//@todo: too much logic in here. Buisness Logic should be abstracted from the interface
-export default module.exports = (sendActionToAllConnectionOfAUser, dataRepository) => {
+//@todo: too much logic in here. Logic should be abstracted from the interface
+export default module.exports = (sendActionToAllConnectionOfAUser) => {
 
     return (userSocket) => {
 
@@ -16,7 +17,7 @@ export default module.exports = (sendActionToAllConnectionOfAUser, dataRepositor
             const userId = userSocket.request.user._id;
             const visitedLocationLogger = logger.child({userId, visitedLocation});
 
-            dataRepository.findUserById(userId)
+            findUserById(userId)
                 .then((user)=> {
                     return user.visitedLocation(visitedLocation);
                 })

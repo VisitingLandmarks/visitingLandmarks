@@ -14,7 +14,7 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
 
-import MainMenu from '../../../src/view/presentational/mainMenu';
+import MainMenu from '../../../src/view/mainMenu';
 
 
 describe.skip('MainMenu', ()=> {

@@ -3,6 +3,8 @@ import routes from '../../../../config/routes';
 import builder from '../builder';
 import {dialogClose} from '../ui';
 
+export const changingPassword = 'changingPassword';
+
 export const PASSWORD_CHANGE = 'PASSWORD_CHANGE';
 export const passwordChange = builder(PASSWORD_CHANGE);
 

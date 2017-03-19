@@ -13,7 +13,7 @@ export default (store) => {
 
 
     const changeState = () => {
-        if (!!store.getState().user !== currentState) {
+        if (!!store.getState().session.user !== currentState) {
             changer[!currentState]();
         }
     };

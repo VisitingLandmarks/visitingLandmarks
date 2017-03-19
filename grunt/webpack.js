@@ -6,7 +6,7 @@ module.exports = function (grunt) {
 
     const shared = {
         entry: [
-            './src/view/main.js',
+            './src/view/browserSide.js',
             './src/style/main.scss',
             ],
         output: {

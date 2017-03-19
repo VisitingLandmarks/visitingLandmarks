@@ -3,6 +3,8 @@ import builder from '../builder';
 import routes from '../../../../config/routes';
 import {dialogClose} from '../ui';
 
+export const registering = 'registering';
+
 export const REGISTER = 'REGISTER';
 export const register = builder(REGISTER);
 

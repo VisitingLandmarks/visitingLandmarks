@@ -3,6 +3,8 @@ import builder from '../builder';
 import routes from '../../../../config/routes';
 import {dialogClose} from '../ui';
 
+export const loggingIn = 'loggingIn';
+
 export const LOGIN = 'LOGIN';
 export const login = builder(LOGIN);
 

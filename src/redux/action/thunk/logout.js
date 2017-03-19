@@ -2,6 +2,8 @@ import axios from 'axios';
 import builder from '../builder';
 import routes from '../../../../config/routes';
 
+export const loggingOut = 'loggingOut';
+
 export const LOGOUT = 'LOGOUT';
 export const logout = builder(LOGOUT);
 

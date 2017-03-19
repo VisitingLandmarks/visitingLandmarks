@@ -5,6 +5,7 @@
  */
 const onlyWhenSocketAvailable = (func) => {
     return function () {
+        console.log(arguments);
         if (!window.socket) {
             return false;
         }
