@@ -125,7 +125,7 @@ export default class DialogUserPassword extends React.Component {
 
 DialogUserPassword.propTypes = {
     dialogName: PropTypes.string.isRequired,
-    disabled: PropTypes.boolean.isRequired,
+    disabled: PropTypes.bool.isRequired,
     error: PropTypes.string,
     onCloseDialog: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
