@@ -56,6 +56,7 @@ export default (oldState = initialState, action) => {
         };
     }
     case LOGIN_FAILURE: {
+        debugger;
         return {
             ...oldState,
             [loggingIn]: {[failure]: action.error || true},
