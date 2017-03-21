@@ -12,12 +12,7 @@ export const REGISTER_FAILURE = 'REGISTER_FAILURE';
 export const registerFailure = builder(REGISTER_FAILURE);
 
 export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
-export const registerSuccess = (user) => {
-    return {
-        type: REGISTER_SUCCESS,
-        user,
-    };
-};
+export const registerSuccess = builder(REGISTER_SUCCESS);
 
 
 export function registerThunk(registerData) {
@@ -25,7 +20,7 @@ export function registerThunk(registerData) {
         dispatch(register());
         axios.post(routes.user.register, registerData)
             .then((response) => {
-                dispatch(registerSuccess(response.data.user));
+                dispatch(registerSuccess({user : response.data.user}));
             })
 
             //delay the closing of the dialog to display some positive feedback to the user
@@ -39,6 +34,6 @@ export function registerThunk(registerData) {
                 dispatch(dialogClose());
             })
 
-            .catch((response) => dispatch(registerFailure(response)));
+            .catch((response) => dispatch(registerFailure({error: response && response.response && response.response.data})));
     };
 }

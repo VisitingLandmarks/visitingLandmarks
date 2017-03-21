@@ -29,6 +29,10 @@ import {dialogName as loginDialogName} from './dialog/login';
 import {dialogName as registerDialogName} from './dialog/register';
 import {dialogName as profileDialogName} from './dialog/profile';
 
+import {loggingIn} from '../redux/action/thunk/login';
+import {registering} from '../redux/action/thunk/register';
+import {failure, inProgress} from '../redux/reducer/communication';
+
 
 /**
  * the whole frontend
@@ -67,6 +71,8 @@ class VisitingLandmarks extends React.Component {
                     open={this.props.openDialog.login}
                     onCloseDialog={this.props.onCloseDialog}
                     onSubmit={this.props.requestLogin}
+                    disabled={this.props.communication[loggingIn][inProgress]}
+                    error={this.props.communication[loggingIn][failure]}
                 />
                 <DialogProfile
                     open={this.props.openDialog.profile}
@@ -80,6 +86,8 @@ class VisitingLandmarks extends React.Component {
                     open={this.props.openDialog.register}
                     onCloseDialog={this.props.onCloseDialog}
                     onSubmit={this.props.requestRegister}
+                    disabled={this.props.communication[registering][inProgress]}
+                    error={this.props.communication[registering][failure]}
                 />
                 <DialogResetPassword
                     open={this.props.openDialog.passwordReset}
@@ -104,6 +112,7 @@ VisitingLandmarks.propTypes = {
     onOpenResetPasswordDialog: PropTypes.func.isRequired,
     onToggleFollowUser: PropTypes.func.isRequired,
     openDialog: PropTypes.object.isRequired,
+    communication: PropTypes.object.isRequired,
     requestLogin: PropTypes.func.isRequired,
     requestLogout: PropTypes.func.isRequired,
     requestRegister: PropTypes.func.isRequired,
@@ -117,7 +126,7 @@ const mapStateToProps = (state) => {
     return {
         loggedIn: !!state.session.user,
         userEmail: state.session.user && state.session.user.email,
-        userEmailConfirmed: state.session.user && state.session.user.isConfirmed,
+        userEmailConfirmed: state.session.user && state.session.user.isConfirmed || false,
         followUser: state.control.followUser,
         categories: state.data.categories,
         locations: state.data.locations,
@@ -129,6 +138,7 @@ const mapStateToProps = (state) => {
             profile: state.control.openDialog === profileDialogName,
             register: state.control.openDialog === registerDialogName,
         },
+        communication: state.communication,
     };
 };
 

@@ -43,8 +43,8 @@ export default class DialogUserPassword extends React.Component {
 
     handleSubmit() {
 
-        var username = this.state.username.trim();
-        var password = this.state.password.trim();
+        const username = this.state.username.trim();
+        const password = this.state.password.trim();
         if (!username || !password) {
             return;
         }
@@ -54,18 +54,21 @@ export default class DialogUserPassword extends React.Component {
 
     render() {
 
+
         const actions = [
             <RaisedButton
                 style={buttonStyle}
                 label="Cancel"
                 primary={true}
                 onTouchTap={this.props.onCloseDialog}
+                disabled={this.props.disabled}
             />,
             <RaisedButton
                 style={buttonStyle}
                 label="Submit"
                 primary={true}
                 onTouchTap={this.handleSubmit}
+                disabled={this.props.disabled}
             />,
         ];
 
@@ -92,6 +95,7 @@ export default class DialogUserPassword extends React.Component {
                            name="password"
                            value={this.state.password}
                            onChange={this.handlePasswordChange}
+                           errorText={this.props.error}
                 />
             </td>
         </tr>;
@@ -114,13 +118,15 @@ export default class DialogUserPassword extends React.Component {
                 </form>
             </Dialog>
         );
-        
+
     }
 }
 
 
 DialogUserPassword.propTypes = {
     dialogName: PropTypes.string.isRequired,
+    disabled: PropTypes.boolean.isRequired,
+    error: PropTypes.string,
     onCloseDialog: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
     open: PropTypes.bool.isRequired,

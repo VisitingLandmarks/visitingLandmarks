@@ -1,7 +1,8 @@
 export default (type) => {
-    return () => {
+    return (...args) => {
         return {
             type,
+            ...args,
         };
     };
 };

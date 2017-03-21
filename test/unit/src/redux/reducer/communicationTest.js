@@ -60,7 +60,7 @@ describe('communication reducer', () => {
 
             const newState = deepFreeze({
                 ...initialState,
-                [verb]: expectedState,
+                [verb]: {[expectedState]: true},
             });
 
             assert.deepEqual(reducer(oldState, action()), newState);

@@ -12,12 +12,7 @@ export const LOGIN_FAILURE = 'LOGIN_FAILURE';
 export const loginFailure = builder(LOGIN_FAILURE);
 
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
-export const loginSuccess = (user) => {
-    return {
-        type: LOGIN_SUCCESS,
-        user,
-    };
-};
+export const loginSuccess = builder(LOGIN_SUCCESS);
 
 
 export function loginThunk(loginData) {
@@ -25,7 +20,7 @@ export function loginThunk(loginData) {
         dispatch(login());
         axios.post(routes.user.login, loginData)
             .then((response) => {
-                dispatch(loginSuccess(response.data.user));
+                dispatch(loginSuccess({user: response.data.user}));
             })
 
             //delay the closing of the dialog to display some positive feedback to the user
@@ -39,6 +34,8 @@ export function loginThunk(loginData) {
                 dispatch(dialogClose());
             })
 
-            .catch((response) => dispatch(loginFailure(response)));
+            .catch((response) => {
+                dispatch(loginFailure({error: response && response.response && response.response.data}));
+            });
     };
 }

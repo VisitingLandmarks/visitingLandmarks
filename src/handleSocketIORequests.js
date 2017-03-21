@@ -8,7 +8,7 @@ export default module.exports = (sendActionToAllConnectionOfAUser) => {
     return (userSocket) => {
 
         userSocket.on('log', (message) => {
-           logger.debug(message);
+            logger.debug(message);
         });
 
         //@todo: a wrapper that ensures that the user is really logged in by checking userSocket.request.user

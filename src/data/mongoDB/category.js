@@ -8,13 +8,13 @@ export const collectionName = 'Category';
 export default module.exports = function (mongoDB) {
 
     const categorySchema = new mongoDB.Schema({
-            description: String,
-            name: {
-                type: String,
-                unique: true,
-            },
-            items: [mongoDB.Schema.ObjectId],
+        description: String,
+        name: {
+            type: String,
+            unique: true,
         },
+        items: [mongoDB.Schema.ObjectId],
+    },
         {
             timestamps: true,
         });

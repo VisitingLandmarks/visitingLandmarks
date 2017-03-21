@@ -8,7 +8,7 @@ module.exports = function (grunt) {
         entry: [
             './src/view/browserSide.js',
             './src/style/main.scss',
-            ],
+        ],
         output: {
             path: './static/',
             filename: 'all.js',

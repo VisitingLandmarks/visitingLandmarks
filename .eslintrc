@@ -25,6 +25,11 @@
     "L": true
   },
   "rules": {
+    "indent": [
+      "error",
+      4
+    ],
+    "no-var": "error",
     "comma-dangle": [
       "error",
       "always-multiline"

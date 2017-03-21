@@ -7,23 +7,23 @@ export default (oldState = initialState, action) => {
 
     switch (action.type) {
 
-        case CATEGORIES_SET: {
-            return {
-                ...oldState,
-                categories: action.categories,
-            };
-        }
+    case CATEGORIES_SET: {
+        return {
+            ...oldState,
+            categories: action.categories,
+        };
+    }
 
-        case LOCATIONS_SET: {
-            return {
-                ...oldState,
-                locations: action.locations,
-            };
-        }
+    case LOCATIONS_SET: {
+        return {
+            ...oldState,
+            locations: action.locations,
+        };
+    }
 
-        default: {
-            return oldState;
-        }
+    default: {
+        return oldState;
+    }
     }
 
 };

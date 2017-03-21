@@ -7,7 +7,7 @@ import config from '../../../config';
  * @param config
  * @returns {*}
  */
-var getMongoDB = (config) => {
+let getMongoDB = (config) => {
 
     // mongoose library
     const mongoose = require('mongoose');

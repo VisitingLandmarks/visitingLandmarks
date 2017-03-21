@@ -11,51 +11,51 @@ export default module.exports = function (mongoDB) {
 
     const userSchema = new mongoDB.Schema({
             //basic user properties
-            email: {
-                type: String,
-                trim: true,
-                unique: true,
-                lowercase: true,
-                required: 'Email address is required',
-                match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,8})+$/, 'Please fill a valid email address'],
-            },
-            isAdmin: {
-                type: Boolean,
-                required: true,
-                default: false,
-            },
-            isConfirmed: {
-                type: Boolean,
-                required: true,
-                default: false,
-            },
-            confirmationToken: {
-                type: String,
-                unique: true,
-                select: false,
-            },
-            resetPasswordToken: {
-                type: String,
-                select: false,
-            },
-            // resetPasswordExpires: Date,
-            passwordHash: {
-                type: String,
-                required: true,
-                select: false,
-            },
-            passwordSalt: {
-                type: String,
-                required: true,
-                select: false,
-            },
-            //and now the game based information
-            visited: {
-                type: mongoDB.Schema.Types.Object,
-                required: true,
-                default: {},
-            },
+        email: {
+            type: String,
+            trim: true,
+            unique: true,
+            lowercase: true,
+            required: 'Email address is required',
+            match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,8})+$/, 'Please fill a valid email address'],
         },
+        isAdmin: {
+            type: Boolean,
+            required: true,
+            default: false,
+        },
+        isConfirmed: {
+            type: Boolean,
+            required: true,
+            default: false,
+        },
+        confirmationToken: {
+            type: String,
+            unique: true,
+            select: false,
+        },
+        resetPasswordToken: {
+            type: String,
+            select: false,
+        },
+            // resetPasswordExpires: Date,
+        passwordHash: {
+            type: String,
+            required: true,
+            select: false,
+        },
+        passwordSalt: {
+            type: String,
+            required: true,
+            select: false,
+        },
+            //and now the game based information
+        visited: {
+            type: mongoDB.Schema.Types.Object,
+            required: true,
+            default: {},
+        },
+    },
         {
             timestamps: true,
             minimize: false,

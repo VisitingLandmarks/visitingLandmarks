@@ -7,7 +7,7 @@ export default (oldState = initialState, action) => {
 
     switch (action.type) {
 
-        case DIALOG_CLOSE:
+    case DIALOG_CLOSE:
         {
             return {
                 ...oldState,
@@ -15,7 +15,7 @@ export default (oldState = initialState, action) => {
             };
         }
 
-        case DIALOG_OPEN:
+    case DIALOG_OPEN:
         {
             return {
                 ...oldState,
@@ -23,7 +23,7 @@ export default (oldState = initialState, action) => {
             };
         }
 
-        case FOLLOW_USER_SET:
+    case FOLLOW_USER_SET:
         {
             return {
                 ...oldState,
@@ -31,9 +31,9 @@ export default (oldState = initialState, action) => {
             };
         }
 
-        default: {
-            return oldState;
-        }
+    default: {
+        return oldState;
+    }
     }
 
 };
