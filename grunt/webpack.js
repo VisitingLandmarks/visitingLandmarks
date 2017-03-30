@@ -1,6 +1,7 @@
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const autoprefixer = require('autoprefixer');
+const path = require('path');
 
 module.exports = function (grunt) {
 
@@ -10,13 +11,13 @@ module.exports = function (grunt) {
             './src/style/main.scss',
         ],
         output: {
-            path: './static/',
+            path: path.resolve(__dirname, '../static/'),
             filename: 'all.js',
         },
         module: {
-            loaders: [
+            rules: [
                 {
-                    test: /.js?$/,
+                    test: /.js$/i,
                     loader: 'babel-loader',
                     exclude: /node_modules/,
                     query: {
@@ -25,8 +26,34 @@ module.exports = function (grunt) {
                     },
                 },
                 {
-                    test: /\.scss$/,
-                    loaders: ['style', ExtractTextPlugin.extract('css!postcss!sass')],
+                    test: /\.(scss)$/i,
+                    // using "loader" instead of newer "use"
+                    loader: ExtractTextPlugin.extract({
+                        loader: [
+                            {
+                                loader: 'css-loader',
+                                query: {
+                                    importLoaders: 1,
+                                    minimize: false,
+                                    sourceMap: true,
+                                },
+                            },
+                            {loader: 'postcss-loader',
+                                options: {
+                                    plugins: [autoprefixer({
+                                        browsers: ['ie 9', 'last 3 versions'],
+                                    })],
+                                },
+                            },
+                            {
+                                loader: 'sass-loader',
+                                query: {
+                                    // Enable sourcemaps for resolve-url-loader to work properly
+                                    sourceMap: true,
+                                },
+                            },
+                        ],
+                    }),
                 },
                 {
                     test: /\.(png|gif)$/,
@@ -38,18 +65,14 @@ module.exports = function (grunt) {
                 },
             ],
         },
-        postcss: function () {
-            return [autoprefixer({
-                browsers: ['ie 9', 'last 3 versions'],
-            })];
-        },
         plugins: [
             new webpack.DefinePlugin({
                 'process.env': {
                     'NODE_ENV': JSON.stringify(process.env.NODE_ENV),
                 },
             }),
-            new ExtractTextPlugin('style.css', {
+            new ExtractTextPlugin({
+                filename: 'style.css',
                 allChunks: true,
             }),
         ],
@@ -89,4 +112,5 @@ module.exports = function (grunt) {
     });
 
     grunt.loadNpmTasks('grunt-webpack');
-};
+}
+;
