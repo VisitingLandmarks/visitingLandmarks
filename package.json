@@ -27,7 +27,7 @@
   "dependencies": {
     "ajv": "4.11.5",
     "autoprefixer": "6.7.7",
-    "axios": "0.15.3",
+    "axios": "0.16.0",
     "babel-core": "6.24.0",
     "babel-loader": "6.4.1",
     "babel-plugin-transform-object-rest-spread": "6.23.0",
@@ -90,10 +90,10 @@
   },
   "devDependencies": {
     "chai": "3.5.0",
-    "eslint": "3.18.0",
+    "eslint": "3.19.0",
     "eslint-plugin-mocha": "4.9.0",
     "eslint-plugin-react": "6.10.3",
     "jsdom": "9.12.0",
-    "sinon": "1.17.7"
+    "sinon": "2.1.0"
   }
 }
