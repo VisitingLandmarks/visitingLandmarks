@@ -23,7 +23,6 @@ class DialogLogin extends React.Component {
                 {...this.props}
                 open={true}
                 dialogName={dialogName}
-                onCloseDialog={this.props.onCloseDialog}
                 onSubmit={this.props.requestLogin}
             />
         );

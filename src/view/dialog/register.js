@@ -24,7 +24,6 @@ class DialogRegister extends React.Component {
                 {...this.props}
                 open={true} //@todo: remove
                 dialogName={dialogName}
-                onCloseDialog={this.onCloseDialog}
                 onSubmit={this.props.requestRegister}
             />
         );

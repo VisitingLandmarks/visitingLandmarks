@@ -45,7 +45,7 @@ export default class DialogUserPassword extends React.Component {
 
         const username = this.state.username.trim();
         const password = this.state.password.trim();
-        if (!username || !password) {
+        if (this.props.showUsernameLine && !username || this.props.showPasswordLine && !password) {
             return;
         }
         this.props.onSubmit(username, password);

@@ -103,8 +103,9 @@ export const passwordReset = (req, res, next) => {
 
     dataRepository.findUserByResetPasswordToken(resetPasswordToken)
         .then((user) => {
+
             if (!user) {
-                res.status(404).send();
+                res.status(404).send(); //@todo: style -> this shows now the generic cannot GET Express error page
                 return;
             }
 
@@ -114,9 +115,8 @@ export const passwordReset = (req, res, next) => {
                     next(err);
                 }
 
-                res.locals.openDialog = 'changePassword'; //@ todo: use react router
-
-                next();
+                //@todo: redirect to changePassword Page
+                res.redirect(302, routes.root);
             });
 
         })

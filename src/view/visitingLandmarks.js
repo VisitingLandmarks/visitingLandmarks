@@ -16,11 +16,6 @@ import {logoutThunk} from '../redux/action/thunk/logout';
 
 import {followUserSet, navigateTo} from '../redux/action/ui';
 
-import {dialogName as resetPasswordDialogName} from './dialog/resetPassword';
-import {dialogName as loginDialogName} from './dialog/login';
-import {dialogName as registerDialogName} from './dialog/register';
-import {dialogName as profileDialogName} from './dialog/profile';
-
 import routes from '../../config/routes';
 
 /**
@@ -51,22 +46,13 @@ class VisitingLandmarks extends React.Component {
                     onOpenLoginDialog={() => this.props.navigateTo(routes.user.login)}
                     onOpenProfileDialog={() => this.props.navigateTo(routes.profile)}
                     onOpenRegisterDialog={() => this.props.navigateTo(routes.user.register)}
-                    onOpenResetPasswordDialog={() => {
-
-                    }}
+                    onOpenResetPasswordDialog={() => this.props.navigateTo(routes.user.resetPassword)}
                     onToggleFollowUser={this.props.onToggleFollowUser}
                     requestLogout={this.props.requestLogout}
                 />
 
                 <Navigator/>
 
-
-
-                {/*<DialogResetPassword*/}
-                {/*open={this.props.openDialog.passwordReset}*/}
-                {/*onCloseDialog={this.props.onCloseDialog}*/}
-                {/*onSubmit={this.props.requestResetPassword}*/}
-                {/*/>*/}
             </div>
         );
 
@@ -78,7 +64,6 @@ VisitingLandmarks.propTypes = {
     followUser: PropTypes.bool.isRequired,
     locations: PropTypes.object.isRequired,
     loggedIn: PropTypes.bool.isRequired,
-    openDialog: PropTypes.object.isRequired,
     communication: PropTypes.object.isRequired,
     userEmailConfirmed: PropTypes.bool.isRequired,
     visitedLocations: PropTypes.object.isRequired,
@@ -104,12 +89,6 @@ const mapStateToProps = (state) => {
         locations: state.data.locations,
         //an object is easier to access and check
         visitedLocations: state.session.user && state.session.user.visited || {},
-        openDialog: {
-            passwordReset: state.control.openDialog === resetPasswordDialogName,
-            login: state.control.openDialog === loginDialogName,
-            profile: state.control.openDialog === profileDialogName,
-            register: state.control.openDialog === registerDialogName,
-        },
         communication: state.communication,
     };
 };
@@ -118,7 +97,6 @@ const mapDispatchToProps = (dispatch) => {
     return {
         // requestChangePassword: (password) => dispatch(changePasswordThunk(password)),
         // requestResetPassword: (username) => dispatch(resetPasswordThunk(username)),
-        // requestLogin: (username, password) => dispatch(loginThunk({username, password})),
         requestLogout: () => dispatch(logoutThunk()),
 
         onToggleFollowUser: (newValue) => dispatch(followUserSet(newValue)),

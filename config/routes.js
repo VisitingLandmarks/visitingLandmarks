@@ -7,6 +7,7 @@ export default deepFreeze({
         confirm: '/confirm/:token',
         login: '/login',
         logout: '/logout',
+        resetPassword: '/resetPassword', //@todo: prevent mixing use cases (dialog and API)
         passwordChange: '/passwordChange', //@todo implement
         passwordResetRequest: '/requestPasswordReset',
         passwordReset: '/resetPassword/:resetPasswordToken',

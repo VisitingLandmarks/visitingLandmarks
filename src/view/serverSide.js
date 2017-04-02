@@ -33,7 +33,7 @@ export default (store, url, userAgent) => {
     if (context.url) {
         // Somewhere a `<Redirect>` was rendered
         return {
-            status: 301,
+            status: 302,
             url: context.url,
         };
     }

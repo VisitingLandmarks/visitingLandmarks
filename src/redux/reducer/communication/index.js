@@ -1,13 +1,31 @@
-//register
-import {REGISTER, REGISTER_FAILURE, REGISTER_SUCCESS, registering} from '../../action/thunk/register';
+import {
+    REGISTER,
+    REGISTER_FAILURE,
+    REGISTER_SUCCESS,
+    registering,
+} from '../../action/thunk/register';
 
-//login
-import {LOGIN, LOGIN_FAILURE, LOGIN_SUCCESS, loggingIn} from '../../action/thunk/login';
+import {
+    LOGIN,
+    LOGIN_FAILURE,
+    LOGIN_SUCCESS,
+    loggingIn,
+} from '../../action/thunk/login';
 
-//logout
-import {LOGOUT, LOGOUT_FAILURE, LOGOUT_SUCCESS, loggingOut} from '../../action/thunk/logout';
+import {
+    LOGOUT,
+    LOGOUT_FAILURE,
+    LOGOUT_SUCCESS,
+    loggingOut,
+} from '../../action/thunk/logout';
 
-//change Password
+import {
+    PASSWORD_RESET,
+    PASSWORD_RESET_FAILURE,
+    PASSWORD_RESET_SUCCESS,
+    resettingPassword,
+} from '../../action/thunk/resetPassword';
+
 import {
     PASSWORD_CHANGE,
     PASSWORD_CHANGE_FAILURE,
@@ -25,7 +43,6 @@ export default (oldState = initialState, action) => {
 
     switch (action.type) {
 
-        //register
         case REGISTER: {
             return {
                 ...oldState,
@@ -48,7 +65,6 @@ export default (oldState = initialState, action) => {
         }
 
 
-        //login
         case LOGIN: {
             return {
                 ...oldState,
@@ -69,7 +85,6 @@ export default (oldState = initialState, action) => {
         }
 
 
-        //logout
         case LOGOUT: {
             return {
                 ...oldState,
@@ -89,7 +104,29 @@ export default (oldState = initialState, action) => {
             };
         }
 
-        //changePassword
+
+        case PASSWORD_RESET: {
+            return {
+                ...oldState,
+                [resettingPassword]: {[inProgress]: true},
+            };
+        }
+        case PASSWORD_RESET_FAILURE: {
+            return {
+                ...oldState,
+                [resettingPassword]: {[failure]: action.error || true},
+            };
+        }
+        case PASSWORD_RESET_SUCCESS: {
+            return {
+                ...oldState,
+                [resettingPassword]: {[success]: true},
+            };
+        }
+
+
+
+
         case PASSWORD_CHANGE: {
             return {
                 ...oldState,

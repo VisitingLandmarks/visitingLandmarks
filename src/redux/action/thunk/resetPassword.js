@@ -1,7 +1,7 @@
 import axios from 'axios';
 import builder from '../builder';
-import routes from '../../../../config/routes';
-import {dialogClose} from '../ui';
+
+export const resettingPassword = 'resettingPassword';
 
 export const PASSWORD_RESET = 'PASSWORD_RESET';
 export const passwordReset = builder(PASSWORD_RESET);
@@ -12,11 +12,14 @@ export const passwordResetFailure = builder(PASSWORD_RESET_FAILURE);
 export const PASSWORD_RESET_SUCCESS = 'PASSWORD_RESET_SUCCESS';
 export const passwordResetSuccess = builder(PASSWORD_RESET_SUCCESS);
 
+import routes from '../../../../config/routes';
 
-export function resetPasswordThunk(username) {
+
+export function resetPasswordThunk(data) {
+
     return function (dispatch) {
         dispatch(passwordReset());
-        axios.post(routes.user.passwordReset, {username})
+        axios.post(routes.user.passwordResetRequest, data)
             .then((response) => {
                 dispatch(passwordResetSuccess(response));
             })
@@ -29,7 +32,7 @@ export function resetPasswordThunk(username) {
             })
 
             .then(() => {
-                dispatch(dialogClose());
+                //@todo: dialog->check your emails
             })
 
             .catch((response) => dispatch(passwordResetFailure(response)));

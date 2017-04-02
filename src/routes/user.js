@@ -64,6 +64,7 @@ export default (app) => {
 
     /**
      * reset the password of a user with a token send to a second channel
+     * this is a get, because of links in email
      */
     app.get(
         routes.user.passwordReset,

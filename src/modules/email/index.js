@@ -30,7 +30,10 @@ const templates = ['userEmailConfirmed', 'userRegistered', 'userResetPassword'].
  * @returns {*}
  */
 const extendTemplateData = (obj) => {
-    return Object.assign({baseDomain: config.baseDomain}, obj);
+    return {
+        baseDomain: config.baseDomain,
+        ...obj,
+    };
 };
 
 
