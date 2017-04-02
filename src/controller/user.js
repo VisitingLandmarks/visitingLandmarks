@@ -1,7 +1,7 @@
 import {sendEmailConfirmed, sendEmailUserRegistered, sendEmailUserResetPassword} from '../modules/email';
 import * as dataRepository from '../data';
 import {disconnectAllSocketsOfUser} from '../modules/sendActionToAllConnectionOfAUser';
-
+import routes from '../../config/routes';
 
 export const confirm = (req, res) => {
 
@@ -32,7 +32,7 @@ export const logout = (req, res) => {
     req.log.info({numberOfSockets, userId: req.user._id}, 'user disconnected');
 
     req.logout();
-    res.redirect('/');
+    res.redirect(routes.root);
 
 };
 

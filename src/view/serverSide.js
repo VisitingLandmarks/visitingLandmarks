@@ -13,9 +13,6 @@ import RouteDefinition from './routeDefinition';
 
 
 export default (store, url, userAgent) => {
-    console.log(url);
-    // Create a new Redux store instance
-    // const store = createStore(reducer, applyMiddleware(thunk));
 
     const context = {};
 
@@ -33,16 +30,22 @@ export default (store, url, userAgent) => {
         </Provider>
     );
 
-    // if (context.url) {
-    //     // Somewhere a `<Redirect>` was rendered
-    //     redirect(301, context.url)
-    // } else {
-    //     // we're good, send the response
-    // }
+    if (context.url) {
+        // Somewhere a `<Redirect>` was rendered
+        return {
+            status: 301,
+            url: context.url,
+        };
+    }
 
     // Grab the initial state from our Redux store
     const initialState = store.getState();
-    return renderFullPage(html, initialState);
+
+    //and now render the page and return a 200 code
+    return {
+        status: 200,
+        html: renderFullPage(html, initialState),
+    };
 };
 
 //@todo: move to template

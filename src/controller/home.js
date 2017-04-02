@@ -22,7 +22,28 @@ export default (req, res) => {
         dataRepository.getAllLocations().then((locations) => store.dispatch(locationsSet(locations))),
     ])
         .then(() => {
-            res.send(serverSideView(store, req.url, req.headers['user-agent']));
+
+            //server side rendering
+            const {status, url, html} = serverSideView(store, req.url, req.headers['user-agent']);
+
+            //and translate the result to express
+            switch (status) {
+
+                case 200: {
+                    res.send(html);
+                    return;
+                }
+
+                case 301:
+                case 302: {
+                    res.redirect(status, url);
+                    return;
+                }
+
+                default: {
+                    throw new Error('unimplemented status code in server side rendering');
+                }
+            }
         });
 
 

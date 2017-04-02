@@ -1,7 +1,7 @@
 import axios from 'axios';
 import routes from '../../../../config/routes';
 import builder from '../builder';
-import {dialogClose} from '../ui';
+// import {dialogClose} from '../ui';
 
 export const changingPassword = 'changingPassword';
 
@@ -31,7 +31,7 @@ export function changePasswordThunk(newPassword) {
             })
 
             .then(() => {
-                dispatch(dialogClose());
+                // dispatch(dialogClose());
             })
 
             .catch((response) => dispatch(passwordChangeFailure(response)));

@@ -10,37 +10,37 @@ export default (oldState = initialState, action) => {
 
     switch (action.type) {
 
-    case LOGIN_SUCCESS:
-    case REGISTER_SUCCESS: {
-        return {
-            ...oldState,
-            user: action.user,
-        };
-    }
+        case LOGIN_SUCCESS:
+        case REGISTER_SUCCESS: {
+            return {
+                ...oldState,
+                user: action.user,
+            };
+        }
 
-    case LOGOUT_SUCCESS: {
-        return {
-            ...oldState,
-            user: initialState.user,
-        };
-    }
+        case LOGOUT_SUCCESS: {
+            return {
+                ...oldState,
+                user: initialState.user,
+            };
+        }
 
-    case LOCATIONS_VISIT: {
-        return {
-            ...oldState,
-            user: {
-                ...oldState.user,
-                visited: {
-                    ...oldState.user.visited,
-                    ...action.visitedLocation,
+        case LOCATIONS_VISIT: {
+            return {
+                ...oldState,
+                user: {
+                    ...oldState.user,
+                    visited: {
+                        ...oldState.user.visited,
+                        ...action.visitedLocation,
+                    },
                 },
-            },
-        };
-    }
+            };
+        }
 
-    default: {
-        return oldState;
-    }
+        default: {
+            return oldState;
+        }
     }
 
 };

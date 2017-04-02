@@ -1,7 +1,7 @@
 import axios from 'axios';
 import builder from '../builder';
+
 import routes from '../../../../config/routes';
-import {dialogClose} from '../ui';
 
 export const loggingIn = 'loggingIn';
 
@@ -14,6 +14,7 @@ export const loginFailure = builder(LOGIN_FAILURE);
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const loginSuccess = builder(LOGIN_SUCCESS);
 
+import {navigateTo} from '../../action/ui';
 
 export function loginThunk(loginData) {
     return function (dispatch) {
@@ -31,7 +32,7 @@ export function loginThunk(loginData) {
             })
 
             .then(() => {
-                dispatch(dialogClose());
+                dispatch(navigateTo(routes.root));
             })
 
             .catch((response) => {

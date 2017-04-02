@@ -5,7 +5,10 @@ import DialogUserPassword from './userPassword';
 
 import {registerThunk} from '../../redux/action/thunk/register';
 import {registering} from '../../redux/action/thunk/register';
+import {navigateTo} from '../../redux/action/ui';
 import {failure, inProgress} from '../../redux/reducer/communication';
+
+import routes from '../../../config/routes';
 
 export const dialogName = 'Register';
 
@@ -13,11 +16,6 @@ class DialogRegister extends React.Component {
 
     constructor(props) {
         super(props);
-        this.onCloseDialog = this.onCloseDialog.bind(this);
-    }
-
-    onCloseDialog() {
-        this.context.router.history.push('/');
     }
 
     render() {
@@ -35,6 +33,10 @@ class DialogRegister extends React.Component {
 }
 
 DialogRegister.propTypes = {
+    disabled: PropTypes.bool.isRequired,
+    error: PropTypes.string.isRequired,
+
+    onCloseDialog: PropTypes.func.isRequired,
     requestRegister: PropTypes.func.isRequired,
 };
 DialogRegister.contextTypes = {
@@ -50,7 +52,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        // onCloseDialog: () => dispatch(dialogClose()),
+        onCloseDialog: () => dispatch(navigateTo(routes.root)),
         requestRegister: (username, password) => dispatch(registerThunk({username, password})),
     };
 };

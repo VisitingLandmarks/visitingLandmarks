@@ -2,10 +2,12 @@ import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
 
 import DialogUserPassword from './userPassword';
-import {loginThunk} from '../../redux/action/thunk/login';
 
-import {loggingIn} from '../../redux/action/thunk/login';
+import {loginThunk, loggingIn} from '../../redux/action/thunk/login';
+import {navigateTo} from '../../redux/action/ui';
 import {failure, inProgress} from '../../redux/reducer/communication';
+
+import routes from '../../../config/routes';
 
 export const dialogName = 'Login';
 
@@ -13,20 +15,15 @@ class DialogLogin extends React.Component {
 
     constructor(props) {
         super(props);
-        this.onCloseDialog = this.onCloseDialog.bind(this);
-    }
-
-    onCloseDialog() {
-        this.context.router.history.push('/');
     }
 
     render() {
         return (
             <DialogUserPassword
                 {...this.props}
-                open={true} //@todo: remove
+                open={true}
                 dialogName={dialogName}
-                onCloseDialog={this.onCloseDialog}
+                onCloseDialog={this.props.onCloseDialog}
                 onSubmit={this.props.requestLogin}
             />
         );
@@ -36,6 +33,7 @@ class DialogLogin extends React.Component {
 
 DialogLogin.propTypes = {
     requestLogin: PropTypes.func.isRequired,
+    onCloseDialog: PropTypes.func.isRequired,
 };
 DialogLogin.contextTypes = {
     router: React.PropTypes.object,
@@ -51,7 +49,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        // onCloseDialog: () => dispatch(dialogClose()),
+        onCloseDialog: () => dispatch(navigateTo(routes.root)),
         requestLogin: (username, password) => dispatch(loginThunk({username, password})),
     };
 };

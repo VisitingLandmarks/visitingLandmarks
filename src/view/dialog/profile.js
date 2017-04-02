@@ -8,6 +8,10 @@ import DoneIcon from 'material-ui/svg-icons/action/done';
 import getSortScore from '../../modules/getCategorySortScore';
 import countVisitedLocationsInCategory from '../../modules/countVisitedLocationsInCategory';
 
+import routes from '../../../config/routes';
+
+import {navigateTo} from '../../redux/action/ui';
+
 export const dialogName = 'Profile';
 
 
@@ -72,11 +76,6 @@ class DialogProfile extends React.Component {
 
     constructor(props) {
         super(props);
-        this.onCloseDialog = this.onCloseDialog.bind(this);
-    }
-
-    onCloseDialog() {
-        this.context.router.history.push('/');
     }
 
     render() {
@@ -85,7 +84,7 @@ class DialogProfile extends React.Component {
             <RaisedButton
                 label="Close"
                 primary={true}
-                onTouchTap={this.onCloseDialog}
+                onTouchTap={this.props.onCloseDialog}
             />,
         ];
 
@@ -119,6 +118,8 @@ DialogProfile.propTypes = {
     locations: PropTypes.object.isRequired,
     categories: PropTypes.object.isRequired,
     visitedLocations: PropTypes.object.isRequired,
+
+    onCloseDialog: PropTypes.func.isRequired,
 };
 
 DialogProfile.contextTypes = {
@@ -137,6 +138,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        onCloseDialog: () => dispatch(navigateTo(routes.root)),
     };
 };
 

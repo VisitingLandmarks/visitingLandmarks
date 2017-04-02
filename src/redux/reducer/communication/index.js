@@ -26,93 +26,93 @@ export default (oldState = initialState, action) => {
     switch (action.type) {
 
         //register
-    case REGISTER: {
-        return {
-            ...oldState,
-            [registering]: {[inProgress]: true},
-        };
-    }
+        case REGISTER: {
+            return {
+                ...oldState,
+                [registering]: {[inProgress]: true},
+            };
+        }
 
-    case REGISTER_FAILURE: {
-        return {
-            ...oldState,
-            [registering]: {[failure]: action.error || true},
-        };
-    }
+        case REGISTER_FAILURE: {
+            return {
+                ...oldState,
+                [registering]: {[failure]: action.error || true},
+            };
+        }
 
-    case REGISTER_SUCCESS: {
-        return {
-            ...oldState,
-            [registering]: {[success]: true},
-        };
-    }
+        case REGISTER_SUCCESS: {
+            return {
+                ...oldState,
+                [registering]: {[success]: true},
+            };
+        }
 
 
         //login
-    case LOGIN: {
-        return {
-            ...oldState,
-            [loggingIn]: {[inProgress]: true},
-        };
-    }
-    case LOGIN_FAILURE: {
-        return {
-            ...oldState,
-            [loggingIn]: {[failure]: action.error || true},
-        };
-    }
-    case LOGIN_SUCCESS: {
-        return {
-            ...oldState,
-            [loggingIn]: {[success]: true},
-        };
-    }
+        case LOGIN: {
+            return {
+                ...oldState,
+                [loggingIn]: {[inProgress]: true},
+            };
+        }
+        case LOGIN_FAILURE: {
+            return {
+                ...oldState,
+                [loggingIn]: {[failure]: action.error || true},
+            };
+        }
+        case LOGIN_SUCCESS: {
+            return {
+                ...oldState,
+                [loggingIn]: {[success]: true},
+            };
+        }
 
 
         //logout
-    case LOGOUT: {
-        return {
-            ...oldState,
-            [loggingOut]: {[inProgress]: true},
-        };
-    }
-    case LOGOUT_FAILURE: {
-        return {
-            ...oldState,
-            [loggingOut]: {[failure]: action.error || true},
-        };
-    }
-    case LOGOUT_SUCCESS: {
-        return {
-            ...oldState,
-            [loggingOut]: {[success]: true},
-        };
-    }
+        case LOGOUT: {
+            return {
+                ...oldState,
+                [loggingOut]: {[inProgress]: true},
+            };
+        }
+        case LOGOUT_FAILURE: {
+            return {
+                ...oldState,
+                [loggingOut]: {[failure]: action.error || true},
+            };
+        }
+        case LOGOUT_SUCCESS: {
+            return {
+                ...oldState,
+                [loggingOut]: {[success]: true},
+            };
+        }
 
         //changePassword
-    case PASSWORD_CHANGE: {
-        return {
-            ...oldState,
-            [changingPassword]: {[inProgress]: true},
-        };
-    }
-    case PASSWORD_CHANGE_FAILURE: {
-        return {
-            ...oldState,
-            [changingPassword]: {[failure]: action.error || true},
-        };
-    }
-    case PASSWORD_CHANGE_SUCCESS: {
-        return {
-            ...oldState,
-            [changingPassword]: {[success]: true},
-        };
-    }
+        case PASSWORD_CHANGE: {
+            return {
+                ...oldState,
+                [changingPassword]: {[inProgress]: true},
+            };
+        }
+        case PASSWORD_CHANGE_FAILURE: {
+            return {
+                ...oldState,
+                [changingPassword]: {[failure]: action.error || true},
+            };
+        }
+        case PASSWORD_CHANGE_SUCCESS: {
+            return {
+                ...oldState,
+                [changingPassword]: {[success]: true},
+            };
+        }
 
 
-    default: {
-        return oldState;
-    }
+        default: {
+            return oldState;
+        }
     }
 
 };

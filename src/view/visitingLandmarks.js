@@ -7,32 +7,21 @@ injectTapEventPlugin();
 
 import MainMap from './mainMap';
 import MainMenu from './mainMenu';
-
-import DialogResetPassword from './dialog/resetPassword';
-// import DialogLogin from './dialog/login';
-// import DialogProfile from './dialog/profile';
-// import DialogRegister from './dialog/register';
+import Navigator from './navigator';
 
 import {onVisitLocation} from '../client/toServer';
 import {connect} from 'react-redux';
 
-import {changePasswordThunk} from '../redux/action/thunk/changePassword';
-import {resetPasswordThunk} from '../redux/action/thunk/resetPassword';
-import {loginThunk} from '../redux/action/thunk/login';
 import {logoutThunk} from '../redux/action/thunk/logout';
-import {registerThunk} from '../redux/action/thunk/register';
 
-import {followUserSet} from '../redux/action/ui';
+import {followUserSet, navigateTo} from '../redux/action/ui';
 
 import {dialogName as resetPasswordDialogName} from './dialog/resetPassword';
 import {dialogName as loginDialogName} from './dialog/login';
 import {dialogName as registerDialogName} from './dialog/register';
 import {dialogName as profileDialogName} from './dialog/profile';
 
-import {loggingIn} from '../redux/action/thunk/login';
-import {registering} from '../redux/action/thunk/register';
-import {failure, inProgress} from '../redux/reducer/communication';
-
+import routes from '../../config/routes';
 
 /**
  * the whole frontend
@@ -42,6 +31,7 @@ class VisitingLandmarks extends React.Component {
     constructor(props) {
         super(props);
     }
+
 
     render() {
         return (
@@ -58,51 +48,24 @@ class VisitingLandmarks extends React.Component {
                 <MainMenu
                     followUser={this.props.followUser}
                     loggedIn={this.props.loggedIn}
-                    onOpenLoginDialog={()=> {
-                        this.context.router.history.push('/login');
-                    }}
-                    onOpenProfileDialog={()=> {
-                        this.context.router.history.push('/profile');
-                    }}
-                    onOpenRegisterDialog={()=> {
-                        this.context.router.history.push('/register');
-                    }}
-                    onOpenResetPasswordDialog={()=> {
+                    onOpenLoginDialog={() => this.props.navigateTo(routes.user.login)}
+                    onOpenProfileDialog={() => this.props.navigateTo(routes.profile)}
+                    onOpenRegisterDialog={() => this.props.navigateTo(routes.user.register)}
+                    onOpenResetPasswordDialog={() => {
 
                     }}
                     onToggleFollowUser={this.props.onToggleFollowUser}
                     requestLogout={this.props.requestLogout}
                 />
 
-                {/*<DialogLogin*/}
-                    {/*open={this.props.openDialog.login}*/}
-                    {/*onCloseDialog={this.props.onCloseDialog}*/}
-                    {/*onSubmit={this.props.requestLogin}*/}
-                    {/*disabled={this.props.communication[loggingIn][inProgress]}*/}
-                    {/*error={this.props.communication[loggingIn][failure]}*/}
-                {/*/>*/}
+                <Navigator/>
 
-                {/*<DialogProfile*/}
-                    {/*open={this.props.openDialog.register}*/}
-                    {/*onCloseDialog={this.props.onCloseDialog}*/}
-                    {/*categories={this.props.categories}*/}
-                    {/*locations={this.props.locations}*/}
-                    {/*visitedLocations={this.props.visitedLocations}*/}
-                    {/*userEmailConfirmed={this.props.userEmailConfirmed}*/}
-                {/*/>*/}
 
-                {/*<DialogRegister*/}
-                    {/*open={this.props.openDialog.register}*/}
-                    {/*onCloseDialog={this.props.onCloseDialog}*/}
-                    {/*onSubmit={this.props.requestRegister}*/}
-                    {/*disabled={this.props.communication[registering][inProgress]}*/}
-                    {/*error={this.props.communication[registering][failure]}*/}
-                {/*/>*/}
 
                 {/*<DialogResetPassword*/}
-                     {/*open={this.props.openDialog.passwordReset}*/}
-                    {/*onCloseDialog={this.props.onCloseDialog}*/}
-                    {/*onSubmit={this.props.requestResetPassword}*/}
+                {/*open={this.props.openDialog.passwordReset}*/}
+                {/*onCloseDialog={this.props.onCloseDialog}*/}
+                {/*onSubmit={this.props.requestResetPassword}*/}
                 {/*/>*/}
             </div>
         );
@@ -115,20 +78,15 @@ VisitingLandmarks.propTypes = {
     followUser: PropTypes.bool.isRequired,
     locations: PropTypes.object.isRequired,
     loggedIn: PropTypes.bool.isRequired,
-    // onCloseDialog: PropTypes.func.isRequired,
-    // onOpenLoginDialog: PropTypes.func.isRequired,
-    // onOpenProfileDialog: PropTypes.func.isRequired,
-    // onOpenRegisterDialog: PropTypes.func.isRequired,
-    // onOpenResetPasswordDialog: PropTypes.func.isRequired,
-    onToggleFollowUser: PropTypes.func.isRequired,
     openDialog: PropTypes.object.isRequired,
     communication: PropTypes.object.isRequired,
-    requestLogin: PropTypes.func.isRequired,
-    requestLogout: PropTypes.func.isRequired,
-    requestRegister: PropTypes.func.isRequired,
-    requestResetPassword: PropTypes.func.isRequired,
     userEmailConfirmed: PropTypes.bool.isRequired,
     visitedLocations: PropTypes.object.isRequired,
+
+    requestLogout: PropTypes.func.isRequired,
+
+    onToggleFollowUser: PropTypes.func.isRequired,
+    navigateTo: PropTypes.func.isRequired,
 };
 
 VisitingLandmarks.contextTypes = {
@@ -158,19 +116,13 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        requestChangePassword: (password) => dispatch(changePasswordThunk(password)),
-        requestRegister: (username, password) => dispatch(registerThunk({username, password})),
-        requestResetPassword: (username) => dispatch(resetPasswordThunk(username)),
-        requestLogin: (username, password) => dispatch(loginThunk({username, password})),
+        // requestChangePassword: (password) => dispatch(changePasswordThunk(password)),
+        // requestResetPassword: (username) => dispatch(resetPasswordThunk(username)),
+        // requestLogin: (username, password) => dispatch(loginThunk({username, password})),
         requestLogout: () => dispatch(logoutThunk()),
 
         onToggleFollowUser: (newValue) => dispatch(followUserSet(newValue)),
-
-        // onCloseDialog: () => dispatch(dialogClose()),
-        // onOpenLoginDialog: () => dispatch(dialogOpen(loginDialogName)),
-        // onOpenProfileDialog: () => dispatch(dialogOpen(profileDialogName)),
-        // onOpenRegisterDialog: () => dispatch(dialogOpen(registerDialogName)),
-        // onOpenResetPasswordDialog: () => dispatch(dialogOpen(resetPasswordDialogName)),
+        navigateTo: (url) => dispatch(navigateTo(url)),
     };
 };
 
