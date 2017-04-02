@@ -1,12 +1,15 @@
 import controller from '../controller/home';
 
-export const routes = Object.freeze({
-    home: '/',
-});
+import routes from '../../config/routes';
 
 export default (app) => {
     /**
-     * handle all get requests on the main address, in short "deliver the app"
+     * handle all get requests on the main addresses, in short "deliver the app"
      */
-    app.get(routes.home, controller);
+    app.get([
+        routes.root,
+        routes.profile,
+        routes.user.login,
+        routes.user.register,
+    ], controller);
 };

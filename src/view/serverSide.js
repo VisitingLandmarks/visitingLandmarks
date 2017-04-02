@@ -2,27 +2,43 @@ import config from '../../config';
 
 import React from 'react';
 import {renderToString} from 'react-dom/server';
-import VisitingLandmarks from './visitingLandmarks';
+import {StaticRouter as Router} from 'react-router-dom';
+import {Provider} from 'react-redux';
+
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
-import {Provider} from 'react-redux';
+import RouteDefinition from './routeDefinition';
 
-export default (store, userAgent) => {
 
+export default (store, url, userAgent) => {
+    console.log(url);
     // Create a new Redux store instance
     // const store = createStore(reducer, applyMiddleware(thunk));
 
+    const context = {};
 
     // Render the component to a string
     const html = renderToString(
         <Provider store={store}>
-            <MuiThemeProvider muiTheme={getMuiTheme({userAgent},darkBaseTheme)}>
-            <VisitingLandmarks radiumConfig={{userAgent}} />
+            <MuiThemeProvider muiTheme={getMuiTheme({userAgent}, darkBaseTheme)}>
+                <Router
+                    location={url}
+                    context={context}
+                >
+                    <RouteDefinition store={store}/>
+                </Router>
             </MuiThemeProvider>
         </Provider>
     );
+
+    // if (context.url) {
+    //     // Somewhere a `<Redirect>` was rendered
+    //     redirect(301, context.url)
+    // } else {
+    //     // we're good, send the response
+    // }
 
     // Grab the initial state from our Redux store
     const initialState = store.getState();

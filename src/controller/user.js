@@ -114,7 +114,7 @@ export const passwordReset = (req, res, next) => {
                     next(err);
                 }
 
-                res.locals.openDialog = 'changePassword'; //@ todo: there is no const for this?
+                res.locals.openDialog = 'changePassword'; //@ todo: use react router
 
                 next();
             });

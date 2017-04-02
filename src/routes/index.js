@@ -6,7 +6,7 @@ export default (app) => {
 
     app.use('/static', express.static('static'));
     
-    home(app);
     user(app);
+    home(app);
 
 };

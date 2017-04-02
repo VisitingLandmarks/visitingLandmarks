@@ -9,9 +9,9 @@ import MainMap from './mainMap';
 import MainMenu from './mainMenu';
 
 import DialogResetPassword from './dialog/resetPassword';
-import DialogLogin from './dialog/login';
-import DialogProfile from './dialog/profile';
-import DialogRegister from './dialog/register';
+// import DialogLogin from './dialog/login';
+// import DialogProfile from './dialog/profile';
+// import DialogRegister from './dialog/register';
 
 import {onVisitLocation} from '../client/toServer';
 import {connect} from 'react-redux';
@@ -22,7 +22,7 @@ import {loginThunk} from '../redux/action/thunk/login';
 import {logoutThunk} from '../redux/action/thunk/logout';
 import {registerThunk} from '../redux/action/thunk/register';
 
-import {dialogClose, dialogOpen, followUserSet} from '../redux/action/ui';
+import {followUserSet} from '../redux/action/ui';
 
 import {dialogName as resetPasswordDialogName} from './dialog/resetPassword';
 import {dialogName as loginDialogName} from './dialog/login';
@@ -44,7 +44,6 @@ class VisitingLandmarks extends React.Component {
     }
 
     render() {
-
         return (
             <div className="mainContainer">
 
@@ -59,41 +58,52 @@ class VisitingLandmarks extends React.Component {
                 <MainMenu
                     followUser={this.props.followUser}
                     loggedIn={this.props.loggedIn}
-                    onOpenLoginDialog={this.props.onOpenLoginDialog}
-                    onOpenProfileDialog={this.props.onOpenProfileDialog}
-                    onOpenRegisterDialog={this.props.onOpenRegisterDialog}
-                    onOpenResetPasswordDialog={this.props.onOpenResetPasswordDialog}
+                    onOpenLoginDialog={()=> {
+                        this.context.router.history.push('/login');
+                    }}
+                    onOpenProfileDialog={()=> {
+                        this.context.router.history.push('/profile');
+                    }}
+                    onOpenRegisterDialog={()=> {
+                        this.context.router.history.push('/register');
+                    }}
+                    onOpenResetPasswordDialog={()=> {
+
+                    }}
                     onToggleFollowUser={this.props.onToggleFollowUser}
                     requestLogout={this.props.requestLogout}
                 />
 
-                <DialogLogin
-                    open={this.props.openDialog.login}
-                    onCloseDialog={this.props.onCloseDialog}
-                    onSubmit={this.props.requestLogin}
-                    disabled={this.props.communication[loggingIn][inProgress]}
-                    error={this.props.communication[loggingIn][failure]}
-                />
-                <DialogProfile
-                    open={this.props.openDialog.profile}
-                    onCloseDialog={this.props.onCloseDialog}
-                    categories={this.props.categories}
-                    locations={this.props.locations}
-                    visitedLocations={this.props.visitedLocations}
-                    userEmailConfirmed={this.props.userEmailConfirmed}
-                />
-                <DialogRegister
-                    open={this.props.openDialog.register}
-                    onCloseDialog={this.props.onCloseDialog}
-                    onSubmit={this.props.requestRegister}
-                    disabled={this.props.communication[registering][inProgress]}
-                    error={this.props.communication[registering][failure]}
-                />
-                <DialogResetPassword
-                    open={this.props.openDialog.passwordReset}
-                    onCloseDialog={this.props.onCloseDialog}
-                    onSubmit={this.props.requestResetPassword}
-                />
+                {/*<DialogLogin*/}
+                    {/*open={this.props.openDialog.login}*/}
+                    {/*onCloseDialog={this.props.onCloseDialog}*/}
+                    {/*onSubmit={this.props.requestLogin}*/}
+                    {/*disabled={this.props.communication[loggingIn][inProgress]}*/}
+                    {/*error={this.props.communication[loggingIn][failure]}*/}
+                {/*/>*/}
+
+                {/*<DialogProfile*/}
+                    {/*open={this.props.openDialog.register}*/}
+                    {/*onCloseDialog={this.props.onCloseDialog}*/}
+                    {/*categories={this.props.categories}*/}
+                    {/*locations={this.props.locations}*/}
+                    {/*visitedLocations={this.props.visitedLocations}*/}
+                    {/*userEmailConfirmed={this.props.userEmailConfirmed}*/}
+                {/*/>*/}
+
+                {/*<DialogRegister*/}
+                    {/*open={this.props.openDialog.register}*/}
+                    {/*onCloseDialog={this.props.onCloseDialog}*/}
+                    {/*onSubmit={this.props.requestRegister}*/}
+                    {/*disabled={this.props.communication[registering][inProgress]}*/}
+                    {/*error={this.props.communication[registering][failure]}*/}
+                {/*/>*/}
+
+                {/*<DialogResetPassword*/}
+                     {/*open={this.props.openDialog.passwordReset}*/}
+                    {/*onCloseDialog={this.props.onCloseDialog}*/}
+                    {/*onSubmit={this.props.requestResetPassword}*/}
+                {/*/>*/}
             </div>
         );
 
@@ -105,11 +115,11 @@ VisitingLandmarks.propTypes = {
     followUser: PropTypes.bool.isRequired,
     locations: PropTypes.object.isRequired,
     loggedIn: PropTypes.bool.isRequired,
-    onCloseDialog: PropTypes.func.isRequired,
-    onOpenLoginDialog: PropTypes.func.isRequired,
-    onOpenProfileDialog: PropTypes.func.isRequired,
-    onOpenRegisterDialog: PropTypes.func.isRequired,
-    onOpenResetPasswordDialog: PropTypes.func.isRequired,
+    // onCloseDialog: PropTypes.func.isRequired,
+    // onOpenLoginDialog: PropTypes.func.isRequired,
+    // onOpenProfileDialog: PropTypes.func.isRequired,
+    // onOpenRegisterDialog: PropTypes.func.isRequired,
+    // onOpenResetPasswordDialog: PropTypes.func.isRequired,
     onToggleFollowUser: PropTypes.func.isRequired,
     openDialog: PropTypes.object.isRequired,
     communication: PropTypes.object.isRequired,
@@ -119,6 +129,10 @@ VisitingLandmarks.propTypes = {
     requestResetPassword: PropTypes.func.isRequired,
     userEmailConfirmed: PropTypes.bool.isRequired,
     visitedLocations: PropTypes.object.isRequired,
+};
+
+VisitingLandmarks.contextTypes = {
+    router: React.PropTypes.object,
 };
 
 
@@ -152,11 +166,11 @@ const mapDispatchToProps = (dispatch) => {
 
         onToggleFollowUser: (newValue) => dispatch(followUserSet(newValue)),
 
-        onCloseDialog: () => dispatch(dialogClose()),
-        onOpenLoginDialog: () => dispatch(dialogOpen(loginDialogName)),
-        onOpenProfileDialog: () => dispatch(dialogOpen(profileDialogName)),
-        onOpenRegisterDialog: () => dispatch(dialogOpen(registerDialogName)),
-        onOpenResetPasswordDialog: () => dispatch(dialogOpen(resetPasswordDialogName)),
+        // onCloseDialog: () => dispatch(dialogClose()),
+        // onOpenLoginDialog: () => dispatch(dialogOpen(loginDialogName)),
+        // onOpenProfileDialog: () => dispatch(dialogOpen(profileDialogName)),
+        // onOpenRegisterDialog: () => dispatch(dialogOpen(registerDialogName)),
+        // onOpenResetPasswordDialog: () => dispatch(dialogOpen(resetPasswordDialogName)),
     };
 };
 

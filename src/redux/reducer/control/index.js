@@ -7,22 +7,6 @@ export default (oldState = initialState, action) => {
 
     switch (action.type) {
 
-    case DIALOG_CLOSE:
-        {
-            return {
-                ...oldState,
-                openDialog: false,
-            };
-        }
-
-    case DIALOG_OPEN:
-        {
-            return {
-                ...oldState,
-                openDialog: action.dialog,
-            };
-        }
-
     case FOLLOW_USER_SET:
         {
             return {

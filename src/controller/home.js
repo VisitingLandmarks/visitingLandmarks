@@ -8,19 +8,13 @@ import reducer from '../redux/reducer';
 import {loginSuccess} from '../redux/action/thunk/login';
 import {categoriesSet} from '../redux/action/categories';
 import {locationsSet} from '../redux/action/locations';
-import {dialogOpen} from '../redux/action/ui';
 
 export default (req, res) => {
 
     const store = createStore(reducer, applyMiddleware(thunk));
 
-
     if (req.user) {
-        store.dispatch(loginSuccess(req.user));
-    }
-
-    if (res.locals.openDialog) {
-        store.dispatch(dialogOpen(res.locals.openDialog));
+        store.dispatch(loginSuccess({user: req.user}));
     }
 
     Promise.all([
@@ -28,7 +22,7 @@ export default (req, res) => {
         dataRepository.getAllLocations().then((locations) => store.dispatch(locationsSet(locations))),
     ])
         .then(() => {
-            res.send(serverSideView(store, req.headers['user-agent']));
+            res.send(serverSideView(store, req.url, req.headers['user-agent']));
         });
 
 

@@ -1,6 +1,8 @@
 import deepFreeze from 'deep-freeze';
 
 export default deepFreeze({
+    root : '/',
+    profile : '/profile',
     user: {
         confirm: '/confirm/:token',
         login: '/login',

@@ -1,4 +1,5 @@
 import React, {PropTypes} from 'react';
+import {connect} from 'react-redux';
 
 import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -19,19 +20,20 @@ export const dialogName = 'Profile';
 const formatVisitedLocations = (locations, visitedLocations) => {
 
     return Object.keys(visitedLocations)
-        .map((key)=> {
+        .map((key) => {
             return {
                 ...locations[key],
-                id : key,
+                id: key,
                 dateTimeOfVisit: new Date(visitedLocations[key]),
             };
 
         })
-        .sort((a, b)=> {
+        .sort((a, b) => {
             return a.dateTimeOfVisit - b.dateTimeOfVisit;
         })
         .map((element) => {
-            return <li key={element.id}>{element.dateTimeOfVisit.toString()} : {element.name} {element.originalUrl}</li>;
+            return <li key={element.id}>{element.dateTimeOfVisit.toString()}
+                : {element.name} {element.originalUrl}</li>;
         });
 };
 
@@ -45,14 +47,14 @@ const formatVisitedLocations = (locations, visitedLocations) => {
 const formatCategories = (categories, visitedLocations) => {
 
     return Object.keys(categories)
-        .map((key)=> {
+        .map((key) => {
             return {
                 name: categories[key].name,
                 visited: countVisitedLocationsInCategory(categories[key].items, visitedLocations),
                 total: categories[key].items.length,
             };
         })
-        .sort((a, b)=> {
+        .sort((a, b) => {
             return getSortScore(a) - getSortScore(b);
         })
         .map((element) => {
@@ -66,10 +68,15 @@ const formatCategories = (categories, visitedLocations) => {
 /**
  * the profile dialog
  */
-export default class DialogProfile extends React.Component {
+class DialogProfile extends React.Component {
 
     constructor(props) {
         super(props);
+        this.onCloseDialog = this.onCloseDialog.bind(this);
+    }
+
+    onCloseDialog() {
+        this.context.router.history.push('/');
     }
 
     render() {
@@ -78,7 +85,7 @@ export default class DialogProfile extends React.Component {
             <RaisedButton
                 label="Close"
                 primary={true}
-                onTouchTap={this.props.onCloseDialog}
+                onTouchTap={this.onCloseDialog}
             />,
         ];
 
@@ -89,7 +96,7 @@ export default class DialogProfile extends React.Component {
             <Dialog
                 title={dialogName}
                 actions={actions}
-                open={this.props.open}
+                open={true}
             >
                 <div>
                     <label>Confirmed: </label>{this.props.userEmailConfirmed ? <DoneIcon /> : null}
@@ -108,10 +115,32 @@ export default class DialogProfile extends React.Component {
 }
 
 DialogProfile.propTypes = {
-    onCloseDialog: PropTypes.func.isRequired,
     userEmailConfirmed: PropTypes.bool.isRequired,
-    open: PropTypes.bool.isRequired,
     locations: PropTypes.object.isRequired,
     categories: PropTypes.object.isRequired,
     visitedLocations: PropTypes.object.isRequired,
 };
+
+DialogProfile.contextTypes = {
+    router: React.PropTypes.object,
+};
+
+
+const mapStateToProps = (state) => {
+    return {
+        categories: state.data.categories,
+        locations: state.data.locations,
+        userEmailConfirmed: state.session.user && state.session.user.isConfirmed || false,
+        visitedLocations: state.session.user && state.session.user.visited || {},
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+    };
+};
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(DialogProfile);

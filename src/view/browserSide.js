@@ -1,11 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import VisitingLandmarks from './visitingLandmarks';
+import {BrowserRouter as Router} from 'react-router-dom';
 import {Provider} from 'react-redux';
 import {createStore, applyMiddleware, compose} from 'redux';
 import thunk from 'redux-thunk';
 import reducer from '../redux/reducer';
 import clientSocket from '../client/clientSocket';
+
+import RouteDefinition from './routeDefinition';
 
 //Material UI
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
@@ -24,7 +26,9 @@ delete window.__INITIAL_STATE__;
 ReactDOM.render(
     <Provider store={store}>
         <MuiThemeProvider muiTheme={getMuiTheme({userAgent: navigator.userAgent}, darkBaseTheme)}>
-            <VisitingLandmarks />
+            <Router>
+                <RouteDefinition store={store}/>
+            </Router>
         </MuiThemeProvider>
     </Provider>
     , document.getElementById('root'));
