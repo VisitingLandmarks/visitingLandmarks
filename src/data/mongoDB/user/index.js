@@ -19,6 +19,11 @@ export default module.exports = function (mongoDB) {
             required: 'Email address is required',
             match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,8})+$/, 'Please fill a valid email address'],
         },
+        facebookId: {
+            type: String,
+            trim: true,
+            unique: true,
+        },
         isAdmin: {
             type: Boolean,
             required: true,
@@ -69,7 +74,7 @@ export default module.exports = function (mongoDB) {
 
     //build model based on scheme
     const UserModel = mongoDB.model(collectionName, userSchema);
-    extensions.forEach((extension)=> {
+    extensions.forEach((extension) => {
         extension && extension(UserModel);
     });
 

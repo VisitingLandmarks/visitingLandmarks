@@ -51,10 +51,10 @@ export const register = (req, res, next) => {
 
     req.log.debug({email: req.body.username, password: req.body.password}, 'new user registered');
     dataRepository.User.register(req.body.username, req.body.password)
-        .then((user)=> {
+        .then((user) => {
             if (user) {
                 sendEmailUserRegistered(user)
-                    .then(()=> {
+                    .then(() => {
                         //invoke next middleware, which will authenticate the new registered user
                         next();
                     });
@@ -64,6 +64,12 @@ export const register = (req, res, next) => {
             next(err);
         });
 
+};
+
+
+export const passwordChange = (req, res) => {
+    req.user.setPassword(req.body.password);
+    res.send();
 };
 
 export const passwordResetRequest = (req, res) => {
@@ -79,17 +85,17 @@ export const passwordResetRequest = (req, res) => {
     }
 
     dataRepository.findUserByEmail(req.body.username)
-        .then((user)=> {
+        .then((user) => {
             if (!user) {
                 throw 'user during request does not exist';
             }
             return user.newPasswordResetToken()
                 .then(sendEmailUserResetPassword)
-                .then(()=> {
+                .then(() => {
                     res.send();
                 });
         })
-        .catch((err)=> {
+        .catch((err) => {
             req.log.error(err, 'unable to handle resetPassword request');
             res.status(403).send();
         });
@@ -127,7 +133,7 @@ export const passwordReset = (req, res, next) => {
 };
 
 
-export const restrictLoginUser = (req, res, next)=> {
+export const restrictLoginUser = (req, res, next) => {
     if (!req.user) {
         res.status(403).send();
         return;
@@ -139,6 +145,6 @@ export const restrictLoginUser = (req, res, next)=> {
 /**
  * answer a request with the user object
  */
-export const sendUser = (req, res)=> {
+export const sendUser = (req, res) => {
     res.json({user: req.user});
 };

@@ -12,7 +12,7 @@ const data = require('./data');
 const io = setupIO(server);
 
 //setup authentication
-require('./modules/authentication')(app, io, data.User.serializeUser, data.User.deserializeUser, data.User.authenticate);
+require('./modules/authentication')(app, io, data.User.serializeUser, data.User.deserializeUser, data.User.authenticate, data.User.findOrCreate);
 
 //setup routes - very important: apply AFTER authentication
 setupRoutes(app);

@@ -32,9 +32,6 @@ class DialogRegister extends React.Component {
 }
 
 DialogRegister.propTypes = {
-    disabled: PropTypes.bool.isRequired,
-    error: PropTypes.string.isRequired,
-
     onCloseDialog: PropTypes.func.isRequired,
     requestRegister: PropTypes.func.isRequired,
 };

@@ -82,10 +82,16 @@ class DialogProfile extends React.Component {
 
         const actions = [
             <RaisedButton
+                label="Change Password"
+                primary={false}
+                onTouchTap={this.props.onChangePasswordDialog}
+            />,
+            <RaisedButton
                 label="Close"
                 primary={true}
                 onTouchTap={this.props.onCloseDialog}
             />,
+
         ];
 
         const formatedVisitedLocations = formatVisitedLocations(this.props.locations, this.props.visitedLocations);
@@ -120,6 +126,7 @@ DialogProfile.propTypes = {
     visitedLocations: PropTypes.object.isRequired,
 
     onCloseDialog: PropTypes.func.isRequired,
+    onChangePasswordDialog: PropTypes.func.isRequired,
 };
 
 DialogProfile.contextTypes = {
@@ -138,6 +145,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        onChangePasswordDialog: () => dispatch(navigateTo(routes.user.passwordChange)),
         onCloseDialog: () => dispatch(navigateTo(routes.root)),
     };
 };

@@ -3,13 +3,13 @@ import {connect} from 'react-redux';
 
 import DialogUserPassword from './userPassword';
 
-import {resetPasswordThunk, resettingPassword} from '../../redux/action/thunk/resetPassword';
+import {changePasswordThunk, changingPassword} from '../../redux/action/thunk/changePassword';
 import {navigateTo} from '../../redux/action/ui';
 import {failure, inProgress} from '../../redux/reducer/communication';
 
 import routes from '../../../config/routes';
 
-class ResetPassword extends React.Component {
+class ChangePassword extends React.Component {
 
     constructor(props) {
         super(props);
@@ -20,39 +20,39 @@ class ResetPassword extends React.Component {
             <DialogUserPassword
                 {...this.props}
                 open={true}
-                dialogName="Forgot Password?"
-                showPasswordLine={false}
-                onSubmit={this.props.requestResetPassword}
+                dialogName="Change Password"
+                showUsernameLine={false}
+                onSubmit={this.props.requestChangePassword}
             />
         );
     }
 
 }
 
-ResetPassword.propTypes = {
+ChangePassword.propTypes = {
     onCloseDialog: PropTypes.func.isRequired,
-    requestResetPassword: PropTypes.func.isRequired,
+    requestChangePassword: PropTypes.func.isRequired,
 };
-ResetPassword.contextTypes = {
+ChangePassword.contextTypes = {
     router: React.PropTypes.object,
 };
 
 
 const mapStateToProps = (state) => {
     return {
-        disabled: state.communication[resettingPassword][inProgress],
-        error: state.communication[resettingPassword][failure],
+        disabled: state.communication[changingPassword][inProgress],
+        error: state.communication[changingPassword][failure],
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
         onCloseDialog: () => dispatch(navigateTo(routes.root)),
-        requestResetPassword: (username) => dispatch(resetPasswordThunk({username})),
+        requestChangePassword: (username, password) => dispatch(changePasswordThunk({password})),
     };
 };
 
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(ResetPassword);
+)(ChangePassword);

@@ -3,6 +3,7 @@ import * as controller from '../controller/user';
 import routes from '../../config/routes';
 import {postFactory} from '../modules/validation';
 import registerSchema from '../modules/validation/schema/register';
+import passwordChangeSchema from '../modules/validation/schema/passwordChange';
 
 const authenticationStrategy = 'local';
 
@@ -54,6 +55,17 @@ export default (app) => {
 
 
     /**
+     * request a password change
+     */
+    app.post(
+        routes.user.passwordChange,
+        controller.restrictLoginUser,
+        postFactory(passwordChangeSchema),
+        controller.passwordChange
+    );
+
+
+    /**
      * request a password reset
      */
     app.post(
@@ -69,6 +81,16 @@ export default (app) => {
     app.get(
         routes.user.passwordReset,
         controller.passwordReset
+    );
+
+    app.get(
+        '/auth/facebook',
+        passport.authenticate('facebook', {scope: ['email']})
+    );
+
+    app.get('/auth/facebook/callback',
+        passport.authenticate('facebook', {failureRedirect: '/login'}),
+        (req, res) => res.redirect(routes.root)
     );
 
 };

@@ -1,7 +1,8 @@
 import localStrategy from './local';
+import facebookStrategy from './facebook';
 import config from '../../../config';
 
-module.exports = (app, io, serializeUser, deserializeUser, authenticate)=> {
+module.exports = (app, io, serializeUser, deserializeUser, authenticate, findOrCreate)=> {
 
     const logger = require('../../modules/logger');
     const passport = require('passport');
@@ -31,6 +32,7 @@ module.exports = (app, io, serializeUser, deserializeUser, authenticate)=> {
 
     //setup strategies
     localStrategy(app, passport, authenticate);
+    facebookStrategy(app, passport, findOrCreate);
 
     const onAuthorizeSuccess = (data, accept) => {
         logger.info({userId: data.user._id}, 'socket connection authorized');

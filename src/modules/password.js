@@ -24,7 +24,7 @@ export const verify = (password, passwordHash, salt) => {
  * @param salt
  * @returns {Promise}
  */
-export const generate = (password, passwordSalt = generateRandomString()) => {
+export const generate = (password = generateRandomString(), passwordSalt = generateRandomString()) => {
 
     //ensure password is a string
     password = password.toString();

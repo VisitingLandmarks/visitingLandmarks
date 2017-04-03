@@ -33,7 +33,7 @@ export default module.exports = (userSchema) => {
             }
 
             verifyPassword(password, user.passwordHash, user.passwordSalt)
-                .then(()=> {
+                .then(() => {
 
                     // remove password and salt from the result without modifying the document.
                     user = user.toObject();
@@ -44,7 +44,7 @@ export default module.exports = (userSchema) => {
                     // return user representing object, not the user model! if everything is ok
                     callback(err, user);
                 })
-                .catch((err)=> {
+                .catch((err) => {
                     logger.info({email, err}, 'wrong password during login');
                     callback(null, false, {message: 'Incorrect login'});
                 });
@@ -52,7 +52,61 @@ export default module.exports = (userSchema) => {
         });
     };
 
-//@todo a method to change password -> password reset / password change
+
+    /**
+     * find the user in the db and create a new one if not found
+     * this is needed for social media logins
+     * @param email
+     * @param password
+     * @param callback
+     */
+    userSchema.statics.findOrCreate = (findBy, data) => {
+
+        //@todo: better flow
+        //1. check for facebook id
+        //2. if facebook id is found -> login (don't sync email)
+        //3. if not found, check email
+        //3a. if email is used by other user -> login as this user ???
+        //3b. if email is not used -> create new user
+
+        return UserModel.findOne(findBy).exec() //@todo: can I trust email address provided by facebook or can this be used to hijack accounts
+            .then((user) => {
+
+                //there is already a user
+                if (user) {
+
+                    //update user with data provided
+                    Object.keys(data).forEach((key) => {
+                        user[key] = data[key];
+                    });
+
+                    return user.save();
+
+                }
+
+                return generatePasswordHash()
+                    .then((passwordData) => {
+                        const passwordHash = passwordData.passwordHash;
+                        const passwordSalt = passwordData.passwordSalt;
+                        const confirmationToken = generateRandomString();
+                        const resetPasswordToken = generateRandomString();
+                        return new UserModel({
+                            ...data,
+                            passwordHash,
+                            passwordSalt,
+                            confirmationToken,
+                            resetPasswordToken,
+                            visited: {},
+                        })
+                            .save()
+                            .catch((message) => {
+                                logger.error({...data, message}, 'mongoDB Error in userSchema.statics.register');
+                            });
+                    });
+
+            });
+    };
+
 
     /**
      * register a new user
@@ -81,10 +135,10 @@ export default module.exports = (userSchema) => {
                     visited: {},
                 })
                     .save()
-                    .then((user)=> {
+                    .then((user) => {
                         return user.toObject();
                     })
-                    .catch((message)=> {
+                    .catch((message) => {
                         logger.error({email, message}, 'mongoDB Error in userSchema.statics.register');
                     });
 
@@ -119,7 +173,7 @@ export default module.exports = (userSchema) => {
                 this.passwordResetToken = generateRandomString();
                 return this.save();
             })
-            .catch((message)=> {
+            .catch((message) => {
                 logger.error({userId: this._id, message}, 'mongoDB Error in userSchema.methods.setPassword');
             });
 
@@ -175,7 +229,7 @@ export default module.exports = (userSchema) => {
         UserModel.findById(id).select('-__v').exec(done);
     };
 
-    return (model)=> {
+    return (model) => {
         UserModel = model;
     };
 

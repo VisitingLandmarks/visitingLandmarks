@@ -9,6 +9,7 @@ export default (app) => {
     app.get([
         routes.root,
         routes.profile,
+        routes.user.passwordChange,
         routes.user.resetPassword,
         routes.user.login,
         routes.user.register,

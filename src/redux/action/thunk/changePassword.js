@@ -1,7 +1,6 @@
 import axios from 'axios';
 import routes from '../../../../config/routes';
 import builder from '../builder';
-// import {dialogClose} from '../ui';
 
 export const changingPassword = 'changingPassword';
 
@@ -14,11 +13,12 @@ export const passwordChangeFailure = builder(PASSWORD_CHANGE_FAILURE);
 export const PASSWORD_CHANGE_SUCCESS = 'PASSWORD_CHANGE_SUCCESS';
 export const passwordChangeSuccess = builder(PASSWORD_CHANGE_SUCCESS);
 
+import {navigateTo} from '../../action/ui';
 
-export function changePasswordThunk(newPassword) {
+export function changePasswordThunk(data) {
     return function (dispatch) {
         dispatch(passwordChange());
-        axios.post(routes.user.passwordChange, {password: newPassword})
+        axios.post(routes.user.passwordChange, data)
             .then((response) => {
                 dispatch(passwordChangeSuccess(response));
             })
@@ -31,7 +31,7 @@ export function changePasswordThunk(newPassword) {
             })
 
             .then(() => {
-                // dispatch(dialogClose());
+                dispatch(navigateTo(routes.root));
             })
 
             .catch((response) => dispatch(passwordChangeFailure(response)));

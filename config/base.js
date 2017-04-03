@@ -18,4 +18,7 @@ module.exports = {
             from: '"Visiting Landmarks" <info@visitinglandmarks.com>',
         },
     },
+    authProvider : {
+        facebook : {},
+    },
 };
