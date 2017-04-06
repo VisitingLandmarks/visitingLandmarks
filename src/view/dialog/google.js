@@ -8,16 +8,18 @@ const style = {
         width: '100%',
         marginTop:10,
     },
-    backgroundColor: '#3b5998',
+    backgroundColor: '#fff',
+    labelColor:'#000',
 };
 
-const facebook = (props) => {
+const google = (props) => {
     return <RaisedButton
-        href={routes.auth.facebook.entry}
+        href={routes.auth.google.entry}
         backgroundColor={style.backgroundColor}
-        label="Register and Login with Facebook"
+        label="Sign In with Google"
+        labelColor={style.labelColor}
         style={style.button}
     ></RaisedButton>;
 };
 
-export default facebook;
+export default google;

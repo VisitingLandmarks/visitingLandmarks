@@ -14,7 +14,7 @@ const style = {
         maxWidth: '400px',
     },
     form: {
-        marginBottom: 20,
+        marginBottom: 10,
     },
 };
 
