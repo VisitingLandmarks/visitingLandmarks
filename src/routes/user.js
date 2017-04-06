@@ -4,8 +4,8 @@ import routes from '../../config/routes';
 import {postFactory} from '../modules/validation';
 import registerSchema from '../modules/validation/schema/register';
 import passwordChangeSchema from '../modules/validation/schema/passwordChange';
+import {strategyName as localAuthenticationStrategy} from '../modules/authentication/local';
 
-const authenticationStrategy = 'local';
 
 export default (app) => {
 
@@ -16,7 +16,7 @@ export default (app) => {
      */
     app.post(
         routes.user.login,
-        passport.authenticate(authenticationStrategy),
+        passport.authenticate(localAuthenticationStrategy),
         controller.sendUser
     );
 
@@ -49,7 +49,7 @@ export default (app) => {
         routes.user.register,
         postFactory(registerSchema),
         controller.register,
-        passport.authenticate(authenticationStrategy),
+        passport.authenticate(localAuthenticationStrategy),
         controller.sendUser
     );
 
@@ -81,16 +81,6 @@ export default (app) => {
     app.get(
         routes.user.passwordReset,
         controller.passwordReset
-    );
-
-    app.get(
-        '/auth/facebook',
-        passport.authenticate('facebook', {scope: ['email']})
-    );
-
-    app.get('/auth/facebook/callback',
-        passport.authenticate('facebook', {failureRedirect: '/login'}),
-        (req, res) => res.redirect(routes.root)
     );
 
 };

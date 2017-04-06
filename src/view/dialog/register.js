@@ -2,6 +2,7 @@ import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
 
 import DialogUserPassword from './userPassword';
+import Facebook from './facebook';
 
 import {registerThunk} from '../../redux/action/thunk/register';
 import {registering} from '../../redux/action/thunk/register';
@@ -25,7 +26,9 @@ class DialogRegister extends React.Component {
                 open={true} //@todo: remove
                 dialogName={dialogName}
                 onSubmit={this.props.requestRegister}
-            />
+            >
+                <Facebook />
+            </DialogUserPassword>
         );
     }
 

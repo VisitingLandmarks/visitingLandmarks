@@ -7,4 +7,10 @@ module.exports = {
     email: {
         smtpTransport: process.env.SMTP_TRANSPORT,
     },
+    authProvider : {
+        facebook : {
+            clientID: process.env.FACEBOOK_CLIENT_ID,
+            clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
+        },
+    },
 };

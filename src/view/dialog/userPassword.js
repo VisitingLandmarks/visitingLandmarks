@@ -4,13 +4,18 @@ import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 
-const buttonStyle = {
-    margin: 12,
-};
 
-const dialogStyle = {
-    width: '100%',
-    maxWidth: '400px',
+const style = {
+    button: {
+        margin: 12,
+    },
+    dialog: {
+        width: '100%',
+        maxWidth: '400px',
+    },
+    form: {
+        marginBottom: 20,
+    },
 };
 
 
@@ -57,14 +62,14 @@ export default class DialogUserPassword extends React.Component {
 
         const actions = [
             <RaisedButton
-                style={buttonStyle}
+                style={style.button}
                 label="Cancel"
                 primary={true}
                 onTouchTap={this.props.onCloseDialog}
                 disabled={this.props.disabled}
             />,
             <RaisedButton
-                style={buttonStyle}
+                style={style.button}
                 label="Submit"
                 primary={true}
                 onTouchTap={this.handleSubmit}
@@ -102,13 +107,13 @@ export default class DialogUserPassword extends React.Component {
 
         return (
             <Dialog
-                contentStyle={dialogStyle}
+                contentStyle={style.dialog}
                 title={this.props.dialogName}
                 actions={actions}
                 modal={true}
                 open={this.props.open}
             >
-                <form>
+                <form style={style.form}>
                     <table>
                         <tbody>
                         {(this.props.showUsernameLine ? usernameLine : null)}
@@ -116,6 +121,7 @@ export default class DialogUserPassword extends React.Component {
                         </tbody>
                     </table>
                 </form>
+                {this.props.children}
             </Dialog>
         );
 
@@ -124,6 +130,7 @@ export default class DialogUserPassword extends React.Component {
 
 
 DialogUserPassword.propTypes = {
+    children: PropTypes.array.isRequired,
     dialogName: PropTypes.string.isRequired,
     disabled: PropTypes.bool,
     error: PropTypes.string,

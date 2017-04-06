@@ -1,10 +1,9 @@
 import config from '../../../config';
 
-export const strategyName = 'facebook';
-const FacebookStrategy = require('passport-facebook').Strategy;
-const requiredFields = ['id', 'email'];
+export const strategyName = 'google';
+const FacebookStrategy = require('passport-google-oauth2').Strategy;
+// const requiredFields = ['id', 'email'];
 import routes from  '../../../config/routes';
-
 
 /**
  *setup passport to use strategy
@@ -14,12 +13,11 @@ import routes from  '../../../config/routes';
  */
 export default (app, passport, findOrCreateUser) => {
     passport.use(new FacebookStrategy({
-        ...config.authProvider.facebook,
-        callbackURL: config.baseDomain + routes.auth.facebook.callback,
-        profileFields: requiredFields,
+        ...config.authProvider.google,
+        callbackURL: config.baseDomain + routes.auth.google.callback,
     },
         function (accessToken, refreshToken, profile, cb) {
-            findOrCreateUser({email: profile.emails[0].value}, {facebookId: profile.id, email: profile.emails[0].value})
+            findOrCreateUser({email: profile.email}, {googleId: profile.id, email: profile.email})
                 .catch((err) => cb(err, null))
                 .then((user) => cb(null, user));
         }

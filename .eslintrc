@@ -28,9 +28,17 @@
     "indent": [
       "error",
       4,
-      { "SwitchCase": 1 }
+      {
+        "SwitchCase": 1
+      }
     ],
     "no-var": "error",
+    "no-unused-vars": [
+      "error",
+      {
+        "args": "none"
+      }
+    ],
     "comma-dangle": [
       "error",
       "always-multiline"

@@ -1,8 +1,9 @@
+export const strategyName = 'local';
 const LocalStrategy = require('passport-local').Strategy;
 
 
 /**
- *setup passport to use a local (manual) strategy
+ *setup passport to use strategy
  * @param app
  * @param passport
  * @param authenticateUser
