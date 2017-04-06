@@ -12,8 +12,6 @@ import routes from '../../../config/routes';
 
 import {navigateTo} from '../../redux/action/ui';
 
-export const dialogName = 'Profile';
-
 
 /**
  * format the visited locations for the profile
@@ -99,7 +97,7 @@ class DialogProfile extends React.Component {
 
         return (
             <Dialog
-                title={dialogName}
+                title={'Profile - '+ this.props.userEmail}
                 actions={actions}
                 open={true}
             >
@@ -120,6 +118,7 @@ class DialogProfile extends React.Component {
 }
 
 DialogProfile.propTypes = {
+    userEmail: PropTypes.string.isRequired,
     userEmailConfirmed: PropTypes.bool.isRequired,
     locations: PropTypes.object.isRequired,
     categories: PropTypes.object.isRequired,
@@ -138,6 +137,7 @@ const mapStateToProps = (state) => {
     return {
         categories: state.data.categories,
         locations: state.data.locations,
+        userEmail: state.session.user.email,
         userEmailConfirmed: state.session.user && state.session.user.isConfirmed || false,
         visitedLocations: state.session.user && state.session.user.visited || {},
     };
