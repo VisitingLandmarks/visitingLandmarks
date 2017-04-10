@@ -54,61 +54,6 @@ export default module.exports = (userSchema) => {
 
 
     /**
-     * find the user in the db and create a new one if not found
-     * this is needed for social media logins
-     * @param email
-     * @param password
-     * @param callback
-     */
-    userSchema.statics.findOrCreate = (findBy, data) => {
-
-        //@todo: better flow
-        //1. check for facebook id
-        //2. if facebook id is found -> login (don't sync email)
-        //3. if not found, check email
-        //3a. if email is used by other user -> login as this user ???
-        //3b. if email is not used -> create new user
-
-        return UserModel.findOne(findBy).exec() //@todo: can I trust email address provided by facebook or can this be used to hijack accounts
-            .then((user) => {
-
-                //there is already a user
-                if (user) {
-
-                    //update user with data provided
-                    Object.keys(data).forEach((key) => {
-                        user[key] = data[key];
-                    });
-
-                    return user.save();
-
-                }
-
-                return generatePasswordHash()
-                    .then((passwordData) => {
-                        const passwordHash = passwordData.passwordHash;
-                        const passwordSalt = passwordData.passwordSalt;
-                        const confirmationToken = generateRandomString();
-                        const resetPasswordToken = generateRandomString();
-                        return new UserModel({
-                            ...data,
-                            passwordHash,
-                            passwordSalt,
-                            confirmationToken,
-                            resetPasswordToken,
-                            visited: {},
-                        })
-                            .save()
-                            .catch((message) => {
-                                logger.error({...data, message}, 'mongoDB Error in userSchema.statics.register');
-                            });
-                    });
-
-            });
-    };
-
-
-    /**
      * register a new user
      * @param email
      * @param clearTextPassword
@@ -140,8 +85,47 @@ export default module.exports = (userSchema) => {
                     })
                     .catch((message) => {
                         logger.error({email, message}, 'mongoDB Error in userSchema.statics.register');
+                        throw message;
                     });
 
+            });
+    };
+
+
+
+    /**
+     * register a new user
+     * @param email
+     * @param clearTextPassword
+     * @param name (optional)
+     * @returns {Promise}
+     */
+    userSchema.statics.registerProvider = (data) => {
+
+        //@todo: verify security level of password
+        return generatePasswordHash()
+            .then((passwordData) => {
+
+                const passwordHash = passwordData.passwordHash;
+                const passwordSalt = passwordData.passwordSalt;
+                const confirmationToken = generateRandomString();
+                const resetPasswordToken = generateRandomString();
+
+                return new UserModel({
+                    ...data,
+                    passwordHash,
+                    passwordSalt,
+                    confirmationToken,
+                    resetPasswordToken,
+                    visited: {},
+                })
+                    .save()
+                    .catch((message) => {
+                        logger.error({
+                            ...data,
+                            message,
+                        }, 'mongoDB Error in userSchema.statics.registerProvider');
+                    });
             });
     };
 

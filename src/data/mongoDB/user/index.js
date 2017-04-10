@@ -24,6 +24,11 @@ export default module.exports = function (mongoDB) {
             trim: true,
             unique: true,
         },
+        googleId: {
+            type: String,
+            trim: true,
+            unique: true,
+        },
         isAdmin: {
             type: Boolean,
             required: true,

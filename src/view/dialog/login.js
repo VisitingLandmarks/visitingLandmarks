@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 
 import DialogUserPassword from './userPassword';
 import Facebook from './facebook';
+import Google from './google';
 
 import {loginThunk, loggingIn} from '../../redux/action/thunk/login';
 import {navigateTo} from '../../redux/action/ui';
@@ -25,7 +26,10 @@ class DialogLogin extends React.Component {
                 open={true}
                 dialogName={dialogName}
                 onSubmit={this.props.requestLogin}
-            >   <Facebook /></DialogUserPassword>
+            >
+                <Facebook />
+                <Google />
+            </DialogUserPassword>
         );
     }
 

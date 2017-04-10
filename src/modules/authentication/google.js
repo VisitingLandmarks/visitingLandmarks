@@ -11,13 +11,13 @@ import routes from  '../../../config/routes';
  * @param passport
  * @param authenticateUser
  */
-export default (app, passport, findOrCreateUser) => {
+export default (app, passport, registerProvider) => {
     passport.use(new FacebookStrategy({
         ...config.authProvider.google,
         callbackURL: config.baseDomain + routes.auth.google.callback,
     },
         function (accessToken, refreshToken, profile, cb) {
-            findOrCreateUser({email: profile.email}, {googleId: profile.id, email: profile.email})
+            registerProvider({googleId: profile.id}, {email: profile.email})
                 .catch((err) => cb(err, null))
                 .then((user) => cb(null, user));
         }

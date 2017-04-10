@@ -89,8 +89,9 @@ export default module.exports = function (mongoDB) {
         usageTerm: 1,
     };
 
-    //fancy index for geo distance calculation
-    locationSchema.index({location: '2dsphere'});
+    // fancy index for geo distance calculation
+    //@todo: find a good use case
+    // locationSchema.index({location: '2dsphere'});
 
 
     /**

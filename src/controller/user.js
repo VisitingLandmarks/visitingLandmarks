@@ -37,6 +37,46 @@ export const logout = (req, res) => {
 };
 
 
+/**
+ * find the user in the db and create a new one if not found
+ * this is needed for social media logins
+ * @param providerCriteria
+ * @param emailCriteria
+ */
+export const registerProvider = (providerCriteria, emailCriteria) => {
+
+    // 1. check for provider id
+    return dataRepository.User.findOne(providerCriteria).then((user) => {
+
+        if (user) { // 2. if provider id is found -> login (don't sync email)
+            return user;
+        }
+
+        //3. if not found, check email
+        return dataRepository.User.findOne(emailCriteria).then((user) => {
+
+            if (user) { // 3a. if email is used by other user -> login as this user and add provider id
+
+                //update user with data provided
+                Object.keys(providerCriteria).forEach((key) => {
+                    user[key] = providerCriteria[key];
+                });
+
+                return user.save();
+            }
+
+            // 3b. if email is not used -> create new user
+            return dataRepository.User.registerProvider({
+                ...providerCriteria,
+                ...emailCriteria,
+            }); //@todo: send email
+
+        });
+
+    });
+};
+
+
 export const register = (req, res, next) => {
 
     //register is only possible if not logged in
@@ -50,15 +90,14 @@ export const register = (req, res, next) => {
     }
 
     req.log.debug({email: req.body.username, password: req.body.password}, 'new user registered');
+
     dataRepository.User.register(req.body.username, req.body.password)
         .then((user) => {
-            if (user) {
-                sendEmailUserRegistered(user)
-                    .then(() => {
-                        //invoke next middleware, which will authenticate the new registered user
-                        next();
-                    });
-            }
+            sendEmailUserRegistered(user)
+                .then(() => {
+                    //invoke next middleware, which will authenticate the new registered user
+                    next();
+                });
         })
         .catch((err) => {
             next(err);
