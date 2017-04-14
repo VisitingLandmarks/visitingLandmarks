@@ -1,4 +1,5 @@
-import React, {PropTypes} from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 
 import Dialog from 'material-ui/Dialog';
@@ -129,7 +130,7 @@ DialogProfile.propTypes = {
 };
 
 DialogProfile.contextTypes = {
-    router: React.PropTypes.object,
+    router: PropTypes.object,
 };
 
 

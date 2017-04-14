@@ -1,3 +1,5 @@
+process.traceDeprecation = true;
+
 import config from '../config';
 import setupRoutes from './routes';
 import {setupIO} from './modules/sendActionToAllConnectionOfAUser';

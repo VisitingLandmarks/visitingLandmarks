@@ -2,6 +2,8 @@ const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const autoprefixer = require('autoprefixer');
 const path = require('path');
+const emptyShim = path.resolve(__dirname, './emptyShim.js');
+
 
 module.exports = function (grunt) {
 
@@ -10,6 +12,16 @@ module.exports = function (grunt) {
             './src/view/browserSide.js',
             './src/style/main.scss',
         ],
+        resolve: {
+            // These shims are needed for bunyan
+            alias: {
+                'dtrace-provider': emptyShim,
+                fs: emptyShim,
+                'safe-json-stringify': emptyShim,
+                mv: emptyShim,
+                'source-map-support': emptyShim,
+            },
+        },
         output: {
             path: path.resolve(__dirname, '../static/'),
             filename: 'all.js',
@@ -17,7 +29,7 @@ module.exports = function (grunt) {
         module: {
             rules: [
                 {
-                    test: /.js$/i,
+                    test: /\.(js)$/i,
                     loader: 'babel-loader',
                     exclude: /node_modules/,
                     query: {

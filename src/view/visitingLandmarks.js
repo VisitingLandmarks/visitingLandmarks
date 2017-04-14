@@ -1,4 +1,5 @@
-import React, {PropTypes} from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
 // Needed for onTouchTap
 // http://stackoverflow.com/a/34015469/988941
@@ -75,7 +76,7 @@ VisitingLandmarks.propTypes = {
 };
 
 VisitingLandmarks.contextTypes = {
-    router: React.PropTypes.object,
+    router: PropTypes.object,
 };
 
 
@@ -95,8 +96,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        // requestChangePassword: (password) => dispatch(changePasswordThunk(password)),
-        // requestResetPassword: (username) => dispatch(resetPasswordThunk(username)),
         requestLogout: () => dispatch(logoutThunk()),
 
         onToggleFollowUser: (newValue) => dispatch(followUserSet(newValue)),

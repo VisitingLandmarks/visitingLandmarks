@@ -1,4 +1,5 @@
 require('babel-register');
+process.traceDeprecation = true;
 
 module.exports = function (grunt) {
     // Load per-task config from separate files in folder '/grunt'.

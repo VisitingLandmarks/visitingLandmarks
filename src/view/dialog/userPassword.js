@@ -1,4 +1,5 @@
-import React, {PropTypes} from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
 import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -130,7 +131,7 @@ export default class DialogUserPassword extends React.Component {
 
 
 DialogUserPassword.propTypes = {
-    children: PropTypes.array.isRequired,
+    children: PropTypes.array,
     dialogName: PropTypes.string.isRequired,
     disabled: PropTypes.bool,
     error: PropTypes.string,

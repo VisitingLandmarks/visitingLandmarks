@@ -1,6 +1,7 @@
 import config from '../../config';
 
 import React from 'react';
+import {IntlProvider} from 'react-intl-redux';
 import {renderToString} from 'react-dom/server';
 import {StaticRouter as Router} from 'react-router-dom';
 import {Provider} from 'react-redux';
@@ -19,6 +20,7 @@ export default (store, url, userAgent) => {
     // Render the component to a string
     const html = renderToString(
         <Provider store={store}>
+            <IntlProvider>
             <MuiThemeProvider muiTheme={getMuiTheme({userAgent}, darkBaseTheme)}>
                 <Router
                     location={url}
@@ -27,6 +29,7 @@ export default (store, url, userAgent) => {
                     <RouteDefinition store={store}/>
                 </Router>
             </MuiThemeProvider>
+            </IntlProvider>
         </Provider>
     );
 

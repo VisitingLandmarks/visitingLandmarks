@@ -1,3 +1,4 @@
+import {LOCATION_VISIT} from '../config/socketEvents';
 import logger from './modules/logger';
 import {locationsVisit} from './redux/action/session';
 import {findUserById} from './data';
@@ -12,7 +13,7 @@ export default module.exports = (sendActionToAllConnectionOfAUser) => {
         });
 
         //@todo: a wrapper that ensures that the user is really logged in by checking userSocket.request.user
-        userSocket.on('visitedLocation', (visitedLocation) => {
+        userSocket.on(LOCATION_VISIT, (visitedLocation) => {
 
             const userId = userSocket.request.user._id;
             const visitedLocationLogger = logger.child({userId, visitedLocation});

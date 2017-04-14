@@ -1,4 +1,5 @@
-import React, {PropTypes} from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import gameSettings from '../../config/gameSettings';
 import markerStyle from '../client/map/markerStyle';
 import orientationToCompassHeading from '../modules/orientationToCompassHeading';

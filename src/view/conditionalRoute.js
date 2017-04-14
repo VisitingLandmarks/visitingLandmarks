@@ -1,5 +1,6 @@
-import React, {PropTypes} from 'react';
+import React from 'react';
 import {Route, Redirect} from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 const conditionalRoute = (target, check) => {
     const Condition = ({component, store, ...rest}) => (

@@ -120,6 +120,9 @@ export default module.exports = (userSchema) => {
                     visited: {},
                 })
                     .save()
+                    .then((user) => {
+                        return user.toObject();
+                    })
                     .catch((message) => {
                         logger.error({
                             ...data,

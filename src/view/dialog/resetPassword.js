@@ -1,11 +1,12 @@
-import React, {PropTypes} from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 
 import DialogUserPassword from './userPassword';
 
 import {resetPasswordThunk, resettingPassword} from '../../redux/action/thunk/resetPassword';
 import {navigateTo} from '../../redux/action/ui';
-import {failure, inProgress} from '../../redux/reducer/communication';
+import {failure, inProgress, success} from '../../redux/reducer/communication';
 
 import routes from '../../../config/routes';
 
@@ -16,6 +17,11 @@ class ResetPassword extends React.Component {
     }
 
     render() {
+
+        if (this.props.done) {
+            return null;
+        }
+
         return (
             <DialogUserPassword
                 {...this.props}
@@ -30,18 +36,20 @@ class ResetPassword extends React.Component {
 }
 
 ResetPassword.propTypes = {
+    done: PropTypes.bool.isRequired,
     onCloseDialog: PropTypes.func.isRequired,
     requestResetPassword: PropTypes.func.isRequired,
 };
 ResetPassword.contextTypes = {
-    router: React.PropTypes.object,
+    router: PropTypes.object,
 };
 
 
 const mapStateToProps = (state) => {
     return {
-        disabled: state.communication[resettingPassword][inProgress],
-        error: state.communication[resettingPassword][failure],
+        done: state.communication[resettingPassword][success] || false,
+        disabled: state.communication[resettingPassword][inProgress] || false,
+        error: state.communication[resettingPassword][failure] || false,
     };
 };
 

@@ -1,4 +1,7 @@
-import React, {PropTypes}  from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
+
+import {FormattedMessage} from 'react-intl';
 
 import Paper from 'material-ui/Paper';
 import Menu from 'material-ui/Menu';
@@ -61,6 +64,11 @@ export default class MainMenu extends React.Component {
                 <MenuItem key="userEmail" primaryText="Profile" onTouchTap={this.props.onOpenProfileDialog}/>,
                 <Divider key="userEmailDivider"/>,
                 <MenuItem key="logout" primaryText="Logout" onTouchTap={this.props.requestLogout}/>,
+                //https://github.com/yahoo/react-intl/wiki/API#injectintl
+                //https://github.com/yahoo/react-intl/issues/438
+                <FormattedMessage
+                    id='test1'
+                />,
             ];
         } else {
             menuItems = [

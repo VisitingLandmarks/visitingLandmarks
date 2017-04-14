@@ -2,6 +2,7 @@ import {sendEmailConfirmed, sendEmailUserRegistered, sendEmailUserResetPassword}
 import * as dataRepository from '../data';
 import {disconnectAllSocketsOfUser} from '../modules/sendActionToAllConnectionOfAUser';
 import routes from '../../config/routes';
+import logger from '../modules/logger';
 
 export const confirm = (req, res) => {
 
@@ -28,7 +29,6 @@ export const confirm = (req, res) => {
 export const logout = (req, res) => {
 
     const numberOfSockets = disconnectAllSocketsOfUser(req.user._id);
-
     req.log.info({numberOfSockets, userId: req.user._id}, 'user disconnected');
 
     req.logout();
@@ -60,7 +60,9 @@ export const registerProvider = (providerCriteria, emailCriteria) => {
                 //update user with data provided
                 Object.keys(providerCriteria).forEach((key) => {
                     user[key] = providerCriteria[key];
-                });
+                }); //@todo: send email telling the user that his account got connected
+
+                logger.info({id: user._id, ...providerCriteria}, 'user associated with auth provider');
 
                 return user.save();
             }
@@ -69,7 +71,12 @@ export const registerProvider = (providerCriteria, emailCriteria) => {
             return dataRepository.User.registerProvider({
                 ...providerCriteria,
                 ...emailCriteria,
-            }); //@todo: send email
+            }).then((user) => {
+                return sendEmailUserRegistered(user)
+                    .then(() => {
+                        return user;
+                    });
+            });
 
         });
 
