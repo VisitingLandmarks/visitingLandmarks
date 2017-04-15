@@ -12,7 +12,7 @@ const flattenObject = (obj, joinString = '.', flat = {}, prefix = '') => {
         let value = obj[key];
 
         if (typeof value === 'object' && !Array.isArray(value)) {
-            flattenObject(value, joinString, flat, key + joinString);
+            flattenObject(value, joinString, flat, prefix + key + joinString);
             return;
         }
 
