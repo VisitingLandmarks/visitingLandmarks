@@ -33,11 +33,11 @@ delete window.__INITIAL_STATE__;
 ReactDOM.render(
     <Provider store={store}>
         <IntlProvider>
-        <MuiThemeProvider muiTheme={getMuiTheme({userAgent: navigator.userAgent}, darkBaseTheme)}>
-            <Router>
-                <RouteDefinition store={store}/>
-            </Router>
-        </MuiThemeProvider>
+            <MuiThemeProvider muiTheme={getMuiTheme({userAgent: navigator.userAgent}, darkBaseTheme)}>
+                <Router>
+                    <RouteDefinition store={store}/>
+                </Router>
+            </MuiThemeProvider>
         </IntlProvider>
     </Provider>
     , document.getElementById('root'));

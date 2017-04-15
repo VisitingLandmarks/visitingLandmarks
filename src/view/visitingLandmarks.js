@@ -34,6 +34,7 @@ class VisitingLandmarks extends React.Component {
             <div className="mainContainer">
 
                 <MainMap
+                    key="mainMap"
                     followUser={this.props.followUser}
                     visitedLocations={this.props.visitedLocations}
                     locations={this.props.locations}
@@ -42,6 +43,7 @@ class VisitingLandmarks extends React.Component {
                 />
 
                 <MainMenu
+                    key="mainMenu"
                     followUser={this.props.followUser}
                     loggedIn={this.props.loggedIn}
                     onOpenLoginDialog={() => this.props.navigateTo(routes.user.login)}

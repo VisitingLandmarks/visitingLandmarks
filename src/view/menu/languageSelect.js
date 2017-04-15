@@ -12,6 +12,7 @@ import MenuItem from 'material-ui/MenuItem';
 const LanguageSelect = (props) => {
     return ( <MenuItem
         menuItems={Object.keys(props.intl).map((locale) => {
+
             return (<MenuItem
                 checked={locale === props.current}
                 insetChildren={true}

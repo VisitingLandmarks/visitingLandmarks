@@ -25,7 +25,14 @@ export default class RouteDefinition extends React.Component {
 
     constructor(props) {
         super(props);
-        this.props.store.subscribe(() => this.forceUpdate()); //@todo: this will notice a change in the store, connecting this with redux would be nicer, but does not work for some reason
+    }
+
+    componentDidMount() {
+        this.unsubscribe = this.props.store.subscribe(() => this.forceUpdate()); //@todo: this will notice a change in the store, connecting this with redux would be nicer, but does not work for some reason
+    }
+
+    componentWillUnmount() {
+        this.unsubscribe();
     }
 
     render() {

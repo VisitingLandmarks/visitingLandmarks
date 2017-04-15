@@ -34,6 +34,10 @@ export default class MainMap extends React.Component {
 
     }
 
+    shouldComponentUpdate(nextProps, nextState) {
+        return false;
+    }
+
 
     /**
      * execute once, when react adds the element to dom
@@ -54,10 +58,12 @@ export default class MainMap extends React.Component {
 
         //geoLocation
         //continuously watching to redraw the marker
-        this.leafLetMap.on('locationfound', antiHammer(onLocationFound.bind(this)));
+        const onLoactionFoundListener = antiHammer(onLocationFound.bind(this));
+        this.leafLetMap.on('locationfound', onLoactionFoundListener);
 
-        //get event for orie
-        window.addEventListener('deviceorientation', antiHammer(onDeviceOrientation.bind(this)), false);
+        //get event for orientation
+        const onDeviceOrientationListener = antiHammer(onDeviceOrientation.bind(this));
+        window.addEventListener('deviceorientation', onDeviceOrientationListener, false);
 
         //first location and setting the view
         this.leafLetMap.locate({setView: true, enableHighAccuracy: true, maxZoom: 16});
@@ -66,13 +72,23 @@ export default class MainMap extends React.Component {
         const markerClusterGroup = createMarkersAndCluster(this.props.locations, this.marker, this.popups, this.props.onToggleFollowUser);
 
         //ensure that the follow user is switched off, when a user clicks on a cluster
-        const onMapMove = () => this.props.onToggleFollowUser(false);
-        markerClusterGroup.on('clusterclick', onMapMove);
-        this.leafLetMap.on('popupopen', onMapMove);
+        const onMapMoveListener = () => this.props.onToggleFollowUser(false);
+        markerClusterGroup.on('clusterclick', onMapMoveListener);
+        this.leafLetMap.on('popupopen', onMapMoveListener);
 
         this.leafLetMap.addLayer(markerClusterGroup);
 
         this.updateMarkers();
+
+        this.removeListener = () => {
+            this.leafLetMap.off('locationfound', onLoactionFoundListener);
+            window.removeEventListener('deviceorientation', onDeviceOrientationListener);
+        };
+    }
+
+    componentWillUnmount() {
+        this.removeListener();
+
     }
 
 

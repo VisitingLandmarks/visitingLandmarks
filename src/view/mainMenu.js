@@ -75,21 +75,36 @@ class MainMenu extends React.Component {
 
             menuItems = [
                 <MenuItem key="userEmail" primaryText={formatMessage({id: 'menu.profile'})}
-                          onTouchTap={this.props.onOpenProfileDialog}/>,
+                          onTouchTap={() => {
+                              this.props.onOpenProfileDialog();
+                              this.handleRequestClose();
+                          }}/>,
                 <Divider key="userEmailDivider"/>,
                 <MenuItem key="logout" primaryText={formatMessage({id: 'menu.logout'})}
-                          onTouchTap={this.props.requestLogout}/>,
+                          onTouchTap={() => {
+                              this.props.requestLogout();
+                              this.handleRequestClose();
+                          }}/>,
             ];
 
         } else {
 
             menuItems = [
                 <MenuItem key="register" primaryText={formatMessage({id: 'menu.register'})}
-                          onTouchTap={this.props.onOpenRegisterDialog}/>,
+                          onTouchTap={() => {
+                              this.props.onOpenRegisterDialog();
+                              this.handleRequestClose();
+                          }}/>,
                 <MenuItem key="login" primaryText={formatMessage({id: 'menu.login'})}
-                          onTouchTap={this.props.onOpenLoginDialog}/>,
+                          onTouchTap={() => {
+                              this.props.onOpenLoginDialog();
+                              this.handleRequestClose();
+                          }}/>,
                 <MenuItem key="resetPassword" primaryText={formatMessage({id: 'menu.resetPassword'})}
-                          onTouchTap={this.props.onOpenResetPasswordDialog}/>,
+                          onTouchTap={() => {
+                              this.props.onOpenResetPasswordDialog();
+                              this.handleRequestClose();
+                          }}/>,
             ];
 
         }
