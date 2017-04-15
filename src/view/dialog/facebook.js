@@ -1,4 +1,6 @@
 import React from 'react';
+import {injectIntl, intlShape} from 'react-intl';
+
 import RaisedButton from 'material-ui/RaisedButton';
 
 import routes from '../../../config/routes';
@@ -6,18 +8,22 @@ import routes from '../../../config/routes';
 const style = {
     button: {
         width: '100%',
-        marginTop:10,
+        marginTop: 10,
     },
     backgroundColor: '#3b5998',
 };
 
-const facebook = (props) => {
+const Facebook = (props) => {
     return <RaisedButton
         href={routes.auth.facebook.entry}
         backgroundColor={style.backgroundColor}
-        label="Register and Login with Facebook"
+        label={props.intl.formatMessage({id: 'dialog.auth.facebook'})}
         style={style.button}
     ></RaisedButton>;
 };
 
-export default facebook;
+Facebook.propTypes = {
+    intl: intlShape.isRequired,
+};
+
+export default injectIntl(Facebook);

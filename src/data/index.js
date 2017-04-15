@@ -1,6 +1,7 @@
 import memoize from 'memoizee';
 import logger from '../modules/logger';
 import getMongoModel from './mongoDB';
+import flattenObject from '../modules/flattenObject';
 
 /**
  * the repository is responsible for all data sources and caches
@@ -11,6 +12,7 @@ import getMongoModel from './mongoDB';
 
 export const Category = getMongoModel('category');
 export const Location = getMongoModel('location');
+export const Intl = getMongoModel('intl');
 export const User = getMongoModel('user');
 
 //caching is in the responsibility of the dataRepository
@@ -20,6 +22,9 @@ const cache = {
     },
     Location: {
         getAllAsObject: memoize(Location.getAllAsObject, {maxAge: 60 * 60 * 1000}),
+    },
+    Intl: {
+        getAllAsObject: memoize(Intl.getAllAsObject, {maxAge: 60 * 60 * 1000}),
     },
 };
 
@@ -31,7 +36,7 @@ const cache = {
  */
 export const getAllCategories = () => {
     return cache.Category.getAllAsObject()
-        .catch((e)=> {
+        .catch((e) => {
             logger.error(e);
         });
 
@@ -45,12 +50,28 @@ export const getAllCategories = () => {
  */
 export const getAllLocations = () => {
     return cache.Location.getAllAsObject()
-        .catch((e)=> {
+        .catch((e) => {
             logger.error(e);
         });
 
 };
 
+
+/**
+ * we need all locations with the individual sugar of a given user
+ * @param user
+ * @returns {Promise|Promise.<T>}
+ */
+export const getAllIntl = () => cache.Intl.getAllAsObject();
+
+export const getFlatIntlByLocale = (locale) => {
+    return getAllIntl().then((intl) => {
+        return {
+            locale: locale,
+            messages: flattenObject(intl[locale] || {}),
+        };
+    });
+};
 
 /**
  * get a single user based on the ID

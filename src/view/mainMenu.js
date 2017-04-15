@@ -1,46 +1,40 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import {FormattedMessage} from 'react-intl';
+import {injectIntl, intlShape} from 'react-intl';
 
-import Paper from 'material-ui/Paper';
+import LanguageSelect from './menu/languageSelect';
+
+import Divider from 'material-ui/Divider';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
-import Divider from 'material-ui/Divider';
+import Popover from 'material-ui/Popover';
+import RaisedButton from 'material-ui/RaisedButton';
 import Toggle from 'material-ui/Toggle';
 
 
 const menuStyle = {
-    display: 'inline-block',
-    padding: 0,
-};
-
-const menuListStyle = {
-    paddingBottom: 0,
-    paddingTop: 0,
-};
-
-const toggleLabelStyle = {
-    marginLeft: 16,
-    lineHeight: '48px',
-};
-
-const toggleIconStyle = {
-    marginRight: 16,
-    marginTop: 12,
+    position: 'fixed',
+    top: '3%',
+    right: '3%',
+    zIndex: 50000,
 };
 
 
 /**
  * MainMenu
  */
-export default class MainMenu extends React.Component {
+class MainMenu extends React.Component {
 
     constructor(props) {
 
         super(props);
 
         this.onToggleFollowUser = this.onToggleFollowUser.bind(this);
+        this.handleTouchTap = this.handleTouchTap.bind(this);
+        this.handleRequestClose = this.handleRequestClose.bind(this);
+
+        this.state = {open: false};
 
     }
 
@@ -55,38 +49,77 @@ export default class MainMenu extends React.Component {
         return this.props.onToggleFollowUser(value);
     }
 
+    handleTouchTap(event) {
+        // This prevents ghost click.
+        event.preventDefault();
+
+        this.setState({
+            open: !this.state.open,
+            anchorEl: event.currentTarget,
+        });
+    }
+
+    handleRequestClose() {
+        this.setState({
+            open: false,
+        });
+    }
+
+
     render() {
 
         let menuItems;
+        const {formatMessage} = this.props.intl;
 
         if (this.props.loggedIn) {
+
             menuItems = [
-                <MenuItem key="userEmail" primaryText="Profile" onTouchTap={this.props.onOpenProfileDialog}/>,
+                <MenuItem key="userEmail" primaryText={formatMessage({id: 'menu.profile'})}
+                          onTouchTap={this.props.onOpenProfileDialog}/>,
                 <Divider key="userEmailDivider"/>,
-                <MenuItem key="logout" primaryText="Logout" onTouchTap={this.props.requestLogout}/>,
-                //https://github.com/yahoo/react-intl/wiki/API#injectintl
-                //https://github.com/yahoo/react-intl/issues/438
-                <FormattedMessage
-                    id='test1'
-                />,
+                <MenuItem key="logout" primaryText={formatMessage({id: 'menu.logout'})}
+                          onTouchTap={this.props.requestLogout}/>,
             ];
+
         } else {
+
             menuItems = [
-                <MenuItem key="register" primaryText="Register" onTouchTap={this.props.onOpenRegisterDialog}/>,
-                <MenuItem key="login" primaryText="Login" onTouchTap={this.props.onOpenLoginDialog}/>,
-                <MenuItem key="resetPassword" primaryText="Forgot Password?" onTouchTap={this.props.onOpenResetPasswordDialog}/>,
+                <MenuItem key="register" primaryText={formatMessage({id: 'menu.register'})}
+                          onTouchTap={this.props.onOpenRegisterDialog}/>,
+                <MenuItem key="login" primaryText={formatMessage({id: 'menu.login'})}
+                          onTouchTap={this.props.onOpenLoginDialog}/>,
+                <MenuItem key="resetPassword" primaryText={formatMessage({id: 'menu.resetPassword'})}
+                          onTouchTap={this.props.onOpenResetPasswordDialog}/>,
             ];
+
         }
 
         return (
-            <div className="MainMenu">
-                <Paper>
-                    <Menu style={menuStyle} listStyle={menuListStyle}>
+            <div style={menuStyle}>
+                <RaisedButton
+                    onTouchTap={this.handleTouchTap}
+                    label={formatMessage({id: 'menu.title'})}
+                />
+                <Popover
+                    open={this.state.open}
+                    anchorEl={this.state.anchorEl}
+                    anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
+                    targetOrigin={{horizontal: 'right', vertical: 'top'}}
+                    onRequestClose={this.handleRequestClose}
+                >
+                    <Menu>
+                        <LanguageSelect />
                         {menuItems}
                         <Divider />
+                        <MenuItem>
+                            <Toggle
+                                label={formatMessage({id: 'menu.follow'})}
+                                onToggle={this.onToggleFollowUser}
+                                defaultToggled={this.props.followUser}
+                            />
+                        </MenuItem>
                     </Menu>
-                    <Toggle label="Follow me" onToggle={this.onToggleFollowUser} defaultToggled={this.props.followUser} labelStyle={toggleLabelStyle} iconStyle={toggleIconStyle}/>
-                </Paper>
+                </Popover>
 
             </div>
         );
@@ -103,4 +136,8 @@ MainMenu.propTypes = {
     onToggleFollowUser: PropTypes.func.isRequired,
     loggedIn: PropTypes.bool.isRequired,
     requestLogout: PropTypes.func.isRequired,
+
+    intl: intlShape.isRequired,
 };
+
+export default injectIntl(MainMenu);

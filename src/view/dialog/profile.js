@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
+import {injectIntl, intlShape, FormattedDate, FormattedMessage} from 'react-intl';
 
 import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -35,8 +36,9 @@ const formatVisitedLocations = (locations, visitedLocations) => {
             return a.dateTimeOfVisit - b.dateTimeOfVisit;
         })
         .map((element) => {
-            return <li key={element.id}>{element.dateTimeOfVisit.toString()}
-                : {element.name} {element.originalUrl}</li>;
+            return <li key={element.id}>
+                <FormattedDate value={element.dateTimeOfVisit}/> : {element.name} {element.originalUrl}
+            </li>;
         });
 };
 
@@ -77,16 +79,17 @@ class DialogProfile extends React.Component {
         super(props);
     }
 
-    render() {
 
+    render() {
+        const {formatMessage} = this.props.intl;
         const actions = [
             <RaisedButton
-                label="Change Password"
+                label={formatMessage({id: 'dialog.profile.changePassword'})}
                 primary={false}
                 onTouchTap={this.props.onChangePasswordDialog}
             />,
             <RaisedButton
-                label="Close"
+                label={formatMessage({id: 'dialog.close'})}
                 primary={true}
                 onTouchTap={this.props.onCloseDialog}
             />,
@@ -98,19 +101,19 @@ class DialogProfile extends React.Component {
 
         return (
             <Dialog
-                title={'Profile - '+ this.props.userEmail}
+                title={formatMessage({id: 'dialog.profile.title'}, {userEmail: this.props.userEmail})}
                 actions={actions}
                 open={true}
             >
                 <div>
-                    <label>Confirmed: </label>{this.props.userEmailConfirmed ? <DoneIcon /> : null}
+                    <label><FormattedMessage id="dialog.profile.confirmed"/>: </label>{this.props.userEmailConfirmed ? <DoneIcon /> : null}
                 </div>
                 <div>
-                    <label>Visited Locations:</label>
+                    <label><FormattedMessage id="dialog.profile.visitedLocations"/>:</label>
                     <ul>{formatedVisitedLocations}</ul>
                 </div>
                 <div>
-                    <label>Categories:</label>
+                    <label><FormattedMessage id="dialog.profile.categories"/>:</label>
                     <ul>{formatedCategories}</ul>
                 </div>
             </Dialog>
@@ -127,10 +130,8 @@ DialogProfile.propTypes = {
 
     onCloseDialog: PropTypes.func.isRequired,
     onChangePasswordDialog: PropTypes.func.isRequired,
-};
 
-DialogProfile.contextTypes = {
-    router: PropTypes.object,
+    intl: intlShape.isRequired,
 };
 
 
@@ -154,4 +155,4 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(DialogProfile);
+)(injectIntl(DialogProfile));

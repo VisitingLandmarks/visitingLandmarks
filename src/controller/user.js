@@ -4,23 +4,26 @@ import {disconnectAllSocketsOfUser} from '../modules/sendActionToAllConnectionOf
 import routes from '../../config/routes';
 import logger from '../modules/logger';
 
-export const confirm = (req, res) => {
+export const confirm = (req, res, next) => {
 
     const confirmationToken = req.params.token;
 
     dataRepository.User.confirm(confirmationToken)
         .then((user) => {
+
             if (!user) {
                 res.status(404).send();
                 return;
             }
+
             return sendEmailConfirmed(user);
         })
         .then(() => {
             res.send();
         })
         .catch((err) => {
-            res.status(500).send(err);
+            req.log.error({err}, 'Error in user confirm controller');
+            next(err);
         });
 
 };
@@ -187,6 +190,7 @@ export const restrictLoginUser = (req, res, next) => {
 
     next();
 };
+
 
 /**
  * answer a request with the user object

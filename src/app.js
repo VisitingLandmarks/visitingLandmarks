@@ -19,3 +19,6 @@ require('./modules/authentication')(app, io, data.User.serializeUser, data.User.
 
 //setup routes - very important: apply AFTER authentication
 setupRoutes(app);
+
+//setup error logging middleware - very important: apply AFTER Routes
+require('./modules/express/errorHandler')(app);

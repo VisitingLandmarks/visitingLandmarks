@@ -1,5 +1,6 @@
 import {CATEGORIES_SET} from '../../action/categories';
 import {LOCATIONS_SET} from '../../action/locations';
+import {INTL_SET} from '../../action/data';
 import initialState from './initialState';
 
 
@@ -18,6 +19,13 @@ export default (oldState = initialState, action) => {
             return {
                 ...oldState,
                 locations: action.locations,
+            };
+        }
+
+        case INTL_SET: {
+            return {
+                ...oldState,
+                intl: action.intl,
             };
         }
 

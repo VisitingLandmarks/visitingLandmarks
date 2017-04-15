@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
+import {injectIntl, intlShape} from 'react-intl';
 
 import DialogUserPassword from './userPassword';
 
@@ -18,6 +19,8 @@ class ResetPassword extends React.Component {
 
     render() {
 
+        //@todo: display nicer feedback
+        //@todo: this will prevent the dialog from reopening - all commuication thunks should go into initial state when done.
         if (this.props.done) {
             return null;
         }
@@ -26,7 +29,7 @@ class ResetPassword extends React.Component {
             <DialogUserPassword
                 {...this.props}
                 open={true}
-                dialogName="Forgot Password?"
+                dialogName={this.props.intl.formatMessage({id: 'dialog.resetPassword.title'})}
                 showPasswordLine={false}
                 onSubmit={this.props.requestResetPassword}
             />
@@ -39,9 +42,7 @@ ResetPassword.propTypes = {
     done: PropTypes.bool.isRequired,
     onCloseDialog: PropTypes.func.isRequired,
     requestResetPassword: PropTypes.func.isRequired,
-};
-ResetPassword.contextTypes = {
-    router: PropTypes.object,
+    intl: intlShape.isRequired,
 };
 
 
@@ -63,4 +64,4 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(ResetPassword);
+)(injectIntl(ResetPassword));

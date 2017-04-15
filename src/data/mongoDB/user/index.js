@@ -69,6 +69,7 @@ export default module.exports = function (mongoDB) {
         {
             timestamps: true,
             minimize: false,
+            // collection: collectionName, //todo: use
         });
 
     //making sure that the combination of user und visited objects is unique - he either visited or not

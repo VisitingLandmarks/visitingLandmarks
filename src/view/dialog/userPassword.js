@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {injectIntl, intlShape, FormattedMessage} from 'react-intl';
 
 import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -23,7 +24,7 @@ const style = {
 /**
  * a generic dialog for username and password fields
  */
-export default class DialogUserPassword extends React.Component {
+class DialogUserPassword extends React.Component {
 
     constructor(props) {
 
@@ -60,18 +61,19 @@ export default class DialogUserPassword extends React.Component {
 
     render() {
 
+        const {formatMessage} = this.props.intl;
 
         const actions = [
             <RaisedButton
                 style={style.button}
-                label="Cancel"
+                label={formatMessage({id: 'dialog.cancel'})}
                 primary={true}
                 onTouchTap={this.props.onCloseDialog}
                 disabled={this.props.disabled}
             />,
             <RaisedButton
                 style={style.button}
-                label="Submit"
+                label={formatMessage({id: 'dialog.submit'})}
                 primary={true}
                 onTouchTap={this.handleSubmit}
                 disabled={this.props.disabled}
@@ -81,7 +83,7 @@ export default class DialogUserPassword extends React.Component {
 
         const usernameLine = <tr>
             <td>
-                <label>Email:</label>
+                <label><FormattedMessage id='dialog.userPassword.email'/>:</label>
             </td>
             <td>
                 <TextField type="text"
@@ -94,7 +96,7 @@ export default class DialogUserPassword extends React.Component {
 
         const passwordLine = <tr>
             <td>
-                <label>Password:</label>
+                <label><FormattedMessage id='dialog.userPassword.password'/>:</label>
             </td>
             <td>
                 <TextField type="password"
@@ -140,9 +142,13 @@ DialogUserPassword.propTypes = {
     open: PropTypes.bool.isRequired,
     showUsernameLine: PropTypes.bool.isRequired,
     showPasswordLine: PropTypes.bool.isRequired,
+
+    intl: intlShape.isRequired,
 };
 
 DialogUserPassword.defaultProps = {
     showUsernameLine: true,
     showPasswordLine: true,
 };
+
+export default injectIntl(DialogUserPassword);

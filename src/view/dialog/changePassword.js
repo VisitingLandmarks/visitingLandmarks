@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
+import {injectIntl, intlShape} from 'react-intl';
+
 
 import DialogUserPassword from './userPassword';
 
@@ -21,7 +23,7 @@ class ChangePassword extends React.Component {
             <DialogUserPassword
                 {...this.props}
                 open={true}
-                dialogName="Change Password"
+                dialogName={this.props.intl.formatMessage({id: 'dialog.changePassword.title'})}
                 showUsernameLine={false}
                 onSubmit={this.props.requestChangePassword}
             />
@@ -33,9 +35,7 @@ class ChangePassword extends React.Component {
 ChangePassword.propTypes = {
     onCloseDialog: PropTypes.func.isRequired,
     requestChangePassword: PropTypes.func.isRequired,
-};
-ChangePassword.contextTypes = {
-    router: PropTypes.object,
+    intl: intlShape.isRequired,
 };
 
 
@@ -56,4 +56,4 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(ChangePassword);
+)(injectIntl(ChangePassword));

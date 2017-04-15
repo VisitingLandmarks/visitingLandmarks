@@ -76,6 +76,7 @@ export default module.exports = function (mongoDB) {
     },
         {
             timestamps: true,
+            // collection: collectionName, //todo: use
         });
 
     //safe data we want to use on the map

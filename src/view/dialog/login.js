@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
+import {injectIntl, intlShape} from 'react-intl';
 
 import DialogUserPassword from './userPassword';
 import Facebook from './facebook';
@@ -11,8 +12,6 @@ import {navigateTo} from '../../redux/action/ui';
 import {failure, inProgress} from '../../redux/reducer/communication';
 
 import routes from '../../../config/routes';
-
-export const dialogName = 'Login';
 
 class DialogLogin extends React.Component {
 
@@ -25,7 +24,7 @@ class DialogLogin extends React.Component {
             <DialogUserPassword
                 {...this.props}
                 open={true}
-                dialogName={dialogName}
+                dialogName={this.props.intl.formatMessage({id: 'dialog.login.title'})}
                 onSubmit={this.props.requestLogin}
             >
                 <Facebook />
@@ -39,11 +38,8 @@ class DialogLogin extends React.Component {
 DialogLogin.propTypes = {
     requestLogin: PropTypes.func.isRequired,
     onCloseDialog: PropTypes.func.isRequired,
+    intl: intlShape.isRequired,
 };
-DialogLogin.contextTypes = {
-    router: PropTypes.object,
-};
-
 
 const mapStateToProps = (state) => {
     return {
@@ -62,4 +58,4 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(DialogLogin);
+)(injectIntl(DialogLogin));

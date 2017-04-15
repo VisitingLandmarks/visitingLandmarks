@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
+import {injectIntl, intlShape} from 'react-intl';
 
 import DialogUserPassword from './userPassword';
 import Facebook from './facebook';
@@ -13,8 +14,6 @@ import {failure, inProgress} from '../../redux/reducer/communication';
 
 import routes from '../../../config/routes';
 
-export const dialogName = 'Register';
-
 class DialogRegister extends React.Component {
 
     constructor(props) {
@@ -25,8 +24,8 @@ class DialogRegister extends React.Component {
         return (
             <DialogUserPassword
                 {...this.props}
-                open={true} //@todo: remove
-                dialogName={dialogName}
+                open={true}
+                dialogName={this.props.intl.formatMessage({id: 'dialog.register.title'})}
                 onSubmit={this.props.requestRegister}
             >
                 <Facebook />
@@ -40,9 +39,8 @@ class DialogRegister extends React.Component {
 DialogRegister.propTypes = {
     onCloseDialog: PropTypes.func.isRequired,
     requestRegister: PropTypes.func.isRequired,
-};
-DialogRegister.contextTypes = {
-    router: PropTypes.object,
+
+    intl: intlShape.isRequired,
 };
 
 const mapStateToProps = (state) => {
@@ -62,4 +60,4 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(DialogRegister);
+)(injectIntl(DialogRegister));

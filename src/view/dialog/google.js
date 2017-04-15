@@ -1,5 +1,6 @@
 import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
+import {injectIntl, intlShape} from 'react-intl';
 
 import routes from '../../../config/routes';
 
@@ -12,14 +13,19 @@ const style = {
     labelColor:'#000',
 };
 
-const google = (props) => {
+const Google = (props) => {
     return <RaisedButton
         href={routes.auth.google.entry}
         backgroundColor={style.backgroundColor}
-        label="Sign In with Google"
+        label={props.intl.formatMessage({id: 'dialog.auth.google'})}
         labelColor={style.labelColor}
         style={style.button}
     ></RaisedButton>;
 };
 
-export default google;
+Google.propTypes = {
+    intl: intlShape.isRequired,
+};
+
+
+export default injectIntl(Google);

@@ -5,7 +5,6 @@ import markerStyle from '../client/map/markerStyle';
 import orientationToCompassHeading from '../modules/orientationToCompassHeading';
 import antiHammer from '../modules/antiHammer';
 const memoize = require('memoizee');
-// import {log} from  '../../client/toServer';
 
 
 /**
