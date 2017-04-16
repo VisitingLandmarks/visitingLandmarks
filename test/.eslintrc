@@ -3,8 +3,7 @@
     "mocha": true
   },
   "globals": {
-    "assert": true,
-    "chai": true,
+    "expect": true,
     "sinon": true
   },
   "plugins": [

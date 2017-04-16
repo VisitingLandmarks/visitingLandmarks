@@ -1,4 +1,5 @@
 import deepFreeze from 'deep-freeze';
+import expect from 'unexpected';
 
 import reducer from '../../../../../src/redux/reducer/data';
 import initialState from '../../../../../src/redux/reducer/data/initialState';
@@ -28,8 +29,7 @@ describe('data reducer', () => {
             categories,
         });
 
-        assert.deepEqual(reducer(oldState, categoriesSet(categories)), newState);
-
+        expect(reducer(oldState, categoriesSet(categories)), 'to equal', newState);
     });
 
     it(LOCATIONS_SET, () => {
@@ -45,7 +45,6 @@ describe('data reducer', () => {
             locations,
         });
 
-        assert.deepEqual(reducer(oldState, locationsSet(locations)), newState);
-
+        expect(reducer(oldState, locationsSet(locations)), 'to equal', newState);
     });
 });

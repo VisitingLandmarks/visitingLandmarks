@@ -1,5 +1,5 @@
 import deepFreeze from 'deep-freeze';
-
+import expect from 'unexpected';
 
 import reducer, {inProgress, failure, success} from '../../../../../src/redux/reducer/communication';
 import initialState from '../../../../../src/redux/reducer/communication/initialState';
@@ -63,8 +63,7 @@ describe('communication reducer', () => {
                 [verb]: {[expectedState]: true},
             });
 
-            assert.deepEqual(reducer(oldState, action()), newState);
-
+            expect(reducer(oldState, action()), 'to equal', newState);
         });
     };
 
