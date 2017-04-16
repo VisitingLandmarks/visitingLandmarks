@@ -1,5 +1,6 @@
+import {routes} from '../../../modules/routes';
+
 import axios from 'axios';
-import routes from '../../../../config/routes';
 import builder from '../builder';
 
 export const changingPassword = 'changingPassword';

@@ -1,6 +1,9 @@
+export const LOCATION_VISIT = 'LOCATION_VISIT';
+export const LOG = 'LOG';
+
 //@todo: rebuild using thunk
 import io from 'socket.io-client';
-import routes from '../../config/routes';
+import {routes} from '../modules/routes';
 
 /**
  * establish socket.io connection for loggedIn Users

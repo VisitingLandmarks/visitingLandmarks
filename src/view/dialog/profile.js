@@ -10,7 +10,7 @@ import DoneIcon from 'material-ui/svg-icons/action/done';
 import getSortScore from '../../modules/getCategorySortScore';
 import countVisitedLocationsInCategory from '../../modules/countVisitedLocationsInCategory';
 
-import routes from '../../../config/routes';
+import {routes} from '../../modules/routes';
 
 import {navigateTo} from '../../redux/action/ui';
 

@@ -1,8 +1,19 @@
-import deepFreeze from 'deep-freeze';
+export const builder = (routes, ...data) => {
 
-export default deepFreeze({
+    return routes.split('/').map((part) => {
+        if (part[0] !== ':') {
+            return part;
+        }
+
+        return data.shift();
+    });
+
+};
+
+
+export const routes = {
     root: '/',
-    static:'/static',
+    static: '/static',
     profile: '/profile',
     auth: {
         facebook: {
@@ -14,6 +25,7 @@ export default deepFreeze({
             callback: '/auth/google/callback',
         },
     },
+    preferences: '/preferences',
     user: {
         confirm: '/confirm/:token',
         login: '/login',
@@ -24,4 +36,4 @@ export default deepFreeze({
         passwordReset: '/resetPassword/:resetPasswordToken',
         register: '/register',
     },
-});
+};

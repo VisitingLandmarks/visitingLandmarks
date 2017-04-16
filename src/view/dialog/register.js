@@ -12,7 +12,7 @@ import {registering} from '../../redux/action/thunk/register';
 import {navigateTo} from '../../redux/action/ui';
 import {failure, inProgress} from '../../redux/reducer/communication';
 
-import routes from '../../../config/routes';
+import {routes} from '../../modules/routes';
 
 class DialogRegister extends React.Component {
 

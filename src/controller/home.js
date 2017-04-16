@@ -11,7 +11,7 @@ import {locationsSet} from '../redux/action/locations';
 import {intlSet} from '../redux/action/data';
 
 import {updateIntl} from 'react-intl-redux';
-const userLocale = 'en'; //@todo: detect / use from session
+
 
 /**
  * main controller to handle the home route and render application
@@ -31,7 +31,7 @@ export default (req, res) => {
     Promise.all([
         dataRepository.getAllIntl().then((intl) => {
             store.dispatch(intlSet(intl));
-            return dataRepository.getFlatIntlByLocale(userLocale);
+            return dataRepository.getFlatIntlByLocale(req.user && req.user.preferences.locale || req.locale);
         })
             .then((userIntl) => {
                 store.dispatch(updateIntl(userIntl));

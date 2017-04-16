@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import gameSettings from '../../config/gameSettings';
+import config from '../../config';
 import markerStyle from '../client/map/markerStyle';
 import orientationToCompassHeading from '../modules/orientationToCompassHeading';
 import antiHammer from '../modules/antiHammer';
@@ -32,10 +32,6 @@ export default class MainMap extends React.Component {
         this.updateOrientationMarker = this.updateOrientationMarker.bind(this);
         this.updateMarkers = this.updateMarkers.bind(this);
 
-    }
-
-    shouldComponentUpdate(nextProps, nextState) {
-        return false;
     }
 
 
@@ -301,9 +297,9 @@ function onLocationFound(geoData) {
             //distance is in meters and we want everything that is as 50m close to the user
             return !component.props.visitedLocations[locationId] &&
                 latLng &&
-                (Math.abs(geoData.latlng.lat - latLng.lat) < gameSettings.visitDistance.lat) &&
-                (Math.abs(geoData.latlng.lng - latLng.lng) < gameSettings.visitDistance.lng) &&
-                latLng.distanceTo(geoData.latlng) <= gameSettings.visitDistance.meters;
+                (Math.abs(geoData.latlng.lat - latLng.lat) < config.map.visitDistance.lat) &&
+                (Math.abs(geoData.latlng.lng - latLng.lng) < config.map.visitDistance.lng) &&
+                latLng.distanceTo(geoData.latlng) <= config.map.visitDistance.meters;
         })
 
         //and mark them as visited

@@ -3,7 +3,7 @@ import {injectIntl, intlShape} from 'react-intl';
 
 import RaisedButton from 'material-ui/RaisedButton';
 
-import routes from '../../../config/routes';
+import {routes} from '../../modules/routes';
 
 const style = {
     button: {

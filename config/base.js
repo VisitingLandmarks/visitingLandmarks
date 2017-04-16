@@ -1,4 +1,3 @@
-
 module.exports = {
     name: 'visitingLandmarks',
     logLevel: 'error',
@@ -18,7 +17,6 @@ module.exports = {
             from: '"Visiting Landmarks" <info@visitinglandmarks.com>',
         },
     },
-    authProvider : {
-        facebook : {},
-    },
+    authProvider: {},
+    locale: ['en', 'de'],
 };

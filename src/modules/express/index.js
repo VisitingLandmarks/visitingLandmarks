@@ -1,9 +1,11 @@
+import config from '../../../config';
 import bodyParser  from 'body-parser';
 import http from 'http';
 import bunyanMiddleware from 'bunyan-middleware';
 import logger from '../logger';
 import express from 'express';
 import helmet  from 'helmet';
+import locale from 'locale';
 
 /**
  *
@@ -14,8 +16,9 @@ import helmet  from 'helmet';
 export default module.exports = (port = 80) => {
 
     const app = express();
-    app.use(helmet());
 
+    app.use(helmet()); // security
+    app.use(locale(config.locale)); //getting users locale
     app.use(bodyParser.json()); // for parsing application/json
     app.use(bodyParser.urlencoded({extended: true})); // for parsing application/x-www-form-urlencoded
 

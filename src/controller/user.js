@@ -1,7 +1,7 @@
 import {sendEmailConfirmed, sendEmailUserRegistered, sendEmailUserResetPassword} from '../modules/email';
 import * as dataRepository from '../data';
 import {disconnectAllSocketsOfUser} from '../modules/sendActionToAllConnectionOfAUser';
-import routes from '../../config/routes';
+import {routes} from '../modules/routes';
 import logger from '../modules/logger';
 
 export const confirm = (req, res, next) => {
@@ -46,7 +46,7 @@ export const logout = (req, res) => {
  * @param providerCriteria
  * @param emailCriteria
  */
-export const registerProvider = (providerCriteria, emailCriteria) => {
+export const registerProvider = (providerCriteria, emailCriteria, locale) => {
 
     // 1. check for provider id
     return dataRepository.User.findOne(providerCriteria).then((user) => {
@@ -74,6 +74,9 @@ export const registerProvider = (providerCriteria, emailCriteria) => {
             return dataRepository.User.registerProvider({
                 ...providerCriteria,
                 ...emailCriteria,
+                preferences: {
+                    locale,
+                },
             }).then((user) => {
                 return sendEmailUserRegistered(user)
                     .then(() => {
@@ -99,10 +102,10 @@ export const register = (req, res, next) => {
         return;
     }
 
-    req.log.debug({email: req.body.username, password: req.body.password}, 'new user registered');
 
-    dataRepository.User.register(req.body.username, req.body.password)
+    dataRepository.User.register(req.body.username, req.body.password, req.locale)
         .then((user) => {
+            req.log.debug({email: req.body.username, password: req.body.password}, 'new user registered');
             sendEmailUserRegistered(user)
                 .then(() => {
                     //invoke next middleware, which will authenticate the new registered user
@@ -110,7 +113,8 @@ export const register = (req, res, next) => {
                 });
         })
         .catch((err) => {
-            next(err);
+            //@todo: this will just throw a error Id at the user. Handle standard cases, like user already exists
+            next(err); //@todo: this will in worst case the whole mongodb operation, which can include credentials
         });
 
 };

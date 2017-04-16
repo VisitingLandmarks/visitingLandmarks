@@ -11,7 +11,7 @@ import {loginThunk, loggingIn} from '../../redux/action/thunk/login';
 import {navigateTo} from '../../redux/action/ui';
 import {failure, inProgress} from '../../redux/reducer/communication';
 
-import routes from '../../../config/routes';
+import {routes} from '../../modules/routes';
 
 class DialogLogin extends React.Component {
 

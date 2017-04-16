@@ -60,7 +60,7 @@ export default module.exports = (userSchema) => {
      * @param name (optional)
      * @returns {Promise}
      */
-    userSchema.statics.register = (email, clearTextPassword, isAdmin) => {
+    userSchema.statics.register = (email, clearTextPassword, locale, isAdmin) => {
 
         //@todo: verify security level of password
         return generatePasswordHash(clearTextPassword)
@@ -76,6 +76,7 @@ export default module.exports = (userSchema) => {
                     confirmationToken,
                     resetPasswordToken,
                     email,
+                    preferences: {locale},
                     isAdmin,
                     visited: {},
                 })
@@ -90,7 +91,6 @@ export default module.exports = (userSchema) => {
 
             });
     };
-
 
 
     /**
@@ -120,9 +120,7 @@ export default module.exports = (userSchema) => {
                     visited: {},
                 })
                     .save()
-                    .then((user) => {
-                        return user.toObject();
-                    })
+                    .then((user) => user.toObject())
                     .catch((message) => {
                         logger.error({
                             ...data,
@@ -215,6 +213,7 @@ export default module.exports = (userSchema) => {
         logger.debug('deserialize User');
         UserModel.findById(id).select('-__v').exec(done);
     };
+
 
     return (model) => {
         UserModel = model;

@@ -1,6 +1,6 @@
 import passport from 'passport';
 
-import routes from '../../config/routes';
+import {routes} from '../modules/routes';
 import {strategyName as facebookStrategyName} from '../modules/authentication/facebook';
 import {strategyName as googleStrategyName} from '../modules/authentication/google';
 

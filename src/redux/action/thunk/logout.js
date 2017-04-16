@@ -1,6 +1,7 @@
+import {routes} from '../../../modules/routes';
+
 import axios from 'axios';
 import builder from '../builder';
-import routes from '../../../../config/routes';
 
 export const loggingOut = 'loggingOut';
 

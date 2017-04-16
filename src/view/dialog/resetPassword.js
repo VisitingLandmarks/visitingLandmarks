@@ -9,7 +9,7 @@ import {resetPasswordThunk, resettingPassword} from '../../redux/action/thunk/re
 import {navigateTo} from '../../redux/action/ui';
 import {failure, inProgress, success} from '../../redux/reducer/communication';
 
-import routes from '../../../config/routes';
+import {routes} from '../../modules/routes';
 
 class ResetPassword extends React.Component {
 

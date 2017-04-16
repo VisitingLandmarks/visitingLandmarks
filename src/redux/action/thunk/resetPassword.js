@@ -1,3 +1,5 @@
+import {routes} from '../../../modules/routes';
+
 import axios from 'axios';
 import builder from '../builder';
 
@@ -11,8 +13,6 @@ export const passwordResetFailure = builder(PASSWORD_RESET_FAILURE);
 
 export const PASSWORD_RESET_SUCCESS = 'PASSWORD_RESET_SUCCESS';
 export const passwordResetSuccess = builder(PASSWORD_RESET_SUCCESS);
-
-import routes from '../../../../config/routes';
 
 
 export function resetPasswordThunk(data) {

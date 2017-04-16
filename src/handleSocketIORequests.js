@@ -1,4 +1,4 @@
-import {LOCATION_VISIT} from '../config/socketEvents';
+import {LOCATION_VISIT} from './client/clientSocket';
 import logger from './modules/logger';
 import {locationsVisit} from './redux/action/session';
 import {findUserById} from './data';

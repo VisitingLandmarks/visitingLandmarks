@@ -1,4 +1,4 @@
-import {LOCATION_VISIT, LOG} from '../../config/socketEvents';
+import {LOCATION_VISIT, LOG} from './clientSocket';
 import logger from '../modules/logger';
 
 /**

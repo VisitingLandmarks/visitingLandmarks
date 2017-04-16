@@ -1,5 +1,6 @@
 import applicationLogic from './applicationLogic';
 import lifetimeManagement from './lifetimeManagement';
+import preferences from './preferences';
 export const collectionName = 'User';
 
 /**
@@ -23,11 +24,13 @@ export default module.exports = function (mongoDB) {
             type: String,
             trim: true,
             unique: true,
+            sparse: true,
         },
         googleId: {
             type: String,
             trim: true,
             unique: true,
+            sparse: true,
         },
         isAdmin: {
             type: Boolean,
@@ -43,6 +46,7 @@ export default module.exports = function (mongoDB) {
             type: String,
             unique: true,
             select: false,
+            sparse: true,
         },
         resetPasswordToken: {
             type: String,
@@ -58,6 +62,12 @@ export default module.exports = function (mongoDB) {
             type: String,
             required: true,
             select: false,
+        },
+        preferences: {
+            locale: {
+                type: String,
+                default: 'en',
+            },
         },
             //and now the game based information
         visited: {
@@ -76,7 +86,12 @@ export default module.exports = function (mongoDB) {
     //this index can also help to answer the question if a user has visited a specific building or not yet.
     userSchema.index({_id: 1, visited: 1}, {unique: true});
 
-    const extensions = [applicationLogic(userSchema), lifetimeManagement(userSchema)];
+    //the extensions have to be prepared before the model is build.
+    const extensions = [
+        applicationLogic(userSchema),
+        lifetimeManagement(userSchema),
+        preferences(userSchema),
+    ];
 
     //build model based on scheme
     const UserModel = mongoDB.model(collectionName, userSchema);

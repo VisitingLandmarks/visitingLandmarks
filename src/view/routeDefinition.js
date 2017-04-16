@@ -10,7 +10,8 @@ import DialogLogin from './dialog/login';
 import DialogProfile from './dialog/profile';
 import DialogRegister from './dialog/register';
 
-import routes from '../../config/routes';
+import {routes} from '../modules/routes';
+
 import conditionalRoute from './conditionalRoute';
 
 

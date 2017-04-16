@@ -5,6 +5,8 @@ import {connect} from 'react-redux';
 import {FormattedMessage} from 'react-intl';
 import {updateIntl} from 'react-intl-redux';
 
+import {setPreferenceThunk} from '../../redux/action/thunk/setPreference';
+
 import flattenObject from '../../modules/flattenObject';
 
 import MenuItem from 'material-ui/MenuItem';
@@ -17,6 +19,7 @@ const LanguageSelect = (props) => {
                 checked={locale === props.current}
                 insetChildren={true}
                 onTouchTap={() => {
+                    props.setPreference({locale}); //@todo: change language based on preference set
                     props.changeLanguage({
                         locale,
                         messages : flattenObject(props.intl[locale]),
@@ -46,6 +49,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         changeLanguage: (locale) => dispatch(updateIntl(locale)),
+        setPreference: (data) => dispatch(setPreferenceThunk(data)),
     };
 };
 

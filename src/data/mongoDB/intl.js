@@ -12,7 +12,7 @@ export default module.exports = function (mongoDB) {
             type: String,
             unique: true,
         },
-        messages: Object,
+        messages: mongoDB.Schema.Types.Object,
 
     },
         {

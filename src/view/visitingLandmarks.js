@@ -17,7 +17,7 @@ import {logoutThunk} from '../redux/action/thunk/logout';
 
 import {followUserSet, navigateTo} from '../redux/action/ui';
 
-import routes from '../../config/routes';
+import {routes} from '../modules/routes';
 
 /**
  * the whole frontend

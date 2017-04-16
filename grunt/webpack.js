@@ -2,8 +2,32 @@ const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const autoprefixer = require('autoprefixer');
 const path = require('path');
-const emptyShim = path.resolve(__dirname, './emptyShim.js');
 
+const emptyShim = path.resolve(__dirname, './emptyShim.js');
+const emptyShimModules = [
+    'dtrace-provider',
+    'fs',
+    'mv',
+    'safe-json-stringify',
+    'source-map-support',
+].reduce((obj, module) => {
+    obj[module] = emptyShim;
+    return obj;
+}, {});
+
+const secureConfigShim = path.resolve(__dirname, '../config/browser.js');
+const secureConfigShimModules = [
+    '../config',
+    '../../config',
+    '../../../config',
+    '../../../../config',
+    '../../../../../config',
+    '../../../../../../config',
+    '../../../../../../../config',
+].reduce((obj, module) => {
+    obj[module] = secureConfigShim;
+    return obj;
+}, {});
 
 module.exports = function (grunt) {
 
@@ -14,12 +38,10 @@ module.exports = function (grunt) {
         ],
         resolve: {
             // These shims are needed for bunyan
+            // and to ensure that no data is leaked
             alias: {
-                'dtrace-provider': emptyShim,
-                fs: emptyShim,
-                'safe-json-stringify': emptyShim,
-                mv: emptyShim,
-                'source-map-support': emptyShim,
+                ...emptyShimModules,
+                ...secureConfigShimModules,
             },
         },
         output: {
@@ -50,7 +72,8 @@ module.exports = function (grunt) {
                                     sourceMap: true,
                                 },
                             },
-                            {loader: 'postcss-loader',
+                            {
+                                loader: 'postcss-loader',
                                 options: {
                                     plugins: [autoprefixer({
                                         browsers: ['ie 9', 'last 3 versions'],
@@ -100,7 +123,6 @@ module.exports = function (grunt) {
         build: {
             ...shared,
             plugins: [...shared.plugins,
-                new webpack.optimize.DedupePlugin(),
                 new webpack.optimize.UglifyJsPlugin({
                     compress: {
                         warnings: false,

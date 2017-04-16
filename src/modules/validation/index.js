@@ -61,7 +61,7 @@ export const combineSchema = function (baseSchema) {
  */
 
 const combineTwoSchema = (baseSchema, extension) => {
-    return {
+    const obj = {
         ...baseSchema,
         ...extension,
         properties: {
@@ -73,6 +73,11 @@ const combineTwoSchema = (baseSchema, extension) => {
             ...extension.required || [],
         ].filter(isFirstOccurance), // elements in required should be unique
     };
+
+    if (!obj.required.length) {
+        delete obj.required;
+    }
+    return obj;
 };
 
 export const buildBaseSchema = (title = 'Schema', additionalProperties = false) => {

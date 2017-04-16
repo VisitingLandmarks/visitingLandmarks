@@ -1,6 +1,6 @@
 import controller from '../controller/home';
 
-import routes from '../../config/routes';
+import {routes} from '../modules/routes';
 
 export default (app) => {
     /**

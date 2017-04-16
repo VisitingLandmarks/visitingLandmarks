@@ -25,14 +25,11 @@ export default (store, url, userAgent) => {
     const html = renderToString(
         <Provider store={store}>
             <IntlProvider>
-            <MuiThemeProvider muiTheme={getMuiTheme({userAgent}, darkBaseTheme)}>
-                <Router
-                    location={url}
-                    context={context}
-                >
-                    <RouteDefinition store={store}/>
-                </Router>
-            </MuiThemeProvider>
+                <MuiThemeProvider muiTheme={getMuiTheme({userAgent}, darkBaseTheme)}>
+                    <Router location={url} context={context}>
+                        <RouteDefinition store={store}/>
+                    </Router>
+                </MuiThemeProvider>
             </IntlProvider>
         </Provider>
     );

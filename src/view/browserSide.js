@@ -9,11 +9,11 @@ import reducer from '../redux/reducer';
 import clientSocket from '../client/clientSocket';
 
 import {addLocaleData} from 'react-intl';
+//@todo: build this automatically
 import en from 'react-intl/locale-data/en';
 import de from 'react-intl/locale-data/de';
 
 import RouteDefinition from './routeDefinition';
-
 
 //Material UI
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';

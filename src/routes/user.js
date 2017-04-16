@@ -1,6 +1,6 @@
 import passport from 'passport';
 import * as controller from '../controller/user';
-import routes from '../../config/routes';
+import {routes} from '../modules/routes';
 import {postFactory} from '../modules/validation';
 import registerSchema from '../modules/validation/schema/register';
 import passwordChangeSchema from '../modules/validation/schema/passwordChange';

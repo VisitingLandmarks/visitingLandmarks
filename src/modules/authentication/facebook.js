@@ -3,7 +3,7 @@ import config from '../../../config';
 export const strategyName = 'facebook';
 const FacebookStrategy = require('passport-facebook').Strategy;
 const requiredFields = ['id', 'email'];
-import routes from  '../../../config/routes';
+import {routes} from  '../../modules/routes';
 
 
 /**
@@ -17,9 +17,10 @@ export default (app, passport, registerProvider) => {
         ...config.authProvider.facebook,
         callbackURL: config.baseDomain + routes.auth.facebook.callback,
         profileFields: requiredFields,
+        passReqToCallback : true,
     },
-        function (accessToken, refreshToken, profile, cb) {
-            registerProvider({facebookId: profile.id}, {email: profile.emails[0].value})
+        function (req, accessToken, refreshToken, profile, cb) {
+            registerProvider({facebookId: profile.id}, {email: profile.emails[0].value}, req.locale)
                 .catch((err) => cb(err, null))
                 .then((user) => cb(null, user));
         }

@@ -64,6 +64,12 @@ export const getAllLocations = () => {
  */
 export const getAllIntl = () => cache.Intl.getAllAsObject();
 
+
+/**
+ * get an intl for a specific locale formated for react-intl
+ * @param locale
+ * @returns {Promise.<TResult>}
+ */
 export const getFlatIntlByLocale = (locale) => {
     return getAllIntl().then((intl) => {
         return {
@@ -72,6 +78,7 @@ export const getFlatIntlByLocale = (locale) => {
         };
     });
 };
+
 
 /**
  * get a single user based on the ID
