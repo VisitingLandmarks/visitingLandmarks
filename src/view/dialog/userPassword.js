@@ -67,7 +67,7 @@ class DialogUserPassword extends React.Component {
             <RaisedButton
                 style={style.button}
                 label={formatMessage({id: 'dialog.cancel'})}
-                primary={true}
+                primary={false}
                 onTouchTap={this.props.onCloseDialog}
                 disabled={this.props.disabled}
             />,

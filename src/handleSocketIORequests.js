@@ -1,6 +1,6 @@
 import {LOCATION_VISIT} from './client/clientSocket';
 import logger from './modules/logger';
-import {locationsVisit} from './redux/action/session';
+import {locationsVisitSuccess} from './redux/action/thunk/visitLocation';
 import {findUserById} from './data';
 
 //@todo: too much logic in here. Logic should be abstracted from the interface
@@ -19,19 +19,19 @@ export default module.exports = (sendActionToAllConnectionOfAUser) => {
             const visitedLocationLogger = logger.child({userId, visitedLocation});
 
             findUserById(userId)
-                .then((user)=> {
+                .then((user) => {
                     return user.visitedLocation(visitedLocation);
                 })
-                .then((newVisit)=> {
+                .then((newVisit) => {
                     if (!newVisit) {
                         visitedLocationLogger.warn('user was here already, he should not send this twice');
                     } else {
                         visitedLocationLogger.info('User visited new location');
 
                     }
-                    sendActionToAllConnectionOfAUser(userId, locationsVisit({[visitedLocation]: newVisit}));
+                    sendActionToAllConnectionOfAUser(userId, locationsVisitSuccess({data: {[visitedLocation]: newVisit}}));
                 })
-                .catch((err)=> {
+                .catch((err) => {
                     visitedLocationLogger.error(err);
                 });
         });

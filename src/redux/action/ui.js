@@ -1,3 +1,5 @@
+import builder from './builder';
+
 //@todo: like reducer -> control
 export const NAVIGATE_TO = 'NAVIGATE_TO';
 export const navigateTo = (value) => {
@@ -14,3 +16,8 @@ export const followUserSet = (value) => {
         value,
     };
 };
+
+export const CONVERSION_LOCATION_VISIT_SHOW = 'CONVERSION_LOCATION_VISIT_SHOW';
+export const conversionLocationVisitShow = builder(CONVERSION_LOCATION_VISIT_SHOW);
+export const CONVERSION_LOCATION_VISIT_HIDE = 'CONVERSION_LOCATION_VISIT_HIDE';
+export const conversionLocationVisitHide = builder(CONVERSION_LOCATION_VISIT_HIDE);

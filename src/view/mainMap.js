@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import config from '../../config';
-import markerStyle from '../client/map/markerStyle';
+// import markerStyle from '../client/map/markerStyle';
+import leafLetBootstrap from '../client/map/index';
 import orientationToCompassHeading from '../modules/orientationToCompassHeading';
 import antiHammer from '../modules/antiHammer';
 const memoize = require('memoizee');
@@ -41,7 +42,8 @@ export default class MainMap extends React.Component {
      */
     componentDidMount() {
 
-        require('leaflet-rotatedmarker');
+        this.Map = leafLetBootstrap();
+        this.markerStyle = require('../client/map/markerStyle');
 
         this.leafLetMap = L.map('mainMap', {
             dragging: !this.props.followUser, //this could also be done with the setUserInteractivity method
@@ -50,7 +52,7 @@ export default class MainMap extends React.Component {
             touchZoom: 'center',
         });
 
-        L.tileLayer('https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png').addTo(this.leafLetMap);
+        L.tileLayer(config.map.tileLocation).addTo(this.leafLetMap);
 
         //geoLocation
         //continuously watching to redraw the marker
@@ -79,12 +81,13 @@ export default class MainMap extends React.Component {
         this.removeListener = () => {
             this.leafLetMap.off('locationfound', onLoactionFoundListener);
             window.removeEventListener('deviceorientation', onDeviceOrientationListener);
+            this.leafLetMap.stopLocate();
+            this.leafLetMap.remove();
         };
     }
 
     componentWillUnmount() {
         this.removeListener();
-
     }
 
 
@@ -126,7 +129,7 @@ export default class MainMap extends React.Component {
      * update all markers on the map
      */
     updateMarkers() {
-        updateMarkers(this.props.locations, this.props.visitedLocations, this.marker, this.popups);
+        updateMarkers(this.props.locations, this.props.visitedLocations, this.markerStyle, this.marker, this.popups);
     }
 
 
@@ -185,7 +188,7 @@ function createMarkersAndCluster(locations, marker, popups) {
  * @todo right now this just works for the title, not coordinations, removing or adding locations
  * @param self
  */
-function updateMarkers(locations, visitedLocations, marker, popups) {
+function updateMarkers(locations, visitedLocations, markerStyle, marker, popups) {
 
     Object.keys(locations)
         .forEach((locationId) => {
@@ -279,8 +282,8 @@ function onLocationFound(geoData) {
 
     } else { //create users position on Map, if not exist yet
         this.userMarker = {
-            marker: L.marker(geoData.latlng, {icon: markerStyle.user}).addTo(this.leafLetMap),
-            arrow: L.marker(geoData.latlng, {icon: markerStyle.arrow}).addTo(this.leafLetMap).setOpacity(0),
+            marker: L.marker(geoData.latlng, {icon: this.markerStyle.user}).addTo(this.leafLetMap),
+            arrow: L.marker(geoData.latlng, {icon: this.markerStyle.arrow}).addTo(this.leafLetMap).setOpacity(0),
             circle: L.circle(geoData.latlng, {radius}).addTo(this.leafLetMap),
         };
     }
@@ -303,7 +306,7 @@ function onLocationFound(geoData) {
         })
 
         //and mark them as visited
-        .forEach(component.props.onVisitLocation);
+        .forEach(component.props.onVisitLocation); //@todo: start a thunk
 }
 
 MainMap.propTypes = {

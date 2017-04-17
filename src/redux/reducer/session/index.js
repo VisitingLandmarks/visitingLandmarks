@@ -1,7 +1,7 @@
 import {LOGIN_SUCCESS} from '../../action/thunk/login';
 import {LOGOUT_SUCCESS} from '../../action/thunk/logout';
 import {REGISTER_SUCCESS} from '../../action/thunk/register';
-import {LOCATIONS_VISIT} from '../../action/session';
+import {LOCATIONS_VISIT_SUCCESS} from '../../action/thunk/visitLocation';
 import {PREFERENCE_SET_SUCCESS} from '../../action/thunk/setPreference';
 
 import initialState from './initialState';
@@ -26,14 +26,14 @@ export default (oldState = initialState, action) => {
             };
         }
 
-        case LOCATIONS_VISIT: {
+        case LOCATIONS_VISIT_SUCCESS: {
             return {
                 ...oldState,
                 user: {
                     ...oldState.user,
                     visited: {
                         ...oldState.user.visited,
-                        ...action.visitedLocation,
+                        ...action.data,
                     },
                 },
             };

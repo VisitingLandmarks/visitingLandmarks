@@ -64,8 +64,6 @@ function renderFullPage(html, initialState) {
         <link rel="stylesheet" href="${config.frontendPath.leafLet}leaflet.css">
         <link rel="stylesheet" href="${config.frontendPath.leafLetMarkerCluster}MarkerCluster.css">
         <link rel="stylesheet" href="${config.frontendPath.leafLetMarkerCluster}MarkerCluster.Default.css">
-        <script src="${config.frontendPath.leafLet}leaflet.js"></script>
-        <script src="${config.frontendPath.leafLetMarkerCluster}leaflet.markercluster.js"></script>
       </head>
       <body>
         <div id="root">${html}</div>

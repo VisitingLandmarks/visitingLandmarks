@@ -3,220 +3,273 @@ import generateRandomString from '../../../modules/generateRandomString';
 
 import logger from '../../../modules/logger';
 
-export default module.exports = (userSchema) => {
+export default module.exports = (mongoDB, schemaDefinition) => {
 
-    let UserModel;
+    Object.assign(schemaDefinition, {
+        email: {
+            type: String,
+            trim: true,
+            unique: true,
+            lowercase: true,
+            required: 'Email address is required',
+            match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,8})+$/, 'Please fill a valid email address'],
+        },
+        facebookId: {
+            type: String,
+            trim: true,
+            unique: true,
+            sparse: true,
+        },
+        googleId: {
+            type: String,
+            trim: true,
+            unique: true,
+            sparse: true,
+        },
+        isConfirmed: {
+            type: Boolean,
+            required: true,
+            default: false,
+        },
+        confirmationToken: {
+            type: String,
+            unique: true,
+            select: false,
+            sparse: true,
+        },
+        resetPasswordToken: {
+            type: String,
+            select: false,
+        },
+        // resetPasswordExpires: Date,
+        passwordHash: {
+            type: String,
+            required: true,
+            select: false,
+        },
+        passwordSalt: {
+            type: String,
+            required: true,
+            select: false,
+        },
+    });
 
-    /**
-     * find the user in the db and check the password with the salt and hash
-     * @param email
-     * @param password
-     * @param callback
-     */
-    userSchema.statics.authenticate = (email, password, callback) => {
+    return (userSchema) => {
 
-        email = email.toLowerCase();
+        let UserModel;
 
-        logger.debug({email}, 'authenticate user');
+        /**
+         * find the user in the db and check the password with the salt and hash
+         * @param email
+         * @param password
+         * @param callback
+         */
+        userSchema.statics.authenticate = (email, password, callback) => {
 
-        UserModel.findOne({email}).select('+passwordHash +passwordSalt').exec(function (err, user) {
+            email = email.toLowerCase();
 
-            if (err) {
-                logger.error({email}, 'db error during user authenticate');
-                return callback(err, null);
-            }
+            logger.debug({email}, 'authenticate user');
 
-            // no user found just return the empty user
-            if (!user) {
-                logger.info({email}, 'email not found during user authenticate');
-                return callback(null, false, {message: 'Incorrect login'});
-            }
+            UserModel.findOne({email}).select('+passwordHash +passwordSalt').exec(function (err, user) {
 
-            verifyPassword(password, user.passwordHash, user.passwordSalt)
-                .then(() => {
-
-                    // remove password and salt from the result without modifying the document.
-                    user = user.toObject();
-                    delete user.passwordHash;
-                    delete user.passwordSalt;
-                    delete user.__v;
-
-                    // return user representing object, not the user model! if everything is ok
-                    callback(err, user);
-                })
-                .catch((err) => {
-                    logger.info({email, err}, 'wrong password during login');
-                    callback(null, false, {message: 'Incorrect login'});
-                });
-
-        });
-    };
-
-
-    /**
-     * register a new user
-     * @param email
-     * @param clearTextPassword
-     * @param name (optional)
-     * @returns {Promise}
-     */
-    userSchema.statics.register = (email, clearTextPassword, locale, isAdmin) => {
-
-        //@todo: verify security level of password
-        return generatePasswordHash(clearTextPassword)
-            .then((passwordData) => {
-                const passwordHash = passwordData.passwordHash;
-                const passwordSalt = passwordData.passwordSalt;
-                const confirmationToken = generateRandomString();
-                const resetPasswordToken = generateRandomString();
-
-                return new UserModel({
-                    passwordHash,
-                    passwordSalt,
-                    confirmationToken,
-                    resetPasswordToken,
-                    email,
-                    preferences: {locale},
-                    isAdmin,
-                    visited: {},
-                })
-                    .save()
-                    .then((user) => {
-                        return user.toObject();
-                    })
-                    .catch((message) => {
-                        logger.error({email, message}, 'mongoDB Error in userSchema.statics.register');
-                        throw message;
-                    });
-
-            });
-    };
-
-
-    /**
-     * register a new user
-     * @param email
-     * @param clearTextPassword
-     * @param name (optional)
-     * @returns {Promise}
-     */
-    userSchema.statics.registerProvider = (data) => {
-
-        //@todo: verify security level of password
-        return generatePasswordHash()
-            .then((passwordData) => {
-
-                const passwordHash = passwordData.passwordHash;
-                const passwordSalt = passwordData.passwordSalt;
-                const confirmationToken = generateRandomString();
-                const resetPasswordToken = generateRandomString();
-
-                return new UserModel({
-                    ...data,
-                    passwordHash,
-                    passwordSalt,
-                    confirmationToken,
-                    resetPasswordToken,
-                    visited: {},
-                })
-                    .save()
-                    .then((user) => user.toObject())
-                    .catch((message) => {
-                        logger.error({
-                            ...data,
-                            message,
-                        }, 'mongoDB Error in userSchema.statics.registerProvider');
-                    });
-            });
-    };
-
-
-    /**
-     * set a new password reset token
-     * which will overwrite the old one -> invalidation of the old one
-     * @returns {*}
-     */
-    userSchema.methods.newPasswordResetToken = function () {
-
-        this.resetPasswordToken = generateRandomString();
-        return this.save();
-
-    };
-
-
-    /**
-     * set a new password
-     * which will overwrite the old one -> invalidation of the old one
-     * @returns {*}
-     */
-    userSchema.methods.setPassword = function (clearTextPassword) {
-
-        return generatePasswordHash(clearTextPassword)
-            .then((passwordData) => {
-                this.passwordHash = passwordData.passwordHash;
-                this.passwordSalt = passwordData.passwordSalt;
-                this.passwordResetToken = generateRandomString();
-                return this.save();
-            })
-            .catch((message) => {
-                logger.error({userId: this._id, message}, 'mongoDB Error in userSchema.methods.setPassword');
-            });
-
-    };
-
-
-    /**
-     * set a user to confirmed
-     * @param confirmationToken
-     * @returns {Promise|Promise.<T>}
-     */
-    userSchema.statics.confirm = (confirmationToken) => {
-
-        return UserModel.findOne({confirmationToken})
-            .then((user) => {
-
-                //the request was successful, but there is no user with that confirmation token
-                if (!user) {
-                    return;
+                if (err) {
+                    logger.error({email}, 'db error during user authenticate');
+                    return callback(err, null);
                 }
 
-                user.isConfirmed = true;
-                user.confirmationToken = generateRandomString();
+                // no user found just return the empty user
+                if (!user) {
+                    logger.info({email}, 'email not found during user authenticate');
+                    return callback(null, false, {message: 'Incorrect login'});
+                }
 
-                return user.save();
-            })
-            .catch((err) => {
-                logger.error(err, 'error during mail confirmation');
+                verifyPassword(password, user.passwordHash, user.passwordSalt)
+                    .then(() => {
+
+                        // remove password and salt from the result without modifying the document.
+                        user = user.toObject();
+                        delete user.passwordHash;
+                        delete user.passwordSalt;
+                        delete user.__v;
+
+                        // return user representing object, not the user model! if everything is ok
+                        callback(err, user);
+                    })
+                    .catch((err) => {
+                        logger.info({email, err}, 'wrong password during login');
+                        callback(null, false, {message: 'Incorrect login'});
+                    });
+
             });
+        };
+
+
+        /**
+         * register a new user
+         * @param email
+         * @param clearTextPassword
+         * @param name (optional)
+         * @returns {Promise}
+         */
+        userSchema.statics.register = (email, clearTextPassword, locale, isAdmin) => {
+
+            //@todo: verify security level of password
+            return generatePasswordHash(clearTextPassword)
+                .then((passwordData) => {
+                    const passwordHash = passwordData.passwordHash;
+                    const passwordSalt = passwordData.passwordSalt;
+                    const confirmationToken = generateRandomString();
+                    const resetPasswordToken = generateRandomString();
+
+                    return new UserModel({
+                        passwordHash,
+                        passwordSalt,
+                        confirmationToken,
+                        resetPasswordToken,
+                        email,
+                        preferences: {locale},
+                        isAdmin,
+                        visited: {},
+                    })
+                        .save()
+                        .then((user) => {
+                            return user.toObject();
+                        })
+                        .catch((message) => {
+                            logger.error({email, message}, 'mongoDB Error in userSchema.statics.register');
+                            throw message;
+                        });
+
+                });
+        };
+
+
+        /**
+         * register a new user
+         * @param email
+         * @param clearTextPassword
+         * @param name (optional)
+         * @returns {Promise}
+         */
+        userSchema.statics.registerProvider = (data) => {
+
+            //@todo: verify security level of password
+            return generatePasswordHash()
+                .then((passwordData) => {
+
+                    const passwordHash = passwordData.passwordHash;
+                    const passwordSalt = passwordData.passwordSalt;
+                    const confirmationToken = generateRandomString();
+                    const resetPasswordToken = generateRandomString();
+
+                    return new UserModel({
+                        ...data,
+                        passwordHash,
+                        passwordSalt,
+                        confirmationToken,
+                        resetPasswordToken,
+                        visited: {},
+                    })
+                        .save()
+                        .then((user) => user.toObject())
+                        .catch((message) => {
+                            logger.error({
+                                ...data,
+                                message,
+                            }, 'mongoDB Error in userSchema.statics.registerProvider');
+                            throw message;
+                        });
+                });
+        };
+
+
+        /**
+         * set a new password reset token
+         * which will overwrite the old one -> invalidation of the old one
+         * @returns {*}
+         */
+        userSchema.methods.newPasswordResetToken = function () {
+
+            this.resetPasswordToken = generateRandomString();
+            return this.save();
+
+        };
+
+
+        /**
+         * set a new password
+         * which will overwrite the old one -> invalidation of the old one
+         * @returns {*}
+         */
+        userSchema.methods.setPassword = function (clearTextPassword) {
+
+            return generatePasswordHash(clearTextPassword)
+                .then((passwordData) => {
+                    this.passwordHash = passwordData.passwordHash;
+                    this.passwordSalt = passwordData.passwordSalt;
+                    this.passwordResetToken = generateRandomString();
+                    return this.save();
+                })
+                .catch((message) => {
+                    logger.error({userId: this._id, message}, 'mongoDB Error in userSchema.methods.setPassword');
+                });
+
+        };
+
+
+        /**
+         * set a user to confirmed
+         * @param confirmationToken
+         * @returns {Promise|Promise.<T>}
+         */
+        userSchema.statics.confirm = (confirmationToken) => {
+
+            return UserModel.findOne({confirmationToken})
+                .then((user) => {
+
+                    //the request was successful, but there is no user with that confirmation token
+                    if (!user) {
+                        return;
+                    }
+
+                    user.isConfirmed = true;
+                    user.confirmationToken = generateRandomString();
+
+                    return user.save();
+                })
+                .catch((err) => {
+                    logger.error(err, 'error during mail confirmation');
+                });
+        };
+
+
+        /**
+         * get the minimal unique information to identify a user in sessions
+         * used by passport
+         * @param user
+         * @param done
+         */
+        userSchema.statics.serializeUser = (user, done) => {
+            logger.debug('serialize User');
+            done(null, user._id);
+        };
+
+
+        /**
+         * deserialize the user to a full model
+         * used by passport
+         * @param id
+         * @param done
+         */
+        userSchema.statics.deserializeUser = (id, done) => {
+            logger.debug('deserialize User');
+            UserModel.findById(id).select('-__v').exec(done);
+        };
+
+
+        return (model) => {
+            UserModel = model;
+        };
+
     };
-
-
-    /**
-     * get the minimal unique information to identify a user in sessions
-     * used by passport
-     * @param user
-     * @param done
-     */
-    userSchema.statics.serializeUser = (user, done) => {
-        logger.debug('serialize User');
-        done(null, user._id);
-    };
-
-
-    /**
-     * deserialize the user to a full model
-     * used by passport
-     * @param id
-     * @param done
-     */
-    userSchema.statics.deserializeUser = (id, done) => {
-        logger.debug('deserialize User');
-        UserModel.findById(id).select('-__v').exec(done);
-    };
-
-
-    return (model) => {
-        UserModel = model;
-    };
-
 };

@@ -9,15 +9,17 @@ injectTapEventPlugin();
 import MainMap from './mainMap';
 import MainMenu from './mainMenu';
 import Navigator from './navigator';
+import ConversionLocationVisit from './dialog/conversionLocationVisit';
 
-import {onVisitLocation} from '../client/toServer';
 import {connect} from 'react-redux';
 
 import {logoutThunk} from '../redux/action/thunk/logout';
+import visitLocationThunk from '../redux/action/thunk/visitLocation';
 
-import {followUserSet, navigateTo} from '../redux/action/ui';
+import {followUserSet, navigateTo, conversionLocationVisitShow} from '../redux/action/ui';
 
 import {routes} from '../modules/routes';
+
 
 /**
  * the whole frontend
@@ -39,7 +41,16 @@ class VisitingLandmarks extends React.Component {
                     visitedLocations={this.props.visitedLocations}
                     locations={this.props.locations}
                     onToggleFollowUser={this.props.onToggleFollowUser}
-                    onVisitLocation={onVisitLocation}
+                    onVisitLocation={(locationId) => {
+                        if (!this.props.loggedIn) {
+                            //only allowed, when not open or already closed by the user
+                            if (this.props.conversionLocationVisitAllowed) {
+                                this.props.conversionLocationVisitShow(locationId);
+                            }
+                            return;
+                        }
+                        this.props.onVisitLocation(locationId);
+                    }}
                 />
 
                 <MainMenu
@@ -54,6 +65,8 @@ class VisitingLandmarks extends React.Component {
                     requestLogout={this.props.requestLogout}
                 />
 
+                <ConversionLocationVisit/>
+
                 <Navigator/>
 
             </div>
@@ -64,6 +77,7 @@ class VisitingLandmarks extends React.Component {
 
 VisitingLandmarks.propTypes = {
     categories: PropTypes.object.isRequired,
+    conversionLocationVisitAllowed: PropTypes.bool.isRequired,
     followUser: PropTypes.bool.isRequired,
     locations: PropTypes.object.isRequired,
     loggedIn: PropTypes.bool.isRequired,
@@ -71,10 +85,11 @@ VisitingLandmarks.propTypes = {
     userEmailConfirmed: PropTypes.bool.isRequired,
     visitedLocations: PropTypes.object.isRequired,
 
-    requestLogout: PropTypes.func.isRequired,
-
+    conversionLocationVisitShow: PropTypes.func.isRequired,
     onToggleFollowUser: PropTypes.func.isRequired,
+    onVisitLocation: PropTypes.func.isRequired,
     navigateTo: PropTypes.func.isRequired,
+    requestLogout: PropTypes.func.isRequired,
 };
 
 VisitingLandmarks.contextTypes = {
@@ -93,15 +108,17 @@ const mapStateToProps = (state) => {
         //an object is easier to access and check
         visitedLocations: state.session.user && state.session.user.visited || {},
         communication: state.communication,
+        conversionLocationVisitAllowed : !state.control.conversionLocationVisit,
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        requestLogout: () => dispatch(logoutThunk()),
-
+        conversionLocationVisitShow: (locationId) => dispatch(conversionLocationVisitShow({locationId})),
         onToggleFollowUser: (newValue) => dispatch(followUserSet(newValue)),
         navigateTo: (url) => dispatch(navigateTo(url)),
+        requestLogout: () => dispatch(logoutThunk()),
+        onVisitLocation: (locationId) => dispatch(visitLocationThunk(locationId)),
     };
 };
 

@@ -33,7 +33,14 @@ import {
     changingPassword,
 } from '../../action/thunk/changePassword';
 
+import {
+    LOCATIONS_VISIT,
+    LOCATIONS_VISIT_SUCCESS,
+    visittingLocation,
+} from '../../action/thunk/visitLocation';
+
 import initialState from './initialState';
+const omit = require('lodash/omit');
 
 export const inProgress = 'inProgress';
 export const failure = 'failure';
@@ -125,8 +132,6 @@ export default (oldState = initialState, action) => {
         }
 
 
-
-
         case PASSWORD_CHANGE: {
             return {
                 ...oldState,
@@ -143,6 +148,24 @@ export default (oldState = initialState, action) => {
             return {
                 ...oldState,
                 [changingPassword]: {[success]: true},
+            };
+        }
+
+        case LOCATIONS_VISIT: {
+            return {
+                ...oldState,
+                [visittingLocation]: {
+                    ...oldState[visittingLocation],
+                    [action.locationId]: true,
+                },
+            };
+        }
+
+        case LOCATIONS_VISIT_SUCCESS: {
+
+            return {
+                ...oldState,
+                [visittingLocation]: omit(oldState[visittingLocation], Object.keys(action.data)),
             };
         }
 

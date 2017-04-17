@@ -2,7 +2,7 @@ import config from '../../../config';
 
 export const strategyName = 'google';
 const FacebookStrategy = require('passport-google-oauth2').Strategy;
-// const requiredFields = ['id', 'email'];
+
 import {routes} from  '../../modules/routes';
 
 /**
@@ -15,10 +15,10 @@ export default (app, passport, registerProvider) => {
     passport.use(new FacebookStrategy({
         ...config.authProvider.google,
         callbackURL: config.baseDomain + routes.auth.google.callback,
-        passReqToCallback : true,
+        passReqToCallback: true,
     },
         function (req, accessToken, refreshToken, profile, cb) {
-            registerProvider({googleId: profile.id}, {email: profile.email}, req.locale)
+            registerProvider({googleId: profile.id}, {email: profile.email}, {locale: req.locale})
                 .catch((err) => cb(err, null))
                 .then((user) => cb(null, user));
         }

@@ -10,10 +10,10 @@ const onlyWhenSocketAvailable = (func) => {
     return function () {
         if (!window.socket) {
             logger.debug(arguments, 'socket connection not available');
-            return false;
+            return;
         }
 
-        func.apply(this, arguments);
+        return func.apply(this, arguments);
     };
 };
 

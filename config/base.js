@@ -4,8 +4,10 @@ module.exports = {
     port: 8000,
     baseDomain: 'http://localhost:8000',
     frontendPath: {
-        leafLet: 'https://unpkg.com/leaflet@1.0.1/dist/',
-        leafLetMarkerCluster: 'https://unpkg.com/leaflet.markercluster@1.0.0-rc.1.0/dist/',
+        //@todo: this is needed to load the css plus graphics from the CDN
+        //@todo: deliver from own host or at least get the version from package.json
+        leafLet: 'https://unpkg.com/leaflet@1.0.3/dist/',
+        leafLetMarkerCluster: 'https://unpkg.com/leaflet.markercluster@1.0.4/dist/',
     },
     mongoDB: {
         debug: false,

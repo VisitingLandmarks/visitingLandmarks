@@ -1,4 +1,5 @@
 import applicationLogic from './applicationLogic';
+import image from './image';
 import lifetimeManagement from './lifetimeManagement';
 import preferences from './preferences';
 export const collectionName = 'User';
@@ -10,92 +11,47 @@ export const collectionName = 'User';
  */
 export default module.exports = function (mongoDB) {
 
-    const userSchema = new mongoDB.Schema({
-            //basic user properties
-        email: {
-            type: String,
-            trim: true,
-            unique: true,
-            lowercase: true,
-            required: 'Email address is required',
-            match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,8})+$/, 'Please fill a valid email address'],
-        },
-        facebookId: {
-            type: String,
-            trim: true,
-            unique: true,
-            sparse: true,
-        },
-        googleId: {
-            type: String,
-            trim: true,
-            unique: true,
-            sparse: true,
-        },
+    const extensions = [
+        applicationLogic,
+        image,
+        lifetimeManagement,
+        preferences,
+    ];
+
+    const schemaDefinition = {
         isAdmin: {
             type: Boolean,
             required: true,
             default: false,
         },
-        isConfirmed: {
-            type: Boolean,
-            required: true,
-            default: false,
-        },
-        confirmationToken: {
-            type: String,
-            unique: true,
-            select: false,
-            sparse: true,
-        },
-        resetPasswordToken: {
-            type: String,
-            select: false,
-        },
-            // resetPasswordExpires: Date,
-        passwordHash: {
-            type: String,
-            required: true,
-            select: false,
-        },
-        passwordSalt: {
-            type: String,
-            required: true,
-            select: false,
-        },
-        preferences: {
-            locale: {
-                type: String,
-                default: 'en',
-            },
-        },
-            //and now the game based information
-        visited: {
-            type: mongoDB.Schema.Types.Object,
-            required: true,
-            default: {},
-        },
-    },
+    };
+
+    //allow extensions to extend the schema definition
+    const extensionsSchemaDef = extensions.map((extension) => {
+        return extension && extension(mongoDB, schemaDefinition);
+    });
+
+    const userSchema = new mongoDB.Schema(schemaDefinition,
         {
             timestamps: true,
             minimize: false,
-            // collection: collectionName, //todo: use
+            collection: collectionName,
         });
 
     //making sure that the combination of user und visited objects is unique - he either visited or not
     //this index can also help to answer the question if a user has visited a specific building or not yet.
     userSchema.index({_id: 1, visited: 1}, {unique: true});
 
-    //the extensions have to be prepared before the model is build.
-    const extensions = [
-        applicationLogic(userSchema),
-        lifetimeManagement(userSchema),
-        preferences(userSchema),
-    ];
+    //allow extensions to add schema hooks like statics and methods
+    const extensionsWithSchema = extensionsSchemaDef.map((extension) => {
+        return extension && extension(userSchema);
+    });
 
     //build model based on scheme
     const UserModel = mongoDB.model(collectionName, userSchema);
-    extensions.forEach((extension) => {
+
+    //allow extensions to use the build Model, e.g. in static methods
+    extensionsWithSchema.forEach((extension) => {
         extension && extension(UserModel);
     });
 

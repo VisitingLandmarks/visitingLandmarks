@@ -3,6 +3,7 @@ import * as dataRepository from '../data';
 import {disconnectAllSocketsOfUser} from '../modules/sendActionToAllConnectionOfAUser';
 import {routes} from '../modules/routes';
 import logger from '../modules/logger';
+import axios from 'axios';
 
 export const confirm = (req, res, next) => {
 
@@ -39,6 +40,17 @@ export const logout = (req, res) => {
 
 };
 
+export const image = (req, res) => {
+
+    //@todo: add alias "hasImage" in mongoose layer
+    if (!req.user.image.data || !req.user.image.contentType) {
+
+    }
+
+    res.contentType(req.user.image.contentType);
+    res.send(req.user.image.data );
+};
+
 
 /**
  * find the user in the db and create a new one if not found
@@ -46,10 +58,11 @@ export const logout = (req, res) => {
  * @param providerCriteria
  * @param emailCriteria
  */
-export const registerProvider = (providerCriteria, emailCriteria, locale) => {
+export const registerProvider = (providerCriteria, emailCriteria, data) => {
 
     // 1. check for provider id
     return dataRepository.User.findOne(providerCriteria).then((user) => {
+
 
         if (user) { // 2. if provider id is found -> login (don't sync email)
             return user;
@@ -70,14 +83,27 @@ export const registerProvider = (providerCriteria, emailCriteria, locale) => {
                 return user.save();
             }
 
-            // 3b. if email is not used -> create new user
-            return dataRepository.User.registerProvider({
+            const userData = {
                 ...providerCriteria,
                 ...emailCriteria,
                 preferences: {
-                    locale,
+                    locale: data.locale,
                 },
-            }).then((user) => {
+            };
+
+            //get image from provider and add to user
+            if (data.image) {
+                axios.get(data.image, {responseType: 'arraybuffer'}).then(function (response) {
+                    userData.image = {
+                        data: response.data,
+                        contentType: response.headers['content-type'],
+                    };
+                });
+            }
+
+
+            // 3b. if email is not used -> create new user
+            return dataRepository.User.registerProvider(userData).then((user) => {
                 return sendEmailUserRegistered(user)
                     .then(() => {
                         return user;

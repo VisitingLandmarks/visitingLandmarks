@@ -30,6 +30,7 @@ export const routes = {
         confirm: '/confirm/:token',
         login: '/login',
         logout: '/logout',
+        image: '/image', //@todo: extend with /:user -> requires a username
         resetPassword: '/resetPassword', //@todo: prevent mixing use cases (dialog and API)
         passwordChange: '/passwordChange',  //@todo: prevent mixing use cases (dialog and API)
         passwordResetRequest: '/requestPasswordReset',

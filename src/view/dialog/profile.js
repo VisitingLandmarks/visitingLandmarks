@@ -106,6 +106,7 @@ class DialogProfile extends React.Component {
                 open={true}
             >
                 <div>
+                    <img src="/image"/>
                     <label><FormattedMessage id="dialog.profile.confirmed"/>: </label>{this.props.userEmailConfirmed ? <DoneIcon /> : null}
                 </div>
                 <div>

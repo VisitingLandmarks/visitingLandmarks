@@ -41,6 +41,14 @@ export default (app) => {
     );
 
 
+    app.get(
+        routes.user.image,
+        controller.restrictLoginUser,
+        controller.image
+    );
+
+
+
     /**
      * handle a post on the login route
      * send back the user if successful
