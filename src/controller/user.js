@@ -49,7 +49,10 @@ export const image = (req, res) => {
     dataRepository.User.getImage(req.user._id).then(({contentType, data}) => {
         res.contentType(contentType);
         res.send(data);
+        //@todo: DEBUG
+        //dataRepository.Image.addImageGroup(data, contentType);
     });
+
 };
 
 

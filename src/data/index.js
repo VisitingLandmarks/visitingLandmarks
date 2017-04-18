@@ -11,8 +11,9 @@ import flattenObject from '../modules/flattenObject';
  */
 
 export const Category = getMongoModel('category');
-export const Location = getMongoModel('location');
 export const Intl = getMongoModel('intl');
+export const Image = getMongoModel('image');
+export const Location = getMongoModel('location');
 export const User = getMongoModel('user');
 
 //caching is in the responsibility of the dataRepository

@@ -92,9 +92,11 @@
     "redux-thunk": "2.2.0",
     "request-promise-native": "1.0.3",
     "sass-loader": "6.0.3",
+    "sharp": "0.17.3",
     "socket.io": "1.7.3",
     "socket.io-client": "1.7.3",
     "style-loader": "0.16.1",
+    "uuid": "3.0.1",
     "webpack": "2.4.1",
     "webpack-dev-server": "2.4.2",
     "xml2js": "0.4.17"
