@@ -31,12 +31,11 @@ export default module.exports = function (mongoDB) {
         return extension && extension(mongoDB, schemaDefinition);
     });
 
-    const userSchema = new mongoDB.Schema(schemaDefinition,
-        {
-            timestamps: true,
-            minimize: false,
-            collection: collectionName,
-        });
+    const userSchema = new mongoDB.Schema(schemaDefinition, {
+        timestamps: true,
+        minimize: false,
+        collection: collectionName,
+    });
 
     //making sure that the combination of user und visited objects is unique - he either visited or not
     //this index can also help to answer the question if a user has visited a specific building or not yet.

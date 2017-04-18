@@ -16,6 +16,11 @@ class DialogConversionLocationVisit extends React.Component {
     }
 
     render() {
+
+        if (!this.props.location) {
+            return null;
+        }
+
         const {formatMessage} = this.props.intl;
 
         const actions = [
@@ -25,12 +30,12 @@ class DialogConversionLocationVisit extends React.Component {
                 onTouchTap={this.props.onCloseDialog}
             />,
             <RaisedButton
-                label={formatMessage({id: 'dialog.conversionLocationVisit.register'})}
+                label={formatMessage({id: 'menu.register'})}
                 primary={true}
                 onTouchTap={this.props.onOpenRegister}
             />,
             <RaisedButton
-                label={formatMessage({id: 'dialog.conversionLocationVisit.login'})}
+                label={formatMessage({id: 'menu.login'})}
                 primary={true}
                 onTouchTap={this.props.onOpenLogin}
             />,
@@ -40,10 +45,12 @@ class DialogConversionLocationVisit extends React.Component {
         return (<Dialog
             title={formatMessage({id: 'dialog.conversionLocationVisit.title'})}
             actions={actions}
-            open={!!this.props.location}
+            open={true}
         >
             <div>
-                <FormattedMessage id="dialog.conversionLocationVisit.content" />
+                <p><FormattedMessage id="dialog.conversionLocationVisit.intro" values={this.props.location}/></p>
+                <p>{this.props.location.extent}</p>
+                <p><FormattedMessage id="dialog.conversionLocationVisit.callToAction"/></p>
             </div>
         </Dialog>);
     }
@@ -61,7 +68,7 @@ DialogConversionLocationVisit.propTypes = {
 
 const mapStateToProps = (state) => {
     return {
-        location: state.control.conversionLocationVisit && state.data.locations[state.control.conversionLocationVisit] || undefined,
+        location: state.control.conversionLocationVisit && state.data.locations[state.control.conversionLocationVisit] || undefined, //type object needs to be undefined not false...
     };
 };
 

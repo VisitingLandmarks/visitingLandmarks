@@ -29,7 +29,7 @@
     "autoprefixer": "6.7.7",
     "axios": "0.16.1",
     "babel-core": "6.24.1",
-    "babel-loader": "6.4.1",
+    "babel-loader": "7.0.0-beta.1",
     "babel-plugin-transform-object-rest-spread": "6.23.0",
     "babel-plugin-transform-runtime": "6.23.0",
     "babel-preset-latest": "6.24.1",
@@ -69,7 +69,7 @@
     "material-ui": "0.17.4",
     "memoizee": "0.4.4",
     "mocha": "3.2.0",
-    "mongoose": "4.9.4",
+    "mongoose": "4.9.5",
     "node-sass": "4.5.2",
     "nodemailer": "2.7.2",
     "passport": "0.3.2",
@@ -105,7 +105,7 @@
     "eslint-plugin-react": "6.10.3",
     "jsdom": "9.12.0",
     "sinon": "2.1.0",
-    "unexpected": "10.26.3",
+    "unexpected": "10.27.0",
     "unexpected-react": "3.5.2"
   }
 }

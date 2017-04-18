@@ -2,7 +2,7 @@ import {routes} from '../../../modules/routes';
 
 import axios from 'axios';
 import builder from '../builder';
-import {dialogClose} from '../ui';
+import {navigateTo} from '../../action/ui';
 
 export const registering = 'registering';
 
@@ -32,7 +32,7 @@ export function registerThunk(registerData) {
             })
 
             .then(() => {
-                dispatch(dialogClose());
+                dispatch(navigateTo(routes.root));
             })
 
             .catch((response) => dispatch(registerFailure({error: response && response.response && response.response.data})));

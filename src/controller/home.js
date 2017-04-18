@@ -64,7 +64,7 @@ export default (req, res) => {
             }
         })
         .catch((err) => {
-            req.logger.error({err}, 'Error in send main app');
+            req.log.error({err}, 'Error in send main app');
             throw err;
         });
 

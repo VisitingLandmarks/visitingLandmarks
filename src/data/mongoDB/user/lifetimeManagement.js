@@ -132,9 +132,7 @@ export default module.exports = (mongoDB, schemaDefinition) => {
                         visited: {},
                     })
                         .save()
-                        .then((user) => {
-                            return user.toObject();
-                        })
+                        // .then((user) =>  user.toObject())
                         .catch((message) => {
                             logger.error({email, message}, 'mongoDB Error in userSchema.statics.register');
                             throw message;
@@ -171,7 +169,7 @@ export default module.exports = (mongoDB, schemaDefinition) => {
                         visited: {},
                     })
                         .save()
-                        .then((user) => user.toObject())
+                        // .then((user) => user.toObject())
                         .catch((message) => {
                             logger.error({
                                 ...data,

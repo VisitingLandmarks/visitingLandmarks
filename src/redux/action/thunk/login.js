@@ -3,7 +3,6 @@ import {routes} from '../../../modules/routes';
 import axios from 'axios';
 import builder from '../builder';
 
-
 export const loggingIn = 'loggingIn';
 
 export const LOGIN = 'LOGIN';

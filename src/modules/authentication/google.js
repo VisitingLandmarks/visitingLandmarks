@@ -18,7 +18,7 @@ export default (app, passport, registerProvider) => {
         passReqToCallback: true,
     },
         function (req, accessToken, refreshToken, profile, cb) {
-            registerProvider({googleId: profile.id}, {email: profile.email}, {locale: req.locale})
+            registerProvider(req, {googleId: profile.id}, {email: profile.email}, {locale: req.locale})
                 .catch((err) => cb(err, null))
                 .then((user) => cb(null, user));
         }

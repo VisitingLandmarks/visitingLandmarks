@@ -42,13 +42,14 @@ export const logout = (req, res) => {
 
 export const image = (req, res) => {
 
-    //@todo: add alias "hasImage" in mongoose layer
-    if (!req.user.image.data || !req.user.image.contentType) {
-
+    if (!req.user.image.has) {
+        res.status(404).send();
     }
 
-    res.contentType(req.user.image.contentType);
-    res.send(req.user.image.data );
+    dataRepository.User.getImage(req.user._id).then(({contentType, data}) => {
+        res.contentType(contentType);
+        res.send(data);
+    });
 };
 
 
@@ -58,7 +59,7 @@ export const image = (req, res) => {
  * @param providerCriteria
  * @param emailCriteria
  */
-export const registerProvider = (providerCriteria, emailCriteria, data) => {
+export const registerProvider = (req, providerCriteria, emailCriteria, data) => {
 
     // 1. check for provider id
     return dataRepository.User.findOne(providerCriteria).then((user) => {
@@ -91,22 +92,23 @@ export const registerProvider = (providerCriteria, emailCriteria, data) => {
                 },
             };
 
-            //get image from provider and add to user
-            if (data.image) {
-                axios.get(data.image, {responseType: 'arraybuffer'}).then(function (response) {
-                    userData.image = {
-                        data: response.data,
-                        contentType: response.headers['content-type'],
-                    };
-                });
-            }
-
 
             // 3b. if email is not used -> create new user
             return dataRepository.User.registerProvider(userData).then((user) => {
-                return sendEmailUserRegistered(user)
-                    .then(() => {
-                        return user;
+
+                //get image from provider and add to user
+                // if (data.image) {
+                //
+                // }
+
+                return Promise.all([
+                    sendEmailUserRegistered(user),
+                    data.image && axios.get(data.image, {responseType: 'arraybuffer'}).then((response) => user.setImage(response.data, response.headers['content-type'])),
+                ])
+                // return now the user back to function caller
+                    .then(() => user)
+                    .catch((err) => {
+                        req.log.error({err}, 'error in userController.registerProvider');
                     });
             });
 

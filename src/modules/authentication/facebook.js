@@ -23,6 +23,7 @@ export default (app, passport, registerProvider) => {
         function (req, accessToken, refreshToken, profile, cb) {
 
             registerProvider(
+                req,
                 {facebookId: profile.id},
                 {email: profile.emails[0].value},
                 {
