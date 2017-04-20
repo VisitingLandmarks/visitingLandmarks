@@ -42,15 +42,14 @@ export const logout = (req, res) => {
 
 export const image = (req, res) => {
 
-    if (!req.user.image.has) {
+    if (!req.user.imageId) {
         res.status(404).send();
+        return;
     }
 
-    dataRepository.User.getImage(req.user._id).then(({contentType, data}) => {
+    dataRepository.Image.getImage(req.user.imageId).then(({contentType, data}) => {
         res.contentType(contentType);
         res.send(data);
-        //@todo: DEBUG
-        //dataRepository.Image.addImageGroup(data, contentType);
     });
 
 };
@@ -99,14 +98,10 @@ export const registerProvider = (req, providerCriteria, emailCriteria, data) => 
             // 3b. if email is not used -> create new user
             return dataRepository.User.registerProvider(userData).then((user) => {
 
-                //get image from provider and add to user
-                // if (data.image) {
-                //
-                // }
-
                 return Promise.all([
                     sendEmailUserRegistered(user),
-                    data.image && axios.get(data.image, {responseType: 'arraybuffer'}).then((response) => user.setImage(response.data, response.headers['content-type'])),
+                    data.image && axios.get(data.image, {responseType: 'arraybuffer'})
+                        .then((response) => dataRepository.setUserImage(user._id, response.data, response.headers['content-type'])),
                 ])
                 // return now the user back to function caller
                     .then(() => user)

@@ -81,6 +81,15 @@ export const getFlatIntlByLocale = (locale) => {
 };
 
 
+export const setUserImage = (userId, data, contentType) => {
+
+    //@todo: cleanup old images in image collection if user has already an image
+    return Image.addImageGroup(data, contentType).then(({groupId}) => {
+        return findUserById(userId).then((user) => user.setImage(groupId));
+    });
+};
+
+
 /**
  * get a single user based on the ID
  * @param userId
