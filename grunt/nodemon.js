@@ -6,7 +6,7 @@ module.exports = function (grunt) {
             options: {
                 // nodeArgs: ['--inspect'],
                 ext: 'js,json,handlebars',
-                delay: 1000,
+                delay: 500,
                 ignore: [
                     'node_modules/**/*',
                     'static/**/*',

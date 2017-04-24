@@ -4,7 +4,6 @@ import config from '../config';
 import setupRoutes from './routes';
 import {setupIO} from './modules/sendActionToAllConnectionOfAUser';
 import {registerProvider} from './controller/user';
-
 //setup express
 const {app, server} = require('./modules/express')(config.port);
 

@@ -1,4 +1,4 @@
-export const collectionName = 'Category';
+const collectionName = 'Category';
 
 /**
  * returns a mongoose model representing a category

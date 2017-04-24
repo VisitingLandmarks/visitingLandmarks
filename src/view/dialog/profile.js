@@ -10,7 +10,9 @@ import DoneIcon from 'material-ui/svg-icons/action/done';
 import getSortScore from '../../modules/getCategorySortScore';
 import countVisitedLocationsInCategory from '../../modules/countVisitedLocationsInCategory';
 
-import {routes} from '../../modules/routes';
+import {builder,routes} from '../../modules/routes';
+
+import {small} from '../../data/mongoDB/image/sizes';
 
 import {navigateTo} from '../../redux/action/ui';
 
@@ -106,7 +108,7 @@ class DialogProfile extends React.Component {
                 open={true}
             >
                 <div>
-                    <img src="/image"/>
+                    <img src={builder(routes.user.image, small)}/>
                     <label><FormattedMessage id="dialog.profile.confirmed"/>: </label>{this.props.userEmailConfirmed ? <DoneIcon /> : null}
                 </div>
                 <div>

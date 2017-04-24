@@ -33,6 +33,17 @@ module.exports = function (grunt) {
 
     const shared = {
         entry: [
+            'react-hot-loader/patch',
+            // activate HMR for React
+
+            'webpack-dev-server/client?http://localhost:8080',
+            // bundle the client for webpack-dev-server
+            // and connect to the provided endpoint
+
+            'webpack/hot/only-dev-server',
+            // bundle the client for hot reloading
+            // only- means to only hot reload for successful updates
+
             './src/view/browserSide.js',
             './src/style/main.scss',
         ],
@@ -46,8 +57,20 @@ module.exports = function (grunt) {
         },
         output: {
             path: path.resolve(__dirname, '../static/'),
+            publicPath: '/',    // necessary for HMR to know where to load the hot update chunks
             filename: 'all.js',
         },
+        devServer: {
+            hot: true,
+            // enable HMR on the server
+
+            contentBase: path.resolve(__dirname, '../static/'),
+            // match the output path
+
+            publicPath: '/',
+            // match the output `publicPath`
+        },
+
         module: {
             rules: [
                 {
@@ -110,10 +133,14 @@ module.exports = function (grunt) {
                 filename: 'style.css',
                 allChunks: true,
             }),
+            new webpack.HotModuleReplacementPlugin(),
+            // enable HMR globally
+
+            new webpack.NamedModulesPlugin(),
+            // prints more readable module names in the browser console on HMR updates
         ],
+        progress: false,
         stats: {
-            colors: false,
-            modules: false,
             reasons: true,
         },
     };
@@ -129,16 +156,18 @@ module.exports = function (grunt) {
                     },
                 }),
             ],
-            progress: false,
             failOnError: true,
             watch: false,
             keepalive: false,
+            stats: {
+                ...shared.stats,
+                colors: false,
+            },
         },
 
         dev: {
             ...shared,
             devtool: '#inline-source-map',
-            progress: true,
             failOnError: false,
             watch: true,
             keepalive: true,
@@ -146,5 +175,4 @@ module.exports = function (grunt) {
     });
 
     grunt.loadNpmTasks('grunt-webpack');
-}
-;
+};

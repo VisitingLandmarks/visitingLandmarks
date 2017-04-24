@@ -13,6 +13,7 @@ import {intlSet} from '../redux/action/data';
 import {updateIntl} from 'react-intl-redux';
 
 
+
 /**
  * main controller to handle the home route and render application
  * @param req

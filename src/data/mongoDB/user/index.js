@@ -2,7 +2,7 @@ import applicationLogic from './applicationLogic';
 import image from './image';
 import lifetimeManagement from './lifetimeManagement';
 import preferences from './preferences';
-export const collectionName = 'User';
+const collectionName = 'User';
 
 /**
  * returns a mongoose model representing a User

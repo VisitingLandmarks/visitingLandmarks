@@ -42,14 +42,16 @@ export const logout = (req, res) => {
 
 export const image = (req, res) => {
 
-    if (!req.user.imageId) {
+    if (!req.user.imageId) { //right now the user can only see his own image with this action
         res.status(404).send();
         return;
     }
 
-    dataRepository.Image.getImage(req.user.imageId).then(({contentType, data}) => {
+    dataRepository.Image.getImage(req.user.imageId, req.params.size).then(({contentType, data}) => {
         res.contentType(contentType);
         res.send(data);
+    }).catch(() => {
+        res.status(404).send();
     });
 
 };

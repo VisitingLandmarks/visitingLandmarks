@@ -1,12 +1,14 @@
 export const builder = (routes, ...data) => {
 
-    return routes.split('/').map((part) => {
+    const urlSeperator = '/';
+
+    return routes.split(urlSeperator).map((part) => {
         if (part[0] !== ':') {
             return part;
         }
 
         return data.shift();
-    });
+    }).join(urlSeperator);
 
 };
 
@@ -30,7 +32,7 @@ export const routes = {
         confirm: '/confirm/:token',
         login: '/login',
         logout: '/logout',
-        image: '/image', //@todo: extend with /:user -> requires a username
+        image: '/image/:size?', //@todo: extend with /:user -> requires a username
         resetPassword: '/resetPassword', //@todo: prevent mixing use cases (dialog and API)
         passwordChange: '/passwordChange',  //@todo: prevent mixing use cases (dialog and API)
         passwordResetRequest: '/requestPasswordReset',

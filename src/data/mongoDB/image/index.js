@@ -1,8 +1,11 @@
 import uuid from 'uuid';
 import sharp from 'sharp';
-import logger from '../../modules/logger';
+import logger from '../../../modules/logger';
+import sizes, {defaultSize} from './sizes';
 
-export const collectionName = 'Image';
+const collectionName = 'Image';
+
+//@todo: if more imageTypes are needed this cam easily be extended as factory taking collectionName and sizes as argument
 
 /**
  * returns a mongoose model representing a image
@@ -41,7 +44,7 @@ export default module.exports = function (mongoDB) {
             collection: collectionName,
         });
 
-    imageSchema.index({groupId: 1, original: 1}, {unique: true, sparse: true });
+    imageSchema.index({groupId: 1, original: 1}, {unique: true, sparse: true});
     imageSchema.index({groupId: 1, width: 1, height: 1}, {unique: true});
 
 
@@ -75,14 +78,9 @@ export default module.exports = function (mongoDB) {
             });
     };
 
-    imageSchema.statics.getImage = function (groupId, width, height) {
+    imageSchema.statics.getImage = function (groupId, size = defaultSize) {
 
-        //@todo: handle if only width or height is given -> auto calc other value
-
-        //if no size is specified return original size
-        if (!width && !height) {
-            return ImageModel.findOne({groupId, original: true}).exec();
-        }
+        const {width, height} = sizes[size];
 
         //try to find image in correct size
         return ImageModel.findOne({groupId, width, height}).exec()

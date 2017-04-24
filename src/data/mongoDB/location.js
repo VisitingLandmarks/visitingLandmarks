@@ -1,4 +1,4 @@
-export const collectionName = 'Item2';
+const collectionName = 'Item2';
 
 
 /**
