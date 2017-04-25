@@ -32,7 +32,7 @@ export const routes = {
         confirm: '/confirm/:token',
         login: '/login',
         logout: '/logout',
-        image: '/image/:size?', //@todo: extend with /:user -> requires a username
+        image: '/image/:size?', //@todo: extend with /:user if needed -> requires a username? userId?
         resetPassword: '/resetPassword', //@todo: prevent mixing use cases (dialog and API)
         passwordChange: '/passwordChange',  //@todo: prevent mixing use cases (dialog and API)
         passwordResetRequest: '/requestPasswordReset',

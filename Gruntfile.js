@@ -15,11 +15,12 @@ module.exports = function (grunt) {
     grunt.registerTask('build:dev', ['webpack:dev']);
     grunt.registerTask('build:prod', ['webpack:build']);
 
+    // target for production after deployment
     grunt.registerTask('postinstall', ['copy:build', 'build:prod']);
 
-    //Dev
+    //dev -> monitor changes and restart
     grunt.registerTask('monitor', ['nodemon:build']);
 
-    //default
+    //default -> test
     grunt.registerTask('default', ['test', 'watch:test']);
 };

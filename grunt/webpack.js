@@ -32,8 +32,8 @@ const secureConfigShimModules = [
 const webpackDevPort = 8888;
 const webpackLocation = 'http://localhost:' + webpackDevPort;
 const webpackAssetTarget = '/static/';
-const webpackAssetTargetAbsolute = webpackLocation + '/static/';
-const fsPathAssetTarget = path.resolve(__dirname, `../${webpackAssetTarget}/`);
+const webpackAssetTargetAbsolute = webpackLocation + webpackAssetTarget;
+const fsPathAssetTarget = path.resolve(__dirname, `..${webpackAssetTarget}`);
 
 module.exports = function (grunt) {
 
@@ -174,17 +174,15 @@ module.exports = function (grunt) {
 
             // necessary for HMR to know where to load the hot update chunks
             publicPath: webpackAssetTargetAbsolute,
-
         },
         plugins: [
             ...devConfig.plugins,
 
-            new webpack.HotModuleReplacementPlugin(), //@todo: only in dev
             // enable HMR globally
+            new webpack.HotModuleReplacementPlugin(),
 
-            new webpack.NamedModulesPlugin(),
             // prints more readable module names in the browser console on HMR updates
-
+            new webpack.NamedModulesPlugin(),
         ],
     };
 
@@ -198,11 +196,8 @@ module.exports = function (grunt) {
             headers: {
                 'Access-Control-Allow-Origin': '*',
             },
-
         },
-        dev: { //target - we need one, even if it is empty...
-
-        },
+        dev: {}, //target - we need one, even if it is empty...
     });
 
     grunt.loadNpmTasks('grunt-webpack');

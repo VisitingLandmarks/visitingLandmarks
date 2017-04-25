@@ -1,14 +1,18 @@
-process.traceDeprecation = true;
-
 import config from '../config';
 import setupRoutes from './routes';
 import {setupIO} from './modules/sendActionToAllConnectionOfAUser';
 import {registerProvider} from './controller/user';
-//setup express
-const {app, server} = require('./modules/express')(config.port);
+import expressSetup from './modules/express';
 
 //setup datarepository
 const data = require('./data');
+
+/*
+IMPORTANT: FOR EVERYTHING BELOW, the ORDER is super important. Stuff will break, if order changed
+ */
+
+//setup express
+const {app, server} = expressSetup(config.port);
 
 //setup io
 const io = setupIO(server);

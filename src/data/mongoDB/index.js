@@ -7,7 +7,7 @@ import config from '../../../config';
  * @param config
  * @returns {*}
  */
-let getMongoDB = (config) => {
+let getMongoDB = (config) => { //@todo: check reconnecting and inially down connection is working fine
 
     // mongoose library
     const mongoose = require('mongoose');

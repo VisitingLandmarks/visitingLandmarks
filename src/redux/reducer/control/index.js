@@ -39,7 +39,7 @@ export default (oldState = initialState, action) => {
             };
         }
 
-        //if a user successfull logged in or registered, this dialog gets obsolete
+        //if a user successful logged in or registered, this dialog gets obsolete
         case LOGIN_SUCCESS:
         case REGISTER_SUCCESS:
         case CONVERSION_LOCATION_VISIT_HIDE: {

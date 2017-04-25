@@ -4,15 +4,19 @@ import localStrategy from './local';
 import facebookStrategy from './facebook';
 import googleStrategy from './google';
 
-module.exports = (app, io, serializeUser, deserializeUser, authenticate, registerProvider)=> {
+import logger from '../../modules/logger';
 
-    const logger = require('../../modules/logger');
+module.exports = (app, io, serializeUser, deserializeUser, authenticate, registerProvider) => {
+
     const passport = require('passport');
     const passportSocketIo = require('passport.socketio');
     const session = require('express-session');
     const MongoStore = require('connect-mongo')(session);
+
+    //this is bypassing mongoose
     const store = new MongoStore({url: config.mongoDB.connectURI});
-    const secret = 'acf8u5HDhVWBmd8p';
+
+    const secret = 'acf8u5HDhVWBmd8p'; //@todo: config
     const cookieName = 'session';
 
     //serializing and deserializing a user to a more compact format
@@ -26,7 +30,7 @@ module.exports = (app, io, serializeUser, deserializeUser, authenticate, registe
         saveUninitialized: false,
         store,
         secret,
-        cookie: {maxAge: 604800000},
+        cookie: {maxAge: 604800000}, //@todo: config
     }));
 
     app.use(passport.initialize());
@@ -58,8 +62,8 @@ module.exports = (app, io, serializeUser, deserializeUser, authenticate, registe
         passport,
         secret,
         store,
-        success: onAuthorizeSuccess,  // *optional* callback on success - read more below
-        fail: onAuthorizeFail,     // *optional* callback on fail/error - read more below
+        success: onAuthorizeSuccess,
+        fail: onAuthorizeFail,
     }));
 
 

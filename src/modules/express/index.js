@@ -13,7 +13,7 @@ import locale from 'locale';
  * @param port - numerical port to open
  * @returns {{app: *, server: *}}
  */
-export default module.exports = (port = 80) => {
+export default (port = 80) => {
 
     const app = express();
 

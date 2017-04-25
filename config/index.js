@@ -1,7 +1,7 @@
 /**
  * builds config based on a public base.js and a private local.js
  */
-export default module.exports = require('deepmerge').all(
+export default require('deepmerge').all(
     [
         require('./base'),
         requireIfExists('./local'),

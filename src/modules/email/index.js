@@ -1,6 +1,7 @@
 import nodemailer from 'nodemailer';
 import logger from '../logger';
 import config from '../../../config';
+import path from 'path';
 
 // create reusable transporter object using the default SMTP transport
 const transporter = nodemailer.createTransport(config.email.smtpTransport);
@@ -8,17 +9,25 @@ const transporter = nodemailer.createTransport(config.email.smtpTransport);
 //setting up email templates
 const EmailTemplate = require('email-templates').EmailTemplate;
 
+//@todo: read email templates from fs
+const emailTemplates = [
+    'userEmailConfirmed',
+    'userRegistered',
+    'userResetPassword',
+];
+
 
 /**
- * preparing a email template
+ * preparing a single email template
  * @param templateName string
  */
 const prepareEmailTemplate = (templateName) => {
-    return transporter.templateSender(new EmailTemplate(require('path').join(__dirname, 'template', templateName)), config.email.sendOptions);
+    return transporter.templateSender(new EmailTemplate(path.join(__dirname, 'template', templateName)), config.email.sendOptions);
 };
 
+
 //build object with template name as key and the prepared setup templates for nodemailer
-const templates = ['userEmailConfirmed', 'userRegistered', 'userResetPassword'].reduce((obj, templateName) => {
+const templates = emailTemplates.reduce((obj, templateName) => {
     obj[templateName] = prepareEmailTemplate(templateName);
     return obj;
 }, {});
@@ -45,7 +54,7 @@ const extendTemplateData = (obj) => {
  */
 const addLogging = (promise, logger) => {
     return promise
-        .then((emailInfo)=> {
+        .then((emailInfo) => {
             logger.info({emailInfo}, 'email send');
             return emailInfo;
         })
@@ -74,7 +83,7 @@ export const sendEmailConfirmed = (user) => {
 export const sendEmailUserRegistered = (user) => {
     return addLogging(templates.userRegistered({
         to: user.email,
-    }, extendTemplateData({user})), logger.child({template: 'userRegistered'}));
+    }, extendTemplateData({user})), logger.child({toEmail: user.email, template: 'userRegistered'}));
 };
 
 
@@ -85,6 +94,6 @@ export const sendEmailUserRegistered = (user) => {
 export const sendEmailUserResetPassword = (user) => {
     return addLogging(templates.userResetPassword({
         to: user.email,
-    }, extendTemplateData({user})), logger.child({template: 'userResetPassword'}));
+    }, extendTemplateData({user})), logger.child({toEmail: user.email, template: 'userResetPassword'}));
 };
 

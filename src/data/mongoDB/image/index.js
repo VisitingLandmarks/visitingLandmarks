@@ -74,6 +74,10 @@ export default module.exports = function (mongoDB) {
             });
     };
 
+    imageSchema.statics.deleteImageGroup = function (groupId) {
+        return ImageModel.remove({groupId}).exec();
+    };
+
     imageSchema.statics.getImage = function (groupId, size = defaultSize) {
 
         const {width, height} = sizes[size];
@@ -112,10 +116,10 @@ export default module.exports = function (mongoDB) {
                             });
                     });
             }).then((image) => {
-                //add mime type
+                //add mime type and return plain object instead model
                 return {
-                    ...image,
-                    contentType : MIMEType,
+                    data: image.data,
+                    contentType: MIMEType,
                 };
             });
     };

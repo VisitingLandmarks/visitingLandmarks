@@ -19,8 +19,10 @@ export default (app) => {
 
     app.get(
         routes.auth.facebook.callback,
-        passport.authenticate(facebookStrategyName, {failureRedirect: routes.user.login}),
-        (req, res) => res.redirect(routes.root)
+        passport.authenticate(facebookStrategyName, {
+            successRedirect: routes.root,
+            failureRedirect: routes.user.login,
+        })
     );
 
 
@@ -29,8 +31,8 @@ export default (app) => {
         passport.authenticate(googleStrategyName, {
             scope: [
                 'https://www.googleapis.com/auth/userinfo.email',
-                // 'https://www.googleapis.com/auth/plus.login',
-                // 'https://www.googleapis.com/auth/plus.profile.emails.read',
+                    // 'https://www.googleapis.com/auth/plus.login',
+                    // 'https://www.googleapis.com/auth/plus.profile.emails.read',
             ],
         }
         ));
@@ -40,7 +42,6 @@ export default (app) => {
         passport.authenticate(googleStrategyName, {
             successRedirect: routes.root,
             failureRedirect: routes.user.login,
-            // (req, res) => res.redirect(routes.root)
         })
     );
 

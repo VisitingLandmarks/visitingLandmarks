@@ -1,5 +1,4 @@
 import memoize from 'memoizee';
-import logger from '../modules/logger';
 import getMongoModel from './mongoDB';
 import flattenObject from '../modules/flattenObject';
 
@@ -35,13 +34,7 @@ const cache = {
  * @param user
  * @returns {Promise|Promise.<T>}
  */
-export const getAllCategories = () => {
-    return cache.Category.getAllAsObject()
-        .catch((e) => {
-            logger.error(e);
-        });
-
-};
+export const getAllCategories = () => cache.Category.getAllAsObject();
 
 
 /**
@@ -49,13 +42,7 @@ export const getAllCategories = () => {
  * @param user
  * @returns {Promise|Promise.<T>}
  */
-export const getAllLocations = () => {
-    return cache.Location.getAllAsObject()
-        .catch((e) => {
-            logger.error(e);
-        });
-
-};
+export const getAllLocations = () => cache.Location.getAllAsObject();
 
 
 /**
@@ -81,11 +68,23 @@ export const getFlatIntlByLocale = (locale) => {
 };
 
 
+/**
+ * set a new image to a user and store the image
+ * @param userId
+ * @param data
+ */
 export const setUserImage = (userId, data) => {
 
-    //@todo: cleanup old images in image collection if user has already an image
     return Image.addImageGroup(data).then(({groupId}) => {
-        return findUserById(userId).then((user) => user.setImage(groupId));
+        return findUserById(userId).then((user) => {
+
+            //if the user has an old image associated, get the id before overwrite, so we can delete the images
+            if (user.imageId) {
+                Image.deleteImageGroup(user.imageId);
+            }
+
+            return user.setImage(groupId);
+        });
     });
 };
 

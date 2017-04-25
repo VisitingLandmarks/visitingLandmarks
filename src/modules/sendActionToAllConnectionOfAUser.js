@@ -1,3 +1,5 @@
+//@todo: move to socket.io folder
+
 import passportSocketIo from 'passport.socketio';
 let getConnectionByUserId;
 
@@ -6,7 +8,7 @@ let getConnectionByUserId;
  * @param userId
  * @param payload
  */
-export default sendActionToAllConnectionOfAUser;
+export default sendActionToAllConnectionOfAUser; // @todo: setup should be default
 const sendActionToAllConnectionOfAUser = (userId, payload) => {
     getConnectionByUserId(userId).forEach(socket => {
         socket.emit('storeAction', payload);
