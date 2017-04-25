@@ -4,6 +4,7 @@ import logger from '../../../modules/logger';
 import sizes, {defaultSize} from './sizes';
 
 const collectionName = 'Image';
+const MIMEType = 'image/jpeg';
 
 //@todo: if more imageTypes are needed this cam easily be extended as factory taking collectionName and sizes as argument
 
@@ -21,10 +22,6 @@ export default module.exports = function (mongoDB) {
         },
         data: { //the image itself
             type: mongoDB.Schema.Types.Buffer,
-            required: true,
-        },
-        contentType: { //obsolete? can we assume that all images are jpg?
-            type: String,
             required: true,
         },
         width: {
@@ -48,9 +45,9 @@ export default module.exports = function (mongoDB) {
     imageSchema.index({groupId: 1, width: 1, height: 1}, {unique: true});
 
 
-    imageSchema.statics.addImageGroup = function (data, contentType) {
+    imageSchema.statics.addImageGroup = function (data) {
 
-        if (!data || !contentType) {
+        if (!data) {
             return Promise.reject('no data provided in User.setImage');
         }
         const image = sharp(data);
@@ -66,7 +63,6 @@ export default module.exports = function (mongoDB) {
                         return new ImageModel({
                             groupId: uuid.v4(),
                             data,
-                            contentType,
                             height: metadata.height,
                             width: metadata.width,
                             original: true,
@@ -107,7 +103,6 @@ export default module.exports = function (mongoDB) {
                                 return new ImageModel({
                                     groupId,
                                     data,
-                                    contentType: originalImage.contentType,
                                     height,
                                     width,
                                 })
@@ -116,6 +111,12 @@ export default module.exports = function (mongoDB) {
                                     });
                             });
                     });
+            }).then((image) => {
+                //add mime type
+                return {
+                    ...image,
+                    contentType : MIMEType,
+                };
             });
     };
 

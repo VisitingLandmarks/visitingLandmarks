@@ -81,10 +81,10 @@ export const getFlatIntlByLocale = (locale) => {
 };
 
 
-export const setUserImage = (userId, data, contentType) => {
+export const setUserImage = (userId, data) => {
 
     //@todo: cleanup old images in image collection if user has already an image
-    return Image.addImageGroup(data, contentType).then(({groupId}) => {
+    return Image.addImageGroup(data).then(({groupId}) => {
         return findUserById(userId).then((user) => user.setImage(groupId));
     });
 };
