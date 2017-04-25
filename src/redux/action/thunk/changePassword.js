@@ -17,7 +17,7 @@ export const passwordChangeSuccess = builder(PASSWORD_CHANGE_SUCCESS);
 import {navigateTo} from '../../action/ui';
 
 export function changePasswordThunk(data) {
-    return function (dispatch) {
+    return (dispatch) => {
         dispatch(passwordChange());
         axios.post(routes.user.passwordChange, data)
             .then((response) => {

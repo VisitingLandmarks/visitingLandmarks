@@ -17,7 +17,7 @@ export const loginSuccess = builder(LOGIN_SUCCESS);
 import {navigateTo} from '../../action/ui';
 
 export function loginThunk(loginData) {
-    return function (dispatch) {
+    return (dispatch) => {
         dispatch(login());
         axios.post(routes.user.login, loginData)
             .then((response) => {

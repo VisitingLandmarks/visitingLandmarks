@@ -6,9 +6,6 @@ import logger from '../logger';
 import express from 'express';
 import helmet  from 'helmet';
 import locale from 'locale';
-let webpack = require('webpack');
-let webpackConfig = require('./webpack.config');
-let compiler = webpack(webpackConfig);
 
 /**
  *
@@ -33,10 +30,7 @@ export default module.exports = (port = 80) => {
         obscureHeaders: [],
         logger,
     }));
-    app.use(require('webpack-dev-middleware')(compiler, {
-        noInfo: true, publicPath: webpackConfig.output.publicPath,
-    }));
-    app.use(require('webpack-hot-middleware')(compiler));
+
     //open server on given port. the server is in this moment reachable
     const server = http.Server(app);
     server.listen(port);

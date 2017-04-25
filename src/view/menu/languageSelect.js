@@ -19,7 +19,9 @@ const LanguageSelect = (props) => {
                 checked={locale === props.current}
                 insetChildren={true}
                 onTouchTap={() => {
-                    props.setPreference({locale}); //@todo: change language based on preference set
+                    //@todo: IMO here is a layer missing. View -> Preferences -> local/remote -> updateUI
+                    //@todo: change language based on preference set, not in view
+                    props.setPreference({locale});
                     props.changeLanguage({
                         locale,
                         messages : flattenObject(props.intl[locale]),

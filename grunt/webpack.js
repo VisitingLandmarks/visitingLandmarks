@@ -29,21 +29,16 @@ const secureConfigShimModules = [
     return obj;
 }, {});
 
+const webpackDevPort = 8888;
+const webpackLocation = 'http://localhost:' + webpackDevPort;
+const webpackAssetTarget = '/static/';
+const webpackAssetTargetAbsolute = webpackLocation + '/static/';
+const fsPathAssetTarget = path.resolve(__dirname, `../${webpackAssetTarget}/`);
+
 module.exports = function (grunt) {
 
     const shared = {
         entry: [
-            'react-hot-loader/patch',
-            // activate HMR for React
-
-            'webpack-dev-server/client?http://localhost:8080',
-            // bundle the client for webpack-dev-server
-            // and connect to the provided endpoint
-
-            'webpack/hot/only-dev-server',
-            // bundle the client for hot reloading
-            // only- means to only hot reload for successful updates
-
             './src/view/browserSide.js',
             './src/style/main.scss',
         ],
@@ -56,19 +51,8 @@ module.exports = function (grunt) {
             },
         },
         output: {
-            path: path.resolve(__dirname, '../static/'),
-            publicPath: '/',    // necessary for HMR to know where to load the hot update chunks
+            path: fsPathAssetTarget,
             filename: 'all.js',
-        },
-        devServer: {
-            hot: true,
-            // enable HMR on the server
-
-            contentBase: path.resolve(__dirname, '../static/'),
-            // match the output path
-
-            publicPath: '/',
-            // match the output `publicPath`
         },
 
         module: {
@@ -133,22 +117,24 @@ module.exports = function (grunt) {
                 filename: 'style.css',
                 allChunks: true,
             }),
-            new webpack.HotModuleReplacementPlugin(),
-            // enable HMR globally
-
-            new webpack.NamedModulesPlugin(),
-            // prints more readable module names in the browser console on HMR updates
         ],
-        progress: false,
         stats: {
             reasons: true,
         },
     };
 
+    const devConfig = {
+        ...shared,
+        devtool: '#inline-source-map',
+        failOnError: false,
+        watch: true,
+        keepalive: true,
+    };
 
     grunt.config('webpack', {
         build: {
             ...shared,
+            progress: false,
             plugins: [...shared.plugins,
                 new webpack.optimize.UglifyJsPlugin({
                     compress: {
@@ -165,12 +151,57 @@ module.exports = function (grunt) {
             },
         },
 
-        dev: {
-            ...shared,
-            devtool: '#inline-source-map',
-            failOnError: false,
-            watch: true,
-            keepalive: true,
+        dev: devConfig,
+    });
+
+    const devHMRConfig = {
+        ...devConfig,
+        entry: [
+            // activate HMR for React
+            'react-hot-loader/patch',
+
+            // bundle the client for webpack-dev-server
+            'webpack-dev-server/client?' + webpackLocation,
+
+            // bundle the client for hot reloading
+            // only- means to only hot reload for successful updates
+            'webpack/hot/only-dev-server',
+
+            ...devConfig.entry,
+        ],
+        output: {
+            ...devConfig.output,
+
+            // necessary for HMR to know where to load the hot update chunks
+            publicPath: webpackAssetTargetAbsolute,
+
+        },
+        plugins: [
+            ...devConfig.plugins,
+
+            new webpack.HotModuleReplacementPlugin(), //@todo: only in dev
+            // enable HMR globally
+
+            new webpack.NamedModulesPlugin(),
+            // prints more readable module names in the browser console on HMR updates
+
+        ],
+    };
+
+    grunt.config('webpack-dev-server', {
+        options: {
+            webpack: devHMRConfig,
+            publicPath: webpackAssetTarget,
+            port: webpackDevPort,
+            hot: true,
+            host: 'localhost',
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+            },
+
+        },
+        dev: { //target - we need one, even if it is empty...
+
         },
     });
 

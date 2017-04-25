@@ -15,7 +15,15 @@ export const PREFERENCE_SET_SUCCESS = 'PREFERENCE_SET_SUCCESS';
 export const preferenceSetSuccess = builder(PREFERENCE_SET_SUCCESS);
 
 export const setPreferenceThunk = (data) => {
-    return function (dispatch) {
+    return (dispatch, getStore) => {
+
+        const store = getStore();
+
+        //prevent calls for not logged in users
+        if (!store.session.user) {
+            return;
+        }
+
         dispatch(preferenceSet());
         axios.post(routes.preferences, data)
             .then((response) => {

@@ -1,16 +1,14 @@
 import config from '../../config';
 
 import React from 'react';
-import {IntlProvider} from 'react-intl-redux';
 import {renderToString} from 'react-dom/server';
 import {StaticRouter as Router} from 'react-router-dom';
-import {Provider} from 'react-redux';
 
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
-import RouteDefinition from './routeDefinition';
+import Providers from './providers';
+
 
 import {addLocaleData} from 'react-intl';
 import en from 'react-intl/locale-data/en';
@@ -19,19 +17,17 @@ addLocaleData([...en, ...de]);
 
 export default (store, url, userAgent) => {
 
+    //context is a referenced object, allowing the router to change the url during SSR
     const context = {};
 
     // Render the component to a string
     const html = renderToString(
-        <Provider store={store}>
-            <IntlProvider>
-                <MuiThemeProvider muiTheme={getMuiTheme({userAgent}, darkBaseTheme)}>
-                    <Router location={url} context={context}>
-                        <RouteDefinition store={store}/>
-                    </Router>
-                </MuiThemeProvider>
-            </IntlProvider>
-        </Provider>
+        <Providers
+            store={store}
+            muiTheme={getMuiTheme({userAgent}, darkBaseTheme)}
+            routerProps={{location: url, context}}
+            router={Router}
+        />
     );
 
     if (context.url) {
@@ -52,7 +48,7 @@ export default (store, url, userAgent) => {
     };
 };
 
-//@todo: move to template
+//@todo: move to template?
 function renderFullPage(html, initialState) {
     return `
     <!doctype html>
@@ -60,7 +56,7 @@ function renderFullPage(html, initialState) {
       <head>
         <title>visitingLandmarks</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-        <link rel="stylesheet" href="/static/style.css">
+        <link rel="stylesheet" href="${config.frontendPath.buildAssets}static/style.css">
         <link rel="stylesheet" href="${config.frontendPath.leafLet}leaflet.css">
         <link rel="stylesheet" href="${config.frontendPath.leafLetMarkerCluster}MarkerCluster.css">
         <link rel="stylesheet" href="${config.frontendPath.leafLetMarkerCluster}MarkerCluster.Default.css">
@@ -70,7 +66,7 @@ function renderFullPage(html, initialState) {
         <script>
           window.__INITIAL_STATE__ = ${JSON.stringify(initialState)}
         </script>
-         <script src="/static/all.js"></script>
+         <script src="${config.frontendPath.buildAssets}static/all.js"></script>
       </body>
     </html>
     `;

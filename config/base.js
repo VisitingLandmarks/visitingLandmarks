@@ -8,6 +8,7 @@ module.exports = {
         //@todo: deliver from own host or at least get the version from package.json
         leafLet: 'https://unpkg.com/leaflet@1.0.3/dist/',
         leafLetMarkerCluster: 'https://unpkg.com/leaflet.markercluster@1.0.4/dist/',
+        buildAssets: '/', //this is used for Webpack-Dev-Server
     },
     mongoDB: {
         debug: false,
