@@ -41,7 +41,6 @@ export default module.exports = function (mongoDB) {
             collection: collectionName,
         });
 
-    imageSchema.index({groupId: 1, original: 1}, {unique: true, sparse: true});
     imageSchema.index({groupId: 1, width: 1, height: 1}, {unique: true});
 
 

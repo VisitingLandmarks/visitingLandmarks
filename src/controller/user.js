@@ -42,7 +42,7 @@ export const logout = (req, res) => {
 
 export const image = (req, res) => {
 
-    data.getUserImage(req.user,req.param.size).then(({contentType, data}) => {
+    data.getUserImage(req.user, req.params.size).then(({contentType, data}) => {
         res.contentType(contentType);
         res.send(data);
     }).catch(() => {
@@ -58,7 +58,7 @@ export const image = (req, res) => {
  * @param providerCriteria
  * @param emailCriteria
  */
-export const registerProvider = (req, providerCriteria, emailCriteria, userData) => {
+export const registerProvider = (req, providerCriteria, emailCriteria, additionalUserData) => {
 
     // 1. check for provider id
     return data.User.findOne(providerCriteria).then((user) => {
@@ -83,21 +83,18 @@ export const registerProvider = (req, providerCriteria, emailCriteria, userData)
                 return user.save();
             }
 
-            const userData = {
+            // 3b. if email is not used -> create new user
+            return data.User.registerProvider({
                 ...providerCriteria,
                 ...emailCriteria,
                 preferences: {
-                    locale: userData.locale,
+                    locale: additionalUserData.locale,
                 },
-            };
-
-
-            // 3b. if email is not used -> create new user
-            return data.User.registerProvider(userData).then((user) => {
+            }).then((user) => {
 
                 return Promise.all([
                     sendEmailUserRegistered(user),
-                    userData.image && axios.get(userData.image, {responseType: 'arraybuffer'})
+                    additionalUserData.image && axios.get(additionalUserData.image, {responseType: 'arraybuffer'})
                         .then((response) => data.setUserImage(user._id, response.data, response.headers['content-type'])),
                 ])
                 // return now the user back to function caller
