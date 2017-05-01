@@ -1,16 +1,17 @@
 import crypto from 'crypto';
+import config from '../../config';
 import logger from './logger';
 import generateRandomString from './generateRandomString';
-
+import {Buffer} from 'buffer';
 
 /**
- * verifies a combination of plain password, passwordHash and salt
+ * verifies a combination of plain password, passwordHash and passwordSalt
  * @param password
  * @param passwordHash
- * @param salt
+ * @param passwordSalt - the salt stored with the user
  */
-export const verify = (password, passwordHash, salt) => {
-    return generate(password, salt).then((passwordData) => {
+export const verify = (password, passwordHash, passwordSalt) => {
+    return generate(password, passwordSalt).then((passwordData) => {
         if (passwordData.passwordHash !== passwordHash) {
             throw Error('incorrect password');
         }
@@ -21,23 +22,27 @@ export const verify = (password, passwordHash, salt) => {
 /**
  * generate a new hash
  * @param password
- * @param salt
+ * @param passwordSalt - the salt stored with the user
  * @returns {Promise}
  */
 export const generate = (password = generateRandomString(), passwordSalt = generateRandomString()) => {
 
-    //ensure password is a string
+    //ensure password is a string, otherwise the crypto will get crazy if the password is a pure number
     password = password.toString();
+    passwordSalt = passwordSalt.toString();
+
+    //combine application (config) and password salt (database)
+    const salt = config.applicationSalt + passwordSalt;
 
     return new Promise((resolve, reject) => {
-        crypto.pbkdf2(password, new Buffer(passwordSalt, 'binary'), 100000, 512, 'sha512', (err, key) => { // eslint-disable-line no-undef
+        crypto.pbkdf2(password, Buffer.from(salt, 'binary'), 100000, 512, 'sha512', (err, hash) => {
             if (err) {
                 logger.error('error during generation of Hash');
                 return reject(err);
             }
             resolve({
-                passwordHash: key.toString('hex'),
-                passwordSalt: passwordSalt.toString('hex'),
+                passwordHash: hash.toString('hex'),
+                passwordSalt: passwordSalt,
             });
         });
     });

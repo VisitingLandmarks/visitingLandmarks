@@ -1,7 +1,8 @@
+import {setUserPreference} from '../data';
 
 export const set = (req, res, next) => {
 
-    req.user.setPreference(req.body)
+    setUserPreference(req.user, req.body)
         .then(() => {
             res.json(req.body);
         })

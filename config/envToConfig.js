@@ -1,5 +1,6 @@
 module.exports = {
     port: process.env.PORT,
+    applicationSalt : process.env.APPLICATION_SALT,
     baseDomain : process.env.BASE_DOMAIN,
     mongoDB: {
         connectURI: process.env.MONGODB_CONNECT_URI,

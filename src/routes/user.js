@@ -26,7 +26,7 @@ export default (app) => {
      */
     app.post(
         routes.user.logout,
-        controller.restrictLoginUser,
+        controller.restrictLoggedInUser,
         controller.logout
     );
 
@@ -43,7 +43,7 @@ export default (app) => {
 
     app.get(
         routes.user.image,
-        controller.restrictLoginUser,
+        controller.restrictLoggedInUser,
         controller.image
     );
 
@@ -67,7 +67,7 @@ export default (app) => {
      */
     app.post(
         routes.user.passwordChange,
-        controller.restrictLoginUser,
+        controller.restrictLoggedInUser,
         postFactory(passwordChangeSchema),
         controller.passwordChange
     );

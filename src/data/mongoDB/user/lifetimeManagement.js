@@ -249,19 +249,19 @@ export default module.exports = (mongoDB, schemaDefinition) => {
          */
         userSchema.statics.serializeUser = (user, done) => {
             logger.debug('serialize User');
-            done(null, user._id);
+            done(null, user);
         };
 
 
         /**
-         * deserialize the user to a full model
+         * deserialize the user -> we just want the user id at controller level
          * used by passport
          * @param id
          * @param done
          */
         userSchema.statics.deserializeUser = (id, done) => {
             logger.debug('deserialize User');
-            UserModel.findById(id).select('-__v').exec(done);
+            done(null, id);
         };
 
 

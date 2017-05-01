@@ -1,4 +1,5 @@
 module.exports = {
+    applicationSalt: 'b9a6233d68ea79a3e8913eb081c6586703aa8d61cd1692ef865aaf37e73096fc',
     name: 'visitingLandmarks',
     logLevel: 'error',
     port: 8000,

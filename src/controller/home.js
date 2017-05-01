@@ -1,4 +1,4 @@
-import * as dataRepository from '../data';
+import * as data from '../data';
 import serverSideView from '../view/serverSide';
 
 import {createStore, applyMiddleware} from 'redux';
@@ -13,7 +13,6 @@ import {intlSet} from '../redux/action/data';
 import {updateIntl} from 'react-intl-redux';
 
 
-
 /**
  * main controller to handle the home route and render application
  * @param req
@@ -23,51 +22,56 @@ export default (req, res) => {
 
     const store = createStore(reducer, applyMiddleware(thunk));
 
-    //set user into session
-    if (req.user) {
-        store.dispatch(loginSuccess({user: req.user}));
-    }
+    //get user object if there is an user
+    (req.user && data.findUserById(req.user) || Promise.resolve()).then((user) => {
 
-    //load data store
-    Promise.all([
-        dataRepository.getAllIntl().then((intl) => {
-            store.dispatch(intlSet(intl));
-            return dataRepository.getFlatIntlByLocale(req.user && req.user.preferences.locale || req.locale);
-        })
-            .then((userIntl) => {
-                store.dispatch(updateIntl(userIntl));
-            }),
-        dataRepository.getAllCategories().then((categories) => store.dispatch(categoriesSet(categories))),
-        dataRepository.getAllLocations().then((locations) => store.dispatch(locationsSet(locations))),
-    ])
-        .then(() => {
+        if (user) { //set user into session
+            store.dispatch(loginSuccess({user}));
+        }
 
-            //server side rendering
-            const {status, url, html} = serverSideView(store, req.url, req.headers['user-agent']);
+        //load data store
+        Promise.all([
+            data.getAllIntl().then((intl) => {
+                store.dispatch(intlSet(intl));
+                return data.getFlatIntlByLocale(user && user.preferences.locale || req.locale);
+            })
+                .then((userIntl) => {
+                    store.dispatch(updateIntl(userIntl));
+                }),
 
-            //and translate the result to express
-            switch (status) {
+            //application stuff
+            data.getAllCategories().then((categories) => store.dispatch(categoriesSet(categories))),
+            data.getAllLocations().then((locations) => store.dispatch(locationsSet(locations))),
 
-                case 200: {
-                    res.send(html);
-                    return;
+        ])
+            .then(() => {
+
+                //server side rendering
+                const {status, url, html} = serverSideView(store, req.url, req.headers['user-agent']);
+
+                //and translate the result to express
+                switch (status) {
+
+                    case 200: {
+                        res.send(html);
+                        return;
+                    }
+
+                    case 301:
+                    case 302: {
+                        res.redirect(status, url);
+                        return;
+                    }
+
+                    default: {
+                        throw new Error('unimplemented status code in server side rendering');
+                    }
                 }
-
-                case 301:
-                case 302: {
-                    res.redirect(status, url);
-                    return;
-                }
-
-                default: {
-                    throw new Error('unimplemented status code in server side rendering');
-                }
-            }
-        })
-        .catch((err) => {
-            req.log.error({err}, 'Error in send main app');
-            throw err;
-        });
-
+            })
+            .catch((err) => {
+                req.log.error({err}, 'Error in send main app');
+                throw err;
+            });
+    });
 };
 

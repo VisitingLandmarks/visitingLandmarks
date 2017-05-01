@@ -1,11 +1,8 @@
 import config from '../config';
 import setupRoutes from './routes';
 import {setupIO} from './modules/sendActionToAllConnectionOfAUser';
-import {registerProvider} from './controller/user';
 import expressSetup from './modules/express';
 
-//setup datarepository
-const data = require('./data');
 
 /*
 IMPORTANT: FOR EVERYTHING BELOW, the ORDER is super important. Stuff will break, if order changed
@@ -18,7 +15,7 @@ const {app, server} = expressSetup(config.port);
 const io = setupIO(server);
 
 //setup authentication
-require('./modules/authentication')(app, io, data.User.serializeUser, data.User.deserializeUser, data.User.authenticate, registerProvider);
+require('./modules/authentication')(app, io);
 
 //setup routes - very important: apply AFTER authentication
 setupRoutes(app);

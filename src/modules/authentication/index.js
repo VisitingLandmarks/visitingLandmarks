@@ -1,12 +1,14 @@
 import config from '../../../config';
+import logger from '../../modules/logger';
 
 import localStrategy from './local';
 import facebookStrategy from './facebook';
 import googleStrategy from './google';
 
-import logger from '../../modules/logger';
+import {User} from '../../data';
+import {registerProvider} from '../../controller/user';
 
-module.exports = (app, io, serializeUser, deserializeUser, authenticate, registerProvider) => {
+module.exports = (app, io) => {
 
     const passport = require('passport');
     const passportSocketIo = require('passport.socketio');
@@ -20,8 +22,8 @@ module.exports = (app, io, serializeUser, deserializeUser, authenticate, registe
     const cookieName = 'session';
 
     //serializing and deserializing a user to a more compact format
-    passport.serializeUser(serializeUser);
-    passport.deserializeUser(deserializeUser);
+    passport.serializeUser(User.serializeUser);
+    passport.deserializeUser(User.deserializeUser);
 
     //setting up session and passport. ORDER IS IMPORTANT for the next app.use commands and the strategy
     app.use(session({
@@ -37,7 +39,7 @@ module.exports = (app, io, serializeUser, deserializeUser, authenticate, registe
     app.use(passport.session());
 
     //setup strategies
-    localStrategy(app, passport, authenticate);
+    localStrategy(app, passport, User.authenticate);
     facebookStrategy(app, passport, registerProvider);
     googleStrategy(app, passport, registerProvider);
 

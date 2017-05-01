@@ -68,6 +68,18 @@ export const getFlatIntlByLocale = (locale) => {
 };
 
 
+export const getUserImage = (userId, size) => {
+
+    return findUserById(userId)
+        .then((user) => {
+            if (!user) {
+                return false;
+            }
+            return Image.getImage(user.imageId, size);
+        });
+};
+
+
 /**
  * set a new image to a user and store the image
  * @param userId
@@ -86,6 +98,17 @@ export const setUserImage = (userId, data) => {
             return user.setImage(groupId);
         });
     });
+};
+
+
+export const setUserPassword = (userId, password) => {
+    return findUserById(userId)
+        .then((user) => user.setPassword(password));
+};
+
+export const setUserPreference = (userId, preferences) => {
+    return findUserById(userId)
+        .then((user) => user.setPreference(preferences));
 };
 
 
