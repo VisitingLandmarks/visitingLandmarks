@@ -42,6 +42,6 @@ const models = {};
  * @param {string} modelName
  * @returns {undefined}
  */
-export default module.exports = (modelName) => {
+export default (modelName) => {
     return models[modelName] || (models[modelName] = require('./' + modelName)(getMongoDB(config.mongoDB)));
 };

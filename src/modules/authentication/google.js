@@ -1,7 +1,7 @@
 import config from '../../../config';
 
 export const strategyName = 'google';
-const FacebookStrategy = require('passport-google-oauth2').Strategy;
+const GoogleStrategy = require('passport-google-oauth2').Strategy;
 
 import {routes} from  '../../modules/routes';
 
@@ -12,7 +12,12 @@ import {routes} from  '../../modules/routes';
  * @param authenticateUser
  */
 export default (app, passport, registerProvider) => {
-    passport.use(new FacebookStrategy({
+
+    if (!enabled()) {
+        return;
+    }
+
+    passport.use(new GoogleStrategy({
         ...config.authProvider.google,
         callbackURL: config.baseDomain + routes.auth.google.callback,
         passReqToCallback: true,
@@ -23,4 +28,12 @@ export default (app, passport, registerProvider) => {
                 .then((user) => cb(null, user));
         }
     ));
+};
+
+export const enabled = () => {
+    return !!(
+        config.authProvider.google &&
+        config.authProvider.google.clientID &&
+        config.authProvider.google.clientSecret
+    );
 };

@@ -1,3 +1,5 @@
+import config from '../../../config';
+
 import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import {injectIntl, intlShape} from 'react-intl';
@@ -14,6 +16,10 @@ const style = {
 };
 
 const Google = (props) => {
+    if (!config.authProvider.google) {
+        return null;
+    }
+
     return <RaisedButton
         href={routes.auth.google.entry}
         backgroundColor={style.backgroundColor}

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import config from '../../config';
-// import markerStyle from '../client/map/markerStyle';
+
 import leafLetBootstrap from '../client/map/index';
 import orientationToCompassHeading from '../modules/orientationToCompassHeading';
 import antiHammer from '../modules/antiHammer';

@@ -14,6 +14,11 @@ import {routes} from  '../../modules/routes';
  * @param authenticateUser
  */
 export default (app, passport, registerProvider) => {
+
+    if (!enabled()) {
+        return;
+    }
+
     passport.use(new FacebookStrategy({
         ...config.authProvider.facebook,
         callbackURL: config.baseDomain + routes.auth.facebook.callback,
@@ -38,4 +43,13 @@ export default (app, passport, registerProvider) => {
                 .then((user) => cb(null, user));
         }
     ));
+};
+
+
+export const enabled = () => {
+    return !!(
+        config.authProvider.google &&
+        config.authProvider.google.clientID &&
+        config.authProvider.google.clientSecret
+    );
 };

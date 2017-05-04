@@ -1,3 +1,5 @@
+import config from '../../../config';
+
 import React from 'react';
 import {injectIntl, intlShape} from 'react-intl';
 
@@ -14,6 +16,10 @@ const style = {
 };
 
 const Facebook = (props) => {
+    if (!config.authProvider.facebook) {
+        return null;
+    }
+
     return <RaisedButton
         href={routes.auth.facebook.entry}
         backgroundColor={style.backgroundColor}
