@@ -18,7 +18,7 @@ import {
  */
 export default (app) => {
 
-    if (facebookEnabled) {
+    if (facebookEnabled()) {
 
         app.get(
             routes.auth.facebook.entry,
@@ -35,7 +35,7 @@ export default (app) => {
 
     }
 
-    if (googleEnabled) {
+    if (googleEnabled()) {
 
         app.get(
             routes.auth.google.entry,

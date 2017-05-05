@@ -248,7 +248,7 @@ export default module.exports = (mongoDB, schemaDefinition) => {
          * @param done
          */
         userSchema.statics.serializeUser = (user, done) => {
-            logger.debug('serialize User');
+            logger.debug('userSchema.statics.serializeUser');
             done(null, user);
         };
 
@@ -260,7 +260,7 @@ export default module.exports = (mongoDB, schemaDefinition) => {
          * @param done
          */
         userSchema.statics.deserializeUser = (id, done) => {
-            logger.debug('deserialize User');
+            logger.debug('userSchema.statics.deserializeUser');
             done(null, id);
         };
 

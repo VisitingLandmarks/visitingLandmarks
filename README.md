@@ -2,10 +2,10 @@
 
 ## Demo
 You can find the lateast stable build at http://visitinglandmarks.com
-Or install the native app at http://app.visitinglandmarks.com
+Or install the mobile app at http://app.visitinglandmarks.com
 
 ## Run It
-1. Install node.js (>=6.0.0)
+1. Install node.js (>=7.0.0)
 2. Install grunt-cli 
 
     ```
@@ -23,9 +23,22 @@ Or install the native app at http://app.visitinglandmarks.com
 
     ```javascript
     module.exports = {
-        mongoDB:{
-            connectURI: 'mongodb://user:password@server:port/db'
-        }
+       mongoDB: {
+            connectURI: 'mongodb://user:password@server:port/db',
+        },
+        email: {
+            smtpTransport: 'smtps://email:password@server',
+        },
+        authProvider : { //optional
+            facebook : {
+                clientID: FACEBOOK_CLIENT_ID,
+                clientSecret: FACEBOOK_CLIENT_SECRET,
+            },
+            google : {
+                clientID: GOOGLE_CLIENT_ID,
+                clientSecret: GOOGLE_CLIENT_SECRET,
+            },
+        },
     };
     ```
     
@@ -41,47 +54,11 @@ Or install the native app at http://app.visitinglandmarks.com
     npm start
     ```
     
-8. Point your browser to http://localhost:8001
+8. Point your browser to http://localhost:8000
     
 ## Test It
-There are several grunt tasks for different quality checks. Easiest is you just run `grunt`
-
-## TechStack
-
-For details have a look at the package.json.
-
-#### Frontend
-* React
-* Redux
-
-#### Communication
-* socket.io
-
-#### TaskRunner / Building
-* Grunt
-* Webpack
-* Babel
-* Apache Cordova / Adobe PhoneGap
-
-#### UserManagement
-* passport.js
-* express-session
-* connect-mongo
-
-#### Testing
-* Mocha
-* Chai
-* Sinon
-
-#### Backend and DB
-* Node.js
-* Express
-* Mongoose
-* MongoDB
-
-#### Map / Geolocation
-* Leaflet
-* Leaflet MarkerCluster
+There are several grunt tasks for different quality checks. Easiest is you just run `grunt`.
+For details check the Gruntfile.js
 
 ## Licenses
 

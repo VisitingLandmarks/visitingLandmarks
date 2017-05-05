@@ -1,7 +1,6 @@
 import logger from '../../modules/logger';
 import config from '../../../config';
 
-
 /**
  *
  * @param config
@@ -20,12 +19,18 @@ let getMongoDB = (config) => { //@todo: check reconnecting and inially down conn
         mongoose.set('debug', true);
     }
 
-    //log errors on DB level
+    mongoose.connection.on('connected', () => {
+        logger.trace('MongoDB connected');
+    });
+
     mongoose.connection.on('error', (error) => {
         logger.error(error, 'MongoDB Error');
     });
 
-    //first connection
+    mongoose.connection.on('reconnected', () => {
+        logger.trace('MongoDB reconnected');
+    });
+
     mongoose.connect(config.connectURI, {server: {reconnectTries: Number.MAX_VALUE}});
 
     //rewrite the getter to just return the instance

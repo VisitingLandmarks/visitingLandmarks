@@ -18,7 +18,7 @@ export default (app) => {
 //unused
 //     app.get(
 //         routes.preferences,
-//         restrictLoginUser,
+//         restrictLoggedInUser,
 //         controller.get
 //     );
 
