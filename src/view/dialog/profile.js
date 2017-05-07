@@ -10,7 +10,7 @@ import DoneIcon from 'material-ui/svg-icons/action/done';
 import getSortScore from '../../modules/getCategorySortScore';
 import countVisitedLocationsInCategory from '../../modules/countVisitedLocationsInCategory';
 
-import {builder,routes} from '../../modules/routes';
+import {builder, routes} from '../../modules/routes';
 
 import {small} from '../../data/mongoDB/image/sizes';
 
@@ -108,8 +108,9 @@ class DialogProfile extends React.Component {
                 open={true}
             >
                 <div>
-                    <img src={builder(routes.user.image, small)}/>
-                    <label><FormattedMessage id="dialog.profile.confirmed"/>: </label>{this.props.userEmailConfirmed ? <DoneIcon /> : null}
+                    {(this.props.hasImage ? <img src={builder(routes.user.image, small)}/> : null)}
+                    <label><FormattedMessage id="dialog.profile.confirmed"/>: </label>{this.props.userEmailConfirmed ?
+                    <DoneIcon /> : null}
                 </div>
                 <div>
                     <label><FormattedMessage id="dialog.profile.visitedLocations"/>:</label>
@@ -125,8 +126,9 @@ class DialogProfile extends React.Component {
 }
 
 DialogProfile.propTypes = {
+    hasImage: PropTypes.bool,
     userEmail: PropTypes.string.isRequired,
-    userEmailConfirmed: PropTypes.bool.isRequired,
+    userEmailConfirmed: PropTypes.bool,
     locations: PropTypes.object.isRequired,
     categories: PropTypes.object.isRequired,
     visitedLocations: PropTypes.object.isRequired,
@@ -143,8 +145,9 @@ const mapStateToProps = (state) => {
         categories: state.data.categories,
         locations: state.data.locations,
         userEmail: state.session.user.email,
-        userEmailConfirmed: state.session.user && state.session.user.isConfirmed || false,
-        visitedLocations: state.session.user && state.session.user.visited || {},
+        hasImage: !!state.session.user.imageId,
+        userEmailConfirmed: state.session.user.isConfirmed,
+        visitedLocations: state.session.user.visited || {},
     };
 };
 

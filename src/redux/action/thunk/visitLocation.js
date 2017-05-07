@@ -1,6 +1,6 @@
 import builder from '../builder';
 
-import {onVisitLocation} from '../../../client/toServer';
+import {onVisitLocation} from '../../../modules/socket.io/client';
 
 export const LOCATIONS_VISIT = 'LOCATIONS_VISIT';
 export const locationsVisit = builder(LOCATIONS_VISIT);

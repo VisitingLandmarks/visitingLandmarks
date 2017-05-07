@@ -109,6 +109,7 @@ module.exports = function (grunt) {
         },
         plugins: [
             new webpack.DefinePlugin({
+                'global.isBrowser': JSON.stringify(true),
                 'process.env': {
                     'NODE_ENV': JSON.stringify(process.env.NODE_ENV),
                 },

@@ -1,6 +1,7 @@
 //@todo: move to socket.io folder
 
 import passportSocketIo from 'passport.socketio';
+import handler from './handler';
 let getConnectionByUserId;
 
 /**
@@ -8,14 +9,13 @@ let getConnectionByUserId;
  * @param userId
  * @param payload
  */
-export default sendActionToAllConnectionOfAUser; // @todo: setup should be default
-const sendActionToAllConnectionOfAUser = (userId, payload) => {
+export const sendActionToAllConnectionOfAUser = (userId, payload) => {
     getConnectionByUserId(userId).forEach(socket => {
         socket.emit('storeAction', payload);
     });
 };
 
-export const setupIO = (server) => {
+export default (server) => {
     const ioApp = require('socket.io')(server);
     getConnectionByUserId = (userId) => {
         userId = userId && userId.toString();
@@ -25,7 +25,7 @@ export const setupIO = (server) => {
     };
     
     //handle socket.io requests of the user
-    ioApp.on('connection', require('../handleSocketIORequests')(sendActionToAllConnectionOfAUser));
+    ioApp.on('connection', handler(sendActionToAllConnectionOfAUser));
 
     return ioApp;
 };
@@ -40,3 +40,4 @@ export const disconnectAllSocketsOfUser = (userId) => {
     
     return numberOfSockets;
 };
+

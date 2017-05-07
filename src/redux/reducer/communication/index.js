@@ -40,7 +40,7 @@ import {
 } from '../../action/thunk/visitLocation';
 
 import initialState from './initialState';
-const omit = require('lodash/omit');
+import omit from 'lodash/omit';
 
 export const inProgress = 'inProgress';
 export const failure = 'failure';

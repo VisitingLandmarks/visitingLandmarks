@@ -1,6 +1,6 @@
 import {sendEmailConfirmed, sendEmailUserRegistered, sendEmailUserResetPassword} from '../modules/email';
 import * as data from '../data';
-import {disconnectAllSocketsOfUser} from '../modules/sendActionToAllConnectionOfAUser';
+import {disconnectAllSocketsOfUser} from '../modules/socket.io';
 import {routes} from '../modules/routes';
 import logger from '../modules/logger';
 import axios from 'axios';

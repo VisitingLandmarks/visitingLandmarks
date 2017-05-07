@@ -1,6 +1,6 @@
 import config from '../config';
 import setupRoutes from './routes';
-import {setupIO} from './modules/sendActionToAllConnectionOfAUser';
+import setupIO from './modules/socket.io';
 import expressSetup from './modules/express';
 
 

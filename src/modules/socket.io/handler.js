@@ -1,15 +1,17 @@
-import {LOCATION_VISIT} from './client/clientSocket';
-import logger from './modules/logger';
-import {locationsVisitSuccess} from './redux/action/thunk/visitLocation';
-import {findUserById} from './data';
+import {LOCATION_VISIT, LOG} from '../socket.io/client';
+import logger from '../logger';
+import {locationsVisitSuccess} from '../../redux/action/thunk/visitLocation';
+import {findUserById} from '../../data/index';
+import omit from 'lodash/omit';
+
 
 //@todo: too much logic in here. Logic should be abstracted from the interface
-export default module.exports = (sendActionToAllConnectionOfAUser) => {
+export default (sendActionToAllConnectionOfAUser) => {
 
     return (userSocket) => {
 
-        userSocket.on('log', (message) => {
-            logger.debug(message);
+        userSocket.on(LOG, (data) => {
+            logger[data.level]({...omit(data, 'level'), clientMsg: data.msg}, 'Frontend Log:' + data.msg);
         });
 
         //@todo: a wrapper that ensures that the user is really logged in by checking userSocket.request.user

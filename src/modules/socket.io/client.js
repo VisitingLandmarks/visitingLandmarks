@@ -1,9 +1,10 @@
+import logger from '../logger/index';
+import io from 'socket.io-client';
+import {routes} from '../routes';
+
 export const LOCATION_VISIT = 'LOCATION_VISIT';
 export const LOG = 'LOG';
 
-//@todo: rebuild using thunk
-import io from 'socket.io-client';
-import {routes} from '../modules/routes';
 
 /**
  * establish socket.io connection for loggedIn Users
@@ -44,3 +45,33 @@ export default (store) => {
     changeState();
 
 };
+
+
+/**
+ * we only have a socket connection when the user is locked in
+ * this wrapper checks this and ensures that there is no runtime error for non logged in users
+ * @param func
+ */
+const onlyWhenSocketAvailable = (func) => {
+    return function () {
+        if (!window.socket) {
+            logger.debug(arguments, 'socket connection not available');
+            return;
+        }
+
+        return func.apply(this, arguments);
+    };
+};
+
+
+/**
+ * claim that we visited a location
+ * @param locationId
+ */
+export const onVisitLocation = onlyWhenSocketAvailable((locationId) => {
+    window.socket.emit(LOCATION_VISIT, locationId);
+});
+
+export const logRemote = onlyWhenSocketAvailable((data) => {
+    window.socket.emit(LOG, data);
+});

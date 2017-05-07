@@ -2,11 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import config from '../../config';
 
-import leafLetBootstrap from '../client/map/index';
+import leafLetBootstrap from '../modules/leafLet';
 import orientationToCompassHeading from '../modules/orientationToCompassHeading';
 import antiHammer from '../modules/antiHammer';
-const memoize = require('memoizee');
-
+import memoize from 'memoizee';
 
 /**
  * translate numerical coordinates to leafLet Map coordinates
@@ -43,7 +42,7 @@ export default class MainMap extends React.Component {
     componentDidMount() {
 
         this.Map = leafLetBootstrap();
-        this.markerStyle = require('../client/map/markerStyle');
+        this.markerStyle = require('../modules/leafLet/markerStyle');
 
         this.leafLetMap = L.map('mainMap', {
             dragging: !this.props.followUser, //this could also be done with the setUserInteractivity method

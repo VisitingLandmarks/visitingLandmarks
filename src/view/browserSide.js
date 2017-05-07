@@ -4,7 +4,7 @@ import {BrowserRouter as Router} from 'react-router-dom';
 import {createStore, applyMiddleware, compose} from 'redux';
 import thunk from 'redux-thunk';
 import reducer from '../redux/reducer';
-import clientSocket from '../client/clientSocket';
+import clientSocket from '../modules/socket.io/client';
 
 import {addLocaleData} from 'react-intl';
 

@@ -1,5 +1,5 @@
 import config from '../../../config';
-import logger from '../../modules/logger';
+import logger from '../logger';
 
 import localStrategy from './local';
 import facebookStrategy from './facebook';
