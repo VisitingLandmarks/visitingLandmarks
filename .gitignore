@@ -3,3 +3,4 @@ node_modules
 static/*.js
 static/*.css
 config/local.js
+config/git.json
