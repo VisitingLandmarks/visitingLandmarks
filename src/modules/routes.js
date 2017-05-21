@@ -14,6 +14,9 @@ export const routes = {
     root: '/',
     static: '/static',
     profile: '/profile',
+    admin: {
+        entry: '/admin',
+    },
     auth: {
         facebook: {
             entry: '/auth/facebook',

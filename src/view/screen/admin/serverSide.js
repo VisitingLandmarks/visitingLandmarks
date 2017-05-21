@@ -1,13 +1,13 @@
-import config from '../../config';
+import config from '../../../../config/index';
 
 import React from 'react';
 import {renderToString} from 'react-dom/server';
 import {StaticRouter as Router} from 'react-router-dom';
 
-import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
-import Providers from './providers';
+import Providers from '../../providers';
+import RouteDefinition from './routeDefinition';
 
 import {addLocaleData} from 'react-intl';
 import en from 'react-intl/locale-data/en';
@@ -22,9 +22,10 @@ export default (store, url, userAgent) => {
     const html = renderToString(
         <Providers
             store={store}
-            muiTheme={getMuiTheme({userAgent}, darkBaseTheme)}
+            muiTheme={getMuiTheme({userAgent})}
             routerProps={{location: url, context}}
-            router={Router}
+            Router={Router}
+            RouteDefinition={RouteDefinition}
         />
     );
 
@@ -54,7 +55,7 @@ function renderFullPage (html, initialState) {
       <head>
         <title>visitingLandmarks</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-        <link rel="stylesheet" href="${config.frontendPath.buildAssets}static/style.css">
+        <link rel="stylesheet" href="${config.frontendPath.buildAssets}static/admin.css">
         <link rel="stylesheet" href="${config.frontendPath.leafLet}leaflet.css">
         <link rel="stylesheet" href="${config.frontendPath.leafLetMarkerCluster}MarkerCluster.css">
         <link rel="stylesheet" href="${config.frontendPath.leafLetMarkerCluster}MarkerCluster.Default.css">
@@ -64,7 +65,7 @@ function renderFullPage (html, initialState) {
         <script>
           window.__INITIAL_STATE__ = ${JSON.stringify(initialState)}
         </script>
-         <script src="${config.frontendPath.buildAssets}static/all.js"></script>
+         <script src="${config.frontendPath.buildAssets}static/admin.js"></script>
       </body>
     </html>
     `;

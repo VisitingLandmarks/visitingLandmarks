@@ -1,13 +1,11 @@
 import * as data from '../data';
-import serverSideView from '../view/screen/home/serverSide';
+import serverSideView from '../view/screen/admin/serverSide';
 
 import {createStore, applyMiddleware} from 'redux';
 import thunk from 'redux-thunk';
 import reducer from '../redux/reducer';
 
 import {loginSuccess} from '../redux/action/thunk/login';
-import {categoriesSet} from '../redux/action/categories';
-import {locationsSet} from '../redux/action/locations';
 import {intlSet} from '../redux/action/data';
 
 import {updateIntl} from 'react-intl-redux';
@@ -36,10 +34,6 @@ export default (req, res) => {
                     store.dispatch(updateIntl(userIntl));
                 }),
 
-            // application stuff
-            data.getAllCategories().then((categories) => store.dispatch(categoriesSet(categories))),
-            data.getAllLocations().then((locations) => store.dispatch(locationsSet(locations))),
-
         ])
             .then(() => {
                 // server side rendering
@@ -65,7 +59,7 @@ export default (req, res) => {
                 }
             })
             .catch((err) => {
-                req.log.error({err}, 'Error in send main app');
+                req.log.error({err}, 'Error in send admin app');
                 throw err;
             });
     });

@@ -37,10 +37,10 @@ const fsPathAssetTarget = path.resolve(__dirname, `..${webpackAssetTarget}`);
 
 module.exports = (grunt) => {
     const shared = {
-        entry: [
-            './src/view/browserSide.js',
-            './src/style/main.scss',
-        ],
+        entry: {
+            home: ['./src/view/screen/home/browserSide.js', './src/style/home.scss'],
+            admin: ['./src/view/screen/admin/browserSide.js', './src/style/admin.scss'],
+        },
         resolve: {
             // These shims are needed for bunyan
             // and to ensure that no data is leaked
@@ -51,7 +51,7 @@ module.exports = (grunt) => {
         },
         output: {
             path: fsPathAssetTarget,
-            filename: 'all.js',
+            filename: '[name].js',
         },
 
         module: {
@@ -82,7 +82,7 @@ module.exports = (grunt) => {
                                 loader: 'postcss-loader',
                                 options: {
                                     plugins: [autoprefixer({
-                                        browsers: ['ie 9', 'last 3 versions'],
+                                        browsers: ['ie 9', 'last 3 versions'], //@todo: agree on browser support
                                     })],
                                 },
                             },
@@ -114,8 +114,7 @@ module.exports = (grunt) => {
                 },
             }),
             new ExtractTextPlugin({
-                filename: 'style.css',
-                allChunks: true,
+                filename: '[name].css',
             }),
         ],
         stats: {

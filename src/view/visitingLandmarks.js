@@ -20,16 +20,10 @@ import {followUserSet, navigateTo, conversionLocationVisitShow} from '../redux/a
 
 import {routes} from '../modules/routes';
 
-import logger from '../modules/logger';
-
 /**
  * the whole frontend
  */
 class VisitingLandmarks extends React.Component {
-
-    componentDidMount () {
-        logger.error({data: 'test'}, 'testing data');
-    }
 
     render () {
         return (

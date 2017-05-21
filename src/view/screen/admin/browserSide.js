@@ -1,10 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {BrowserRouter as Router} from 'react-router-dom';
+import RouteDefinition from './routeDefinition';
 import {createStore, applyMiddleware, compose} from 'redux';
 import thunk from 'redux-thunk';
-import reducer from '../redux/reducer';
-import clientSocket from '../modules/socket.io/client';
+import reducer from '../../../redux/reducer/index';
+import clientSocket from '../../../modules/socket.io/client';
 
 import {addLocaleData} from 'react-intl';
 
@@ -13,10 +14,9 @@ import en from 'react-intl/locale-data/en';
 import de from 'react-intl/locale-data/de';
 
 // Material UI
-import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
-import Providers from './providers';
+import Providers from '../../providers';
 
 addLocaleData([...en, ...de]);
 let enhancer = applyMiddleware(thunk);
@@ -36,9 +36,10 @@ const render = (Component) => {
     ReactDOM.render(
         <Component
             store={store}
-            muiTheme={getMuiTheme({userAgent: navigator.userAgent}, darkBaseTheme)}
+            muiTheme={getMuiTheme({userAgent: navigator.userAgent})}
             routerProps={{key: Math.random()}}
-            router={Router}
+            Router={Router}
+            RouteDefinition={RouteDefinition}
         />,
         document.getElementById('root')
     );

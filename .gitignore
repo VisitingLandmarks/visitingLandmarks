@@ -1,5 +1,5 @@
 node_modules
 .idea
-static/all.js
-static/style.css
+static/*.js
+static/*.css
 config/local.js
