@@ -1,4 +1,4 @@
-//UI management
+// UI management
 import {
     CONVERSION_LOCATION_VISIT_SHOW,
     CONVERSION_LOCATION_VISIT_HIDE,
@@ -11,9 +11,7 @@ import {REGISTER_SUCCESS} from '../../action/thunk/register';
 
 import initialState from './initialState';
 
-
 export default (oldState = initialState, action) => {
-
     switch (action.type) {
 
         case FOLLOW_USER_SET: {
@@ -39,7 +37,7 @@ export default (oldState = initialState, action) => {
             };
         }
 
-        //if a user successful logged in or registered, this dialog gets obsolete
+        // if a user successful logged in or registered, this dialog gets obsolete
         case LOGIN_SUCCESS:
         case REGISTER_SUCCESS:
         case CONVERSION_LOCATION_VISIT_HIDE: {
@@ -53,5 +51,4 @@ export default (oldState = initialState, action) => {
             return oldState;
         }
     }
-
 };

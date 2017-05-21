@@ -16,7 +16,6 @@ import {small} from '../../data/mongoDB/image/sizes';
 
 import {navigateTo} from '../../redux/action/ui';
 
-
 /**
  * format the visited locations for the profile
  * @param locations
@@ -24,7 +23,6 @@ import {navigateTo} from '../../redux/action/ui';
  * @returns {Array}
  */
 const formatVisitedLocations = (locations, visitedLocations) => {
-
     return Object.keys(visitedLocations)
         .map((key) => {
             return {
@@ -32,18 +30,16 @@ const formatVisitedLocations = (locations, visitedLocations) => {
                 id: key,
                 dateTimeOfVisit: new Date(visitedLocations[key]),
             };
-
         })
         .sort((a, b) => {
             return a.dateTimeOfVisit - b.dateTimeOfVisit;
         })
         .map((element) => {
             return <li key={element.id}>
-                <FormattedDate value={element.dateTimeOfVisit}/> : {element.name} {element.originalUrl}
+                <FormattedDate value={element.dateTimeOfVisit} /> : {element.name} {element.originalUrl}
             </li>;
         });
 };
-
 
 /**
  * format the categories for the profile
@@ -52,7 +48,6 @@ const formatVisitedLocations = (locations, visitedLocations) => {
  * @returns {Array}
  */
 const formatCategories = (categories, visitedLocations) => {
-
     return Object.keys(categories)
         .map((key) => {
             return {
@@ -68,21 +63,14 @@ const formatCategories = (categories, visitedLocations) => {
             const done = (element.total === element.visited ? <DoneIcon /> : null);
             return <li key={element.name}>{element.name} ({element.visited} / {element.total}){done}</li>;
         });
-
 };
-
 
 /**
  * the profile dialog
  */
 class DialogProfile extends React.Component {
 
-    constructor(props) {
-        super(props);
-    }
-
-
-    render() {
+    render () {
         const {formatMessage} = this.props.intl;
         const actions = [
             <RaisedButton
@@ -92,7 +80,7 @@ class DialogProfile extends React.Component {
             />,
             <RaisedButton
                 label={formatMessage({id: 'dialog.close'})}
-                primary={true}
+                primary
                 onTouchTap={this.props.onCloseDialog}
             />,
 
@@ -105,19 +93,19 @@ class DialogProfile extends React.Component {
             <Dialog
                 title={formatMessage({id: 'dialog.profile.title'}, {userEmail: this.props.userEmail})}
                 actions={actions}
-                open={true}
+                open
             >
                 <div>
-                    {(this.props.hasImage ? <img src={builder(routes.user.image, small)}/> : null)}
-                    <label><FormattedMessage id="dialog.profile.confirmed"/>: </label>{this.props.userEmailConfirmed ?
-                    <DoneIcon /> : null}
+                    {(this.props.hasImage ? <img src={builder(routes.user.image, small)} /> : null)}
+                    <label><FormattedMessage id='dialog.profile.confirmed' />: </label>{this.props.userEmailConfirmed
+                    ? <DoneIcon /> : null}
                 </div>
                 <div>
-                    <label><FormattedMessage id="dialog.profile.visitedLocations"/>:</label>
+                    <label><FormattedMessage id='dialog.profile.visitedLocations' />:</label>
                     <ul>{formatedVisitedLocations}</ul>
                 </div>
                 <div>
-                    <label><FormattedMessage id="dialog.profile.categories"/>:</label>
+                    <label><FormattedMessage id='dialog.profile.categories' />:</label>
                     <ul>{formatedCategories}</ul>
                 </div>
             </Dialog>
@@ -138,7 +126,6 @@ DialogProfile.propTypes = {
 
     intl: intlShape.isRequired,
 };
-
 
 const mapStateToProps = (state) => {
     return {

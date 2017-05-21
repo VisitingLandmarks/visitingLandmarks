@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {injectIntl, intlShape} from 'react-intl';
 
-
 import DialogUserPassword from './userPassword';
 
 import {changePasswordThunk, changingPassword} from '../../redux/action/thunk/changePassword';
@@ -14,15 +13,11 @@ import {routes} from '../../modules/routes';
 
 class ChangePassword extends React.Component {
 
-    constructor(props) {
-        super(props);
-    }
-
-    render() {
+    render () {
         return (
             <DialogUserPassword
                 {...this.props}
-                open={true}
+                open
                 dialogName={this.props.intl.formatMessage({id: 'dialog.changePassword.title'})}
                 showUsernameLine={false}
                 onSubmit={this.props.requestChangePassword}
@@ -37,7 +32,6 @@ ChangePassword.propTypes = {
     requestChangePassword: PropTypes.func.isRequired,
     intl: intlShape.isRequired,
 };
-
 
 const mapStateToProps = (state) => {
     return {

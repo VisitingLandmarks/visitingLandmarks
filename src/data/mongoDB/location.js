@@ -1,16 +1,14 @@
 const collectionName = 'Item2';
 
-
 /**
  * returns a mongoose model representing a category
  * @param mongoDB
  * @return UserModel
  */
 export default module.exports = function (mongoDB) {
-
     const locationSchema = new mongoDB.Schema({
         originalUrl: String,
-            //tricky
+            // tricky
             // longitute -> x -> easting
             // latitutde -> y -> northing
         location: {
@@ -21,9 +19,9 @@ export default module.exports = function (mongoDB) {
             },
             coordinates: {
                 type: [Number],
-                    //https://docs.mongodb.com/v3.0/applications/geospatial-indexes
-                    //Store your location data as GeoJSON objects with this coordinate-axis order: longitude, latitude
-                    //Leaflet, the frontend uses latitude, longitude... what a mess.
+                    // https://docs.mongodb.com/v3.0/applications/geospatial-indexes
+                    // Store your location data as GeoJSON objects with this coordinate-axis order: longitude, latitude
+                    // Leaflet, the frontend uses latitude, longitude... what a mess.
                 default: [0, 0],
             },
         },
@@ -79,7 +77,7 @@ export default module.exports = function (mongoDB) {
             // collection: collectionName, //todo: use
         });
 
-    //safe data we want to use on the map
+    // safe data we want to use on the map
     const getForUserWhitelist = {
         _id: 1,
         extent: 1,
@@ -91,9 +89,8 @@ export default module.exports = function (mongoDB) {
     };
 
     // fancy index for geo distance calculation
-    //@todo: find a good use case
+    // @todo: find a good use case
     // locationSchema.index({location: '2dsphere'});
-
 
     /**
      * get all locations
@@ -113,10 +110,8 @@ export default module.exports = function (mongoDB) {
             });
     };
 
-
-    //build model based on scheme
+    // build model based on scheme
     const LocationModel = mongoDB.model(collectionName, locationSchema);
 
     return LocationModel;
-
 };

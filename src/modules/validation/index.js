@@ -17,7 +17,6 @@ const ajv = new Ajv({
     allErrors: true,
 });
 
-
 /**
  * a factory that creates a schema specific post middleware
  * @param schema a JSON schema
@@ -25,7 +24,6 @@ const ajv = new Ajv({
  */
 export const postFactory = (schema) => {
     return (req, res, next) => {
-
         const isValid = ajv.validate(schema, req.body);
         req.log.debug({schema, isValid, body: req.body}, 'validating Input');
 
@@ -40,9 +38,6 @@ export const postFactory = (schema) => {
     };
 };
 
-
-
-
 /**
  * combines n schemas (either as array or arguments into one schema)
  * @param baseSchema (optional/Array)
@@ -51,7 +46,6 @@ export const combineSchema = function (baseSchema) {
     const args = Array.isArray(baseSchema) && baseSchema || Array.prototype.slice.call(arguments);
     return args.reduce(combineTwoSchema);
 };
-
 
 /**
  * combines two schemas into one
@@ -88,7 +82,6 @@ export const buildBaseSchema = (title = 'Schema', additionalProperties = false) 
     };
 };
 
-
 /**
  * checks, if an element is the first occurrence in an array
  * @param value
@@ -100,7 +93,6 @@ const isFirstOccurance = (value, index, arr) => {
     return arr.indexOf(value) === index;
 };
 
-
 /**
  * a factory that returns a schema specific ReduxForm Validator
  * @param schema
@@ -111,7 +103,6 @@ export const reduxFormFactory = (schema) => {
         return validateInput(values, schema);
     };
 };
-
 
 /**
  * Validate a given input object against a json schema

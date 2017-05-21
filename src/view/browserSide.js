@@ -8,11 +8,11 @@ import clientSocket from '../modules/socket.io/client';
 
 import {addLocaleData} from 'react-intl';
 
-//@todo: build this automatically based on config
+// @todo: build this automatically based on config
 import en from 'react-intl/locale-data/en';
 import de from 'react-intl/locale-data/de';
 
-//Material UI
+// Material UI
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 

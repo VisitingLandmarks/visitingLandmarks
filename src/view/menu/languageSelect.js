@@ -12,27 +12,26 @@ import flattenObject from '../../modules/flattenObject';
 import MenuItem from 'material-ui/MenuItem';
 
 const LanguageSelect = (props) => {
-    return ( <MenuItem
+    return (<MenuItem
         menuItems={Object.keys(props.intl).map((locale) => {
-
             return (<MenuItem
                 checked={locale === props.current}
-                insetChildren={true}
+                insetChildren
                 onTouchTap={() => {
-                    //@todo: IMO here is a layer missing. View -> Preferences -> local/remote -> updateUI
-                    //@todo: change language based on preference set, not in view
+                    // @todo: IMO here is a layer missing. View -> Preferences -> local/remote -> updateUI
+                    // @todo: change language based on preference set, not in view
                     props.setPreference({locale});
                     props.changeLanguage({
                         locale,
-                        messages : flattenObject(props.intl[locale]),
+                        messages: flattenObject(props.intl[locale]),
                     });
                 }}
             >
-                <FormattedMessage id={`language.${locale}`}/>
+                <FormattedMessage id={`language.${locale}`} />
             </MenuItem>);
         })}
     >
-        <FormattedMessage id='menu.language'/>
+        <FormattedMessage id='menu.language' />
     </MenuItem>);
 };
 

@@ -10,12 +10,11 @@ export const locationsVisitSuccess = builder(LOCATIONS_VISIT_SUCCESS);
 
 export const visittingLocation = 'visittingLocation';
 
-export default function visitLocationThunk(locationId) {
+export default function visitLocationThunk (locationId) {
     return function (dispatch, getStore) {
-
         const store = getStore();
 
-        //if the location is already in progress, stop here
+        // if the location is already in progress, stop here
         if (
             store.communication[visittingLocation][locationId] ||
             store.session.user && store.session.user.visited[locationId]

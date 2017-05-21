@@ -3,9 +3,7 @@ import {LOCATIONS_SET} from '../../action/locations';
 import {INTL_SET} from '../../action/data';
 import initialState from './initialState';
 
-
 export default (oldState = initialState, action) => {
-
     switch (action.type) {
 
         case CATEGORIES_SET: {
@@ -33,5 +31,4 @@ export default (oldState = initialState, action) => {
             return oldState;
         }
     }
-
 };

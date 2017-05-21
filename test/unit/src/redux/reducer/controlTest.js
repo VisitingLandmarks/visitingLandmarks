@@ -8,14 +8,10 @@ import {
     followUserSet,
 } from '../../../../../src/redux/action/ui';
 
-
 describe('control reducer', () => {
-
     describe(FOLLOW_USER_SET, () => {
         [true, false].map((testing) => {
-
             it(testing.toString(), () => {
-
                 const oldState = deepFreeze({
                     ...initialState,
                     followUser: !testing,
@@ -29,6 +25,5 @@ describe('control reducer', () => {
                 expect(reducer(oldState, followUserSet(testing)), 'to equal', newState);
             });
         });
-
     });
 });

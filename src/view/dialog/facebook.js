@@ -25,7 +25,7 @@ const Facebook = (props) => {
         backgroundColor={style.backgroundColor}
         label={props.intl.formatMessage({id: 'dialog.auth.facebook'})}
         style={style.button}
-    ></RaisedButton>;
+     />;
 };
 
 Facebook.propTypes = {

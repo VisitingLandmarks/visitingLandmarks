@@ -9,11 +9,10 @@ export default require('deepmerge').all(
     ]
 );
 
-function requireIfExists(name) {
+function requireIfExists (name) {
     try {
         return require(name);
-    }
-    catch (e) {
+    } catch (e) {
         if (e.code === 'MODULE_NOT_FOUND') {
             return false;
         }

@@ -7,7 +7,6 @@
  * @returns {object}
  */
 const flattenObject = (obj, joinString = '.', flat = {}, prefix = '') => {
-
     Object.keys(obj).forEach((key) => {
         let value = obj[key];
 
@@ -17,7 +16,6 @@ const flattenObject = (obj, joinString = '.', flat = {}, prefix = '') => {
         }
 
         flat[prefix + key] = value;
-
     });
 
     return flat;

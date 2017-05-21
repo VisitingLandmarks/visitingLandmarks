@@ -6,9 +6,7 @@ import {PREFERENCE_SET_SUCCESS} from '../../action/thunk/setPreference';
 
 import initialState from './initialState';
 
-
 export default (oldState = initialState, action) => {
-
     switch (action.type) {
 
         case LOGIN_SUCCESS:
@@ -52,10 +50,8 @@ export default (oldState = initialState, action) => {
             };
         }
 
-
         default: {
             return oldState;
         }
     }
-
 };

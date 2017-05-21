@@ -1,7 +1,6 @@
 import logger from '../../../modules/logger';
 
 export default module.exports = (mongoDB, schemaDefinition) => {
-
     schemaDefinition.preferences = {
         locale: {
             type: String,
@@ -10,14 +9,12 @@ export default module.exports = (mongoDB, schemaDefinition) => {
     };
 
     return (userSchema) => {
-
-        //unused
+        // unused
         // userSchema.methods.getPreference = function (key) {
         //     return this.preferences[key];
         // };
 
         userSchema.methods.setPreference = function (data) {
-
             Object.keys(data).forEach((key) => {
                 this.preferences[key] = data[key];
             });
@@ -33,6 +30,5 @@ export default module.exports = (mongoDB, schemaDefinition) => {
                     }, 'mongoDB Error in userSchema.methods.setPreference');
                 });
         };
-
     };
 };

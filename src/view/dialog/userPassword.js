@@ -6,7 +6,6 @@ import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 
-
 const style = {
     button: {
         margin: 12,
@@ -20,14 +19,12 @@ const style = {
     },
 };
 
-
 /**
  * a generic dialog for username and password fields
  */
 class DialogUserPassword extends React.Component {
 
-    constructor(props) {
-
+    constructor (props) {
         super(props);
         this.state = {
             username: '',
@@ -37,30 +34,26 @@ class DialogUserPassword extends React.Component {
         this.handleUsernameChange = this.handleUsernameChange.bind(this);
         this.handlePasswordChange = this.handlePasswordChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-
     }
 
-    handleUsernameChange(e) {
+    handleUsernameChange (e) {
         this.setState({username: e.target.value});
     }
 
-    handlePasswordChange(e) {
+    handlePasswordChange (e) {
         this.setState({password: e.target.value});
     }
 
-    handleSubmit() {
-
+    handleSubmit () {
         const username = this.state.username.trim();
         const password = this.state.password.trim();
         if (this.props.showUsernameLine && !username || this.props.showPasswordLine && !password) {
             return;
         }
         this.props.onSubmit(username, password);
-
     }
 
-    render() {
-
+    render () {
         const {formatMessage} = this.props.intl;
 
         const actions = [
@@ -74,36 +67,35 @@ class DialogUserPassword extends React.Component {
             <RaisedButton
                 style={style.button}
                 label={formatMessage({id: 'dialog.submit'})}
-                primary={true}
+                primary
                 onTouchTap={this.handleSubmit}
                 disabled={this.props.disabled}
             />,
         ];
 
-
         const usernameLine = <tr>
             <td>
-                <label><FormattedMessage id='dialog.userPassword.email'/>:</label>
+                <label><FormattedMessage id='dialog.userPassword.email' />:</label>
             </td>
             <td>
-                <TextField type="text"
-                           name="username"
-                           value={this.state.username}
-                           onChange={this.handleUsernameChange}
+                <TextField type='text'
+                    name='username'
+                    value={this.state.username}
+                    onChange={this.handleUsernameChange}
                 />
             </td>
         </tr>;
 
         const passwordLine = <tr>
             <td>
-                <label><FormattedMessage id='dialog.userPassword.password'/>:</label>
+                <label><FormattedMessage id='dialog.userPassword.password' />:</label>
             </td>
             <td>
-                <TextField type="password"
-                           name="password"
-                           value={this.state.password}
-                           onChange={this.handlePasswordChange}
-                           errorText={this.props.error}
+                <TextField type='password'
+                    name='password'
+                    value={this.state.password}
+                    onChange={this.handlePasswordChange}
+                    errorText={this.props.error}
                 />
             </td>
         </tr>;
@@ -113,24 +105,22 @@ class DialogUserPassword extends React.Component {
                 contentStyle={style.dialog}
                 title={this.props.dialogName}
                 actions={actions}
-                modal={true}
+                modal
                 open={this.props.open}
             >
                 <form style={style.form}>
                     <table>
                         <tbody>
-                        {(this.props.showUsernameLine ? usernameLine : null)}
-                        {(this.props.showPasswordLine ? passwordLine : null)}
+                            {(this.props.showUsernameLine ? usernameLine : null)}
+                            {(this.props.showPasswordLine ? passwordLine : null)}
                         </tbody>
                     </table>
                 </form>
                 {this.props.children}
             </Dialog>
         );
-
     }
 }
-
 
 DialogUserPassword.propTypes = {
     children: PropTypes.array,

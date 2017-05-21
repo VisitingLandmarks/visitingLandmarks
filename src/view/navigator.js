@@ -2,27 +2,22 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 
-
 /**
  * this class handles the navigation through the page via react-router.
  * Much simpler and easier to use than https://github.com/ReactTraining/react-router/tree/master/packages/react-router-redux
  */
 class Navigator extends React.Component {
-    constructor(props) {
-        super(props);
-    }
 
-    componentDidUpdate() {
+    componentDidUpdate () {
         if (this.props.navigateTo.target) {
             this.context.router.history.push(this.props.navigateTo.target);
         }
     }
 
-    render() {
+    render () {
         return null;
     }
 }
-
 
 Navigator.propTypes = {
     navigateTo: PropTypes.object.isRequired,
@@ -31,7 +26,6 @@ Navigator.propTypes = {
 Navigator.contextTypes = {
     router: PropTypes.object,
 };
-
 
 const mapStateToProps = (state) => {
     return {

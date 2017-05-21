@@ -5,26 +5,28 @@
     "es6": true
   },
   "extends": [
-    "eslint:recommended",
-    "plugin:react/recommended"
+    "standard",
+    "standard-react"
   ],
   "installedESLint": true,
-  "parserOptions": {
-    "ecmaFeatures": {
-      "experimentalObjectRestSpread": true,
-      "jsx": true
-    },
-    "sourceType": "module"
-  },
   "plugins": [
+    "json",
     "react"
   ],
   "globals": {
     "__dirname": true,
     "process": true,
-    "L": true
+    "L":true
   },
   "rules": {
+    "space-before-function-paren": [
+      "error",
+      "always"
+    ],
+    "spaced-comment": [
+      "error",
+      "always"
+    ],
     "indent": [
       "error",
       4,
@@ -50,8 +52,14 @@
     "semi": [
       "error",
       "always"
+    ],
+    "react/jsx-indent": [
+      2,
+      4
+    ],
+    "react/jsx-indent-props": [
+      2,
+      4
     ]
-  },
-  "settings": {
   }
 }

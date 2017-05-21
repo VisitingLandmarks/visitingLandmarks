@@ -22,36 +22,28 @@ import {routes} from '../modules/routes';
 
 import logger from '../modules/logger';
 
-
 /**
  * the whole frontend
  */
 class VisitingLandmarks extends React.Component {
 
-    constructor(props) {
-        super(props);
+    componentDidMount () {
+        logger.error({data: 'test'}, 'testing data');
     }
 
-    componentDidMount() {
-
-
-        logger.error({data:'test'}, 'testing data');
-    }
-
-    render() {
-
+    render () {
         return (
-            <div className="mainContainer">
+            <div className='mainContainer'>
 
                 <MainMap
-                    key="mainMap"
+                    key='mainMap'
                     followUser={this.props.followUser}
                     visitedLocations={this.props.visitedLocations}
                     locations={this.props.locations}
                     onToggleFollowUser={this.props.onToggleFollowUser}
                     onVisitLocation={(locationId) => {
                         if (!this.props.loggedIn) {
-                            //only allowed, when not open or already closed by the user
+                            // only allowed, when not open or already closed by the user
                             if (this.props.conversionLocationVisitAllowed) {
                                 this.props.conversionLocationVisitShow(locationId);
                             }
@@ -62,7 +54,7 @@ class VisitingLandmarks extends React.Component {
                 />
 
                 <MainMenu
-                    key="mainMenu"
+                    key='mainMenu'
                     followUser={this.props.followUser}
                     loggedIn={this.props.loggedIn}
                     onOpenLoginDialog={() => this.props.navigateTo(routes.user.login)}
@@ -73,13 +65,12 @@ class VisitingLandmarks extends React.Component {
                     requestLogout={this.props.requestLogout}
                 />
 
-                <ConversionLocationVisit/>
+                <ConversionLocationVisit />
 
-                <Navigator/>
+                <Navigator />
 
             </div>
         );
-
     }
 }
 
@@ -104,7 +95,6 @@ VisitingLandmarks.contextTypes = {
     router: PropTypes.object,
 };
 
-
 const mapStateToProps = (state) => {
     return {
         loggedIn: !!state.session.user,
@@ -113,10 +103,10 @@ const mapStateToProps = (state) => {
         followUser: state.control.followUser,
         categories: state.data.categories,
         locations: state.data.locations,
-        //an object is easier to access and check
+        // an object is easier to access and check
         visitedLocations: state.session.user && state.session.user.visited || {},
         communication: state.communication,
-        conversionLocationVisitAllowed : !state.control.conversionLocationVisit,
+        conversionLocationVisitAllowed: !state.control.conversionLocationVisit,
     };
 };
 
@@ -129,7 +119,6 @@ const mapDispatchToProps = (dispatch) => {
         onVisitLocation: (locationId) => dispatch(visitLocationThunk(locationId)),
     };
 };
-
 
 export default connect(
     mapStateToProps,

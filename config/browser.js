@@ -6,7 +6,7 @@ const config = {
         google: true,
     },
 
-    map: { //settings for the game logic. Rules, etc.
+    map: { // settings for the game logic. Rules, etc.
         tileLocation: 'https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png',
         visitDistance: {
             lat: 0.1,

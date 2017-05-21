@@ -6,7 +6,6 @@ const collectionName = 'Category';
  * @return UserModel
  */
 export default module.exports = function (mongoDB) {
-
     const categorySchema = new mongoDB.Schema({
         description: String,
         name: {
@@ -20,14 +19,13 @@ export default module.exports = function (mongoDB) {
             // collection: collectionName, //todo: use
         });
 
-    //safe data we want to use on the map
+    // safe data we want to use on the map
     const getForUserWhitelist = {
         _id: 1,
         description: 1,
         name: 1,
         items: 1,
     };
-
 
     /**
      * get all locations
@@ -47,10 +45,8 @@ export default module.exports = function (mongoDB) {
             });
     };
 
-
-    //build model based on scheme
+    // build model based on scheme
     const CategoryModel = mongoDB.model(collectionName, categorySchema);
 
     return CategoryModel;
-
 };

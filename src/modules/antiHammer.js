@@ -5,15 +5,13 @@ export default module.exports = function (func, interval = 100) {
     let lastExecution = 0;
     let timeout;
 
-    return function antiHammer() {
-
+    return function antiHammer () {
         clearTimeout(timeout);
         const now = Date.now();
         const distance = now - lastExecution;
         const args = arguments;
 
         if (distance < interval) {
-
             timeout = setTimeout(function () {
                 antiHammer.apply(this, args);
             }, interval - distance + 1);
@@ -24,5 +22,4 @@ export default module.exports = function (func, interval = 100) {
         func.apply(this, args);
         lastExecution = now;
     };
-
 };

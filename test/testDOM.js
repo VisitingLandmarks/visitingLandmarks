@@ -12,7 +12,6 @@ if (typeof document !== 'undefined') {
     };
 }
 
-
     // module.exports = function (markup) {
     //     if (typeof document === 'undefined') {
     //

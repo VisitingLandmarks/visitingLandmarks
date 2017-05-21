@@ -16,10 +16,9 @@ export const preferenceSetSuccess = builder(PREFERENCE_SET_SUCCESS);
 
 export const setPreferenceThunk = (data) => {
     return (dispatch, getStore) => {
-
         const store = getStore();
 
-        //prevent calls for not logged in users
+        // prevent calls for not logged in users
         if (!store.session.user) {
             return;
         }

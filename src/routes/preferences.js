@@ -2,12 +2,10 @@ import {routes} from '../modules/routes';
 import {postFactory} from '../modules/validation';
 import preferencesSet from '../modules/validation/schema/preferencesSet';
 
-import {restrictLoggedInUser} from '../controller/user';
+import {restrictLoggedInUser} from '../controller/restrict';
 import * as controller from '../controller/preferences';
 
-
 export default (app) => {
-
     app.post(
         routes.preferences,
         restrictLoggedInUser,
@@ -15,11 +13,10 @@ export default (app) => {
         controller.set
     );
 
-//unused
+// unused
 //     app.get(
 //         routes.preferences,
 //         restrictLoggedInUser,
 //         controller.get
 //     );
-
 };

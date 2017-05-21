@@ -10,7 +10,6 @@ const collectionName = 'User';
  * @return UserModel
  */
 export default module.exports = function (mongoDB) {
-
     const extensions = [
         applicationLogic,
         image,
@@ -26,7 +25,7 @@ export default module.exports = function (mongoDB) {
         },
     };
 
-    //allow extensions to extend the schema definition
+    // allow extensions to extend the schema definition
     const extensionsSchemaDef = extensions.map((extension) => {
         return extension && extension(mongoDB, schemaDefinition);
     });
@@ -37,19 +36,18 @@ export default module.exports = function (mongoDB) {
         collection: collectionName,
     });
 
-    //allow extensions to add schema hooks like statics and methods
+    // allow extensions to add schema hooks like statics and methods
     const extensionsWithSchema = extensionsSchemaDef.map((extension) => {
         return extension && extension(userSchema);
     });
 
-    //build model based on scheme
+    // build model based on scheme
     const UserModel = mongoDB.model(collectionName, userSchema);
 
-    //allow extensions to use the build Model, e.g. in static methods
+    // allow extensions to use the build Model, e.g. in static methods
     extensionsWithSchema.forEach((extension) => {
         extension && extension(UserModel);
     });
 
     return UserModel;
-
 };

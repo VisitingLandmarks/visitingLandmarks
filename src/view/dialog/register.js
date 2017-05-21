@@ -7,8 +7,7 @@ import DialogUserPassword from './userPassword';
 import Facebook from './facebook';
 import Google from './google';
 
-import {registerThunk} from '../../redux/action/thunk/register';
-import {registering} from '../../redux/action/thunk/register';
+import {registering, registerThunk} from '../../redux/action/thunk/register';
 import {navigateTo} from '../../redux/action/ui';
 import {failure, inProgress} from '../../redux/reducer/communication';
 
@@ -16,15 +15,11 @@ import {routes} from '../../modules/routes';
 
 class DialogRegister extends React.Component {
 
-    constructor(props) {
-        super(props);
-    }
-
-    render() {
+    render () {
         return (
             <DialogUserPassword
                 {...this.props}
-                open={true}
+                open
                 dialogName={this.props.intl.formatMessage({id: 'dialog.register.title'})}
                 onSubmit={this.props.requestRegister}
             >

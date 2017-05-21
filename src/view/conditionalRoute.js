@@ -12,10 +12,10 @@ const conditionalRoute = (target, check) => {
                     <Redirect to={{
                         pathname: target,
                         state: {from: props.location}, // eslint-disable-line react/prop-types
-                    }}/>
+                    }} />
                 )
             );
-        }}/>
+        }} />
     );
     Condition.propTypes = {
         component: PropTypes.func.isRequired,

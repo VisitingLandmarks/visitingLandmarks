@@ -15,16 +15,15 @@ export const registerFailure = builder(REGISTER_FAILURE);
 export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
 export const registerSuccess = builder(REGISTER_SUCCESS);
 
-
-export function registerThunk(registerData) {
+export function registerThunk (registerData) {
     return function (dispatch) {
         dispatch(register());
         axios.post(routes.user.register, registerData)
             .then((response) => {
-                dispatch(registerSuccess({user : response.data.user}));
+                dispatch(registerSuccess({user: response.data.user}));
             })
 
-            //delay the closing of the dialog to display some positive feedback to the user
+            // delay the closing of the dialog to display some positive feedback to the user
             .then(() => {
                 return new Promise((resolve) => {
                     setTimeout(resolve, 500);

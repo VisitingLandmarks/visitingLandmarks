@@ -1,5 +1,4 @@
-module.exports = function (grunt) {
-
+module.exports = (grunt) => {
     grunt.config('copy', {
         build: {
             files: [

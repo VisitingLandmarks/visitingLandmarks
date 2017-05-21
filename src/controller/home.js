@@ -12,24 +12,21 @@ import {intlSet} from '../redux/action/data';
 
 import {updateIntl} from 'react-intl-redux';
 
-
 /**
  * main controller to handle the home route and render application
  * @param req
  * @param res
  */
 export default (req, res) => {
-
     const store = createStore(reducer, applyMiddleware(thunk));
 
-    //get user object if there is an user
+    // get user object if there is an user
     (req.user && data.findUserById(req.user) || Promise.resolve()).then((user) => {
-
-        if (user) { //set user into session
+        if (user) { // set user into session
             store.dispatch(loginSuccess({user}));
         }
 
-        //load data store
+        // load data store
         Promise.all([
             data.getAllIntl().then((intl) => {
                 store.dispatch(intlSet(intl));
@@ -39,17 +36,16 @@ export default (req, res) => {
                     store.dispatch(updateIntl(userIntl));
                 }),
 
-            //application stuff
+            // application stuff
             data.getAllCategories().then((categories) => store.dispatch(categoriesSet(categories))),
             data.getAllLocations().then((locations) => store.dispatch(locationsSet(locations))),
 
         ])
             .then(() => {
-
-                //server side rendering
+                // server side rendering
                 const {status, url, html} = serverSideView(store, req.url, req.headers['user-agent']);
 
-                //and translate the result to express
+                // and translate the result to express
                 switch (status) {
 
                     case 200: {

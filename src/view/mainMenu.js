@@ -12,7 +12,6 @@ import Popover from 'material-ui/Popover';
 import RaisedButton from 'material-ui/RaisedButton';
 import Toggle from 'material-ui/Toggle';
 
-
 const menuStyle = {
     position: 'fixed',
     top: '3%',
@@ -20,14 +19,12 @@ const menuStyle = {
     zIndex: 50000,
 };
 
-
 /**
  * MainMenu
  */
 class MainMenu extends React.Component {
 
-    constructor(props) {
-
+    constructor (props) {
         super(props);
 
         this.onToggleFollowUser = this.onToggleFollowUser.bind(this);
@@ -35,9 +32,7 @@ class MainMenu extends React.Component {
         this.handleRequestClose = this.handleRequestClose.bind(this);
 
         this.state = {open: false};
-
     }
-
 
     /**
      * handle a user switch in the follow user menu item
@@ -45,11 +40,11 @@ class MainMenu extends React.Component {
      * @param value
      * @returns {*}
      */
-    onToggleFollowUser(event, value) {
+    onToggleFollowUser (event, value) {
         return this.props.onToggleFollowUser(value);
     }
 
-    handleTouchTap(event) {
+    handleTouchTap (event) {
         // This prevents ghost click.
         event.preventDefault();
 
@@ -59,54 +54,48 @@ class MainMenu extends React.Component {
         });
     }
 
-    handleRequestClose() {
+    handleRequestClose () {
         this.setState({
             open: false,
         });
     }
 
-
-    render() {
-
+    render () {
         let menuItems;
         const {formatMessage} = this.props.intl;
 
         if (this.props.loggedIn) {
-
             menuItems = [
-                <MenuItem key="userEmail" primaryText={formatMessage({id: 'menu.profile'})}
-                          onTouchTap={() => {
-                              this.props.onOpenProfileDialog();
-                              this.handleRequestClose();
-                          }}/>,
-                <Divider key="userEmailDivider"/>,
-                <MenuItem key="logout" primaryText={formatMessage({id: 'menu.logout'})}
-                          onTouchTap={() => {
-                              this.props.requestLogout();
-                              this.handleRequestClose();
-                          }}/>,
+                <MenuItem key='userEmail' primaryText={formatMessage({id: 'menu.profile'})}
+                    onTouchTap={() => {
+                        this.props.onOpenProfileDialog();
+                        this.handleRequestClose();
+                    }} />,
+                <Divider key='userEmailDivider' />,
+                <MenuItem key='logout' primaryText={formatMessage({id: 'menu.logout'})}
+                    onTouchTap={() => {
+                        this.props.requestLogout();
+                        this.handleRequestClose();
+                    }} />,
             ];
-
         } else {
-
             menuItems = [
-                <MenuItem key="register" primaryText={formatMessage({id: 'menu.register'})}
-                          onTouchTap={() => {
-                              this.props.onOpenRegisterDialog();
-                              this.handleRequestClose();
-                          }}/>,
-                <MenuItem key="login" primaryText={formatMessage({id: 'menu.login'})}
-                          onTouchTap={() => {
-                              this.props.onOpenLoginDialog();
-                              this.handleRequestClose();
-                          }}/>,
-                <MenuItem key="resetPassword" primaryText={formatMessage({id: 'menu.resetPassword'})}
-                          onTouchTap={() => {
-                              this.props.onOpenResetPasswordDialog();
-                              this.handleRequestClose();
-                          }}/>,
+                <MenuItem key='register' primaryText={formatMessage({id: 'menu.register'})}
+                    onTouchTap={() => {
+                        this.props.onOpenRegisterDialog();
+                        this.handleRequestClose();
+                    }} />,
+                <MenuItem key='login' primaryText={formatMessage({id: 'menu.login'})}
+                    onTouchTap={() => {
+                        this.props.onOpenLoginDialog();
+                        this.handleRequestClose();
+                    }} />,
+                <MenuItem key='resetPassword' primaryText={formatMessage({id: 'menu.resetPassword'})}
+                    onTouchTap={() => {
+                        this.props.onOpenResetPasswordDialog();
+                        this.handleRequestClose();
+                    }} />,
             ];
-
         }
 
         return (
@@ -138,7 +127,6 @@ class MainMenu extends React.Component {
 
             </div>
         );
-
     }
 }
 

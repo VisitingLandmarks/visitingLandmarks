@@ -35,8 +35,7 @@ const webpackAssetTarget = '/static/';
 const webpackAssetTargetAbsolute = webpackLocation + webpackAssetTarget;
 const fsPathAssetTarget = path.resolve(__dirname, `..${webpackAssetTarget}`);
 
-module.exports = function (grunt) {
-
+module.exports = (grunt) => {
     const shared = {
         entry: [
             './src/view/browserSide.js',

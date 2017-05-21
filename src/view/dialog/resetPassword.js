@@ -13,14 +13,9 @@ import {routes} from '../../modules/routes';
 
 class ResetPassword extends React.Component {
 
-    constructor(props) {
-        super(props);
-    }
-
-    render() {
-
-        //@todo: display nicer feedback
-        //@todo: this will prevent the dialog from reopening - all commuication thunks should go into initial state when done.
+    render () {
+        // @todo: display nicer feedback
+        // @todo: this will prevent the dialog from reopening - all commuication thunks should go into initial state when done.
         if (this.props.done) {
             return null;
         }
@@ -28,7 +23,7 @@ class ResetPassword extends React.Component {
         return (
             <DialogUserPassword
                 {...this.props}
-                open={true}
+                open
                 dialogName={this.props.intl.formatMessage({id: 'dialog.resetPassword.title'})}
                 showPasswordLine={false}
                 onSubmit={this.props.requestResetPassword}
@@ -44,7 +39,6 @@ ResetPassword.propTypes = {
     requestResetPassword: PropTypes.func.isRequired,
     intl: intlShape.isRequired,
 };
-
 
 const mapStateToProps = (state) => {
     return {

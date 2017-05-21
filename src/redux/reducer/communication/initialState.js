@@ -8,7 +8,7 @@ export default {
     [registering]: false,
     [loggingIn]: false,
     [loggingOut]: false,
-    changingPassword : false, //@todo: implement
-    [resettingPassword] : false,
-    [visittingLocation] : {},
+    changingPassword: false, // @todo: implement
+    [resettingPassword]: false,
+    [visittingLocation]: {},
 };

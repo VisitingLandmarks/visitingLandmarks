@@ -1,7 +1,6 @@
 import {setUserPreference} from '../data';
 
 export const set = (req, res, next) => {
-
     setUserPreference(req.user, req.body)
         .then(() => {
             res.json(req.body);
@@ -10,10 +9,9 @@ export const set = (req, res, next) => {
             req.log.error({err, changed: req.body}, 'Error in preference set');
             next(err);
         });
-
 };
 
-//Unused
+// Unused
 // export const get = (req, res, next) => {
 //
 //     const key = req.params.key;

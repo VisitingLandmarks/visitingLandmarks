@@ -15,15 +15,11 @@ import {routes} from '../../modules/routes';
 
 class DialogLogin extends React.Component {
 
-    constructor(props) {
-        super(props);
-    }
-
-    render() {
+    render () {
         return (
             <DialogUserPassword
                 {...this.props}
-                open={true}
+                open
                 dialogName={this.props.intl.formatMessage({id: 'dialog.login.title'})}
                 onSubmit={this.props.requestLogin}
             >

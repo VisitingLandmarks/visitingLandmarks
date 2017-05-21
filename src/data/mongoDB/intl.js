@@ -6,7 +6,6 @@ const collectionName = 'Intl';
  * @return UserModel
  */
 export default module.exports = function (mongoDB) {
-
     const intlSchema = new mongoDB.Schema({
         locale: {
             type: String,
@@ -19,7 +18,6 @@ export default module.exports = function (mongoDB) {
             timestamps: true,
             collection: collectionName,
         });
-
 
     /**
      * get all locations
@@ -36,10 +34,8 @@ export default module.exports = function (mongoDB) {
             });
     };
 
-
-    //build model based on scheme
+    // build model based on scheme
     const IntlModel = mongoDB.model(collectionName, intlSchema);
 
     return IntlModel;
-
 };

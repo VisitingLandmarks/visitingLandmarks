@@ -47,7 +47,6 @@ export const failure = 'failure';
 export const success = 'success';
 
 export default (oldState = initialState, action) => {
-
     switch (action.type) {
 
         case REGISTER: {
@@ -71,7 +70,6 @@ export default (oldState = initialState, action) => {
             };
         }
 
-
         case LOGIN: {
             return {
                 ...oldState,
@@ -90,7 +88,6 @@ export default (oldState = initialState, action) => {
                 [loggingIn]: {[success]: true},
             };
         }
-
 
         case LOGOUT: {
             return {
@@ -111,7 +108,6 @@ export default (oldState = initialState, action) => {
             };
         }
 
-
         case PASSWORD_RESET: {
             return {
                 ...oldState,
@@ -130,7 +126,6 @@ export default (oldState = initialState, action) => {
                 [resettingPassword]: {[success]: true},
             };
         }
-
 
         case PASSWORD_CHANGE: {
             return {
@@ -162,17 +157,14 @@ export default (oldState = initialState, action) => {
         }
 
         case LOCATIONS_VISIT_SUCCESS: {
-
             return {
                 ...oldState,
                 [visittingLocation]: omit(oldState[visittingLocation], Object.keys(action.data)),
             };
         }
 
-
         default: {
             return oldState;
         }
     }
-
 };

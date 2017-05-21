@@ -14,9 +14,7 @@ export const passwordResetFailure = builder(PASSWORD_RESET_FAILURE);
 export const PASSWORD_RESET_SUCCESS = 'PASSWORD_RESET_SUCCESS';
 export const passwordResetSuccess = builder(PASSWORD_RESET_SUCCESS);
 
-
-export function resetPasswordThunk(data) {
-
+export function resetPasswordThunk (data) {
     return function (dispatch) {
         dispatch(passwordReset());
         axios.post(routes.user.passwordResetRequest, data)
@@ -24,7 +22,7 @@ export function resetPasswordThunk(data) {
                 dispatch(passwordResetSuccess(response));
             })
 
-            //delay the closing of the dialog to display some positive feedback to the user
+            // delay the closing of the dialog to display some positive feedback to the user
             .then(() => {
                 return new Promise((resolve) => {
                     setTimeout(resolve, 500);
@@ -32,7 +30,7 @@ export function resetPasswordThunk(data) {
             })
 
             .then(() => {
-                //@todo: dialog->check your emails
+                // @todo: dialog->check your emails
             })
 
             .catch((response) => dispatch(passwordResetFailure(response)));

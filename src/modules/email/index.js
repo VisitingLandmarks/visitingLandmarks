@@ -6,16 +6,15 @@ import path from 'path';
 // create reusable transporter object using the default SMTP transport
 const transporter = nodemailer.createTransport(config.email.smtpTransport);
 
-//setting up email templates
+// setting up email templates
 const EmailTemplate = require('email-templates').EmailTemplate;
 
-//@todo: read email templates from fs
+// @todo: read email templates from fs
 const emailTemplates = [
     'userEmailConfirmed',
     'userRegistered',
     'userResetPassword',
 ];
-
 
 /**
  * preparing a single email template
@@ -25,13 +24,11 @@ const prepareEmailTemplate = (templateName) => {
     return transporter.templateSender(new EmailTemplate(path.join(__dirname, 'template', templateName)), config.email.sendOptions);
 };
 
-
-//build object with template name as key and the prepared setup templates for nodemailer
+// build object with template name as key and the prepared setup templates for nodemailer
 const templates = emailTemplates.reduce((obj, templateName) => {
     obj[templateName] = prepareEmailTemplate(templateName);
     return obj;
 }, {});
-
 
 /**
  * extend a template with global settings like domain
@@ -44,7 +41,6 @@ const extendTemplateData = (obj) => {
         ...obj,
     };
 };
-
 
 /**
  * extend the nodemailer promise with logging
@@ -63,7 +59,6 @@ const addLogging = (promise, logger) => {
         });
 };
 
-
 /**
  * send email when a user confirmed his emailadress
  * @param user
@@ -75,7 +70,6 @@ export const sendEmailConfirmed = (user) => {
     }, extendTemplateData({user})), logger.child({toEmail: user.email, template: 'userEmailConfirmed'}));
 };
 
-
 /**
  * send a email when a user registered his emailadress
  * @param user
@@ -85,7 +79,6 @@ export const sendEmailUserRegistered = (user) => {
         to: user.email,
     }, extendTemplateData({user})), logger.child({toEmail: user.email, template: 'userRegistered'}));
 };
-
 
 /**
  * send a email when a user registered his emailadress

@@ -1,31 +1,31 @@
 import config from '../../../config';
 import logger from '../logger';
+import promiseToNodeback from '../promiseToNodeback';
 
 import localStrategy from './local';
 import facebookStrategy from './facebook';
 import googleStrategy from './google';
 
-import {User} from '../../data';
+import {user} from '../../data';
 import {registerProvider} from '../../controller/user';
 
 module.exports = (app, io) => {
-
     const passport = require('passport');
     const passportSocketIo = require('passport.socketio');
     const session = require('express-session');
     const MongoStore = require('connect-mongo')(session);
 
-    //this is bypassing mongoose
+    // this is bypassing mongoose
     const store = new MongoStore({url: config.mongoDB.connectURI});
 
-    const secret = 'acf8u5HDhVWBmd8p'; //@todo: config
+    const secret = 'acf8u5HDhVWBmd8p'; // @todo: config
     const cookieName = 'session';
 
-    //serializing and deserializing a user to a more compact format
-    passport.serializeUser(User.serializeUser);
-    passport.deserializeUser(User.deserializeUser);
+    // serializing and deserializing a user to a more compact format
+    passport.serializeUser(promiseToNodeback(user.serializeUser));
+    passport.deserializeUser(promiseToNodeback(user.deserializeUser));
 
-    //setting up session and passport. ORDER IS IMPORTANT for the next app.use commands and the strategy
+    // setting up session and passport. ORDER IS IMPORTANT for the next app.use commands and the strategy
     app.use(session({
         key: cookieName,
         resave: false,
@@ -38,8 +38,8 @@ module.exports = (app, io) => {
     app.use(passport.initialize());
     app.use(passport.session());
 
-    //setup strategies
-    localStrategy(app, passport, User.authenticate);
+    // setup strategies
+    localStrategy(app, passport, promiseToNodeback(user.authenticate));
     facebookStrategy(app, passport, registerProvider);
     googleStrategy(app, passport, registerProvider);
 
@@ -49,7 +49,6 @@ module.exports = (app, io) => {
     };
 
     const onAuthorizeFail = (data, message, error, accept) => {
-
         // this error will be sent to the user as a special error-package
         // see: http://socket.io/docs/client-api/#socket > error-object
         if (error) {
@@ -58,7 +57,7 @@ module.exports = (app, io) => {
         }
     };
 
-    //making passport available for socket.io connections
+    // making passport available for socket.io connections
     io.use(passportSocketIo.authorize({
         key: cookieName,
         passport,
@@ -67,7 +66,6 @@ module.exports = (app, io) => {
         success: onAuthorizeSuccess,
         fail: onAuthorizeFail,
     }));
-
 
     return passport;
 };

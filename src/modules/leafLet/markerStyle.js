@@ -1,4 +1,4 @@
-/*global L */
+/* global L */
 
 /**
  * definition of markers used in the application

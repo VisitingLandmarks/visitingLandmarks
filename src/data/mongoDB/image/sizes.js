@@ -3,7 +3,7 @@ export const normal = 'normal';
 export const large = 'large';
 export const defaultSize = normal;
 
-export default  {
+export default {
     [small]: {
         height: 50,
         width: 50,

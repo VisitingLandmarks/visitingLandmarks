@@ -4,7 +4,7 @@ import expect from 'unexpected';
 import reducer, {inProgress, failure, success} from '../../../../../src/redux/reducer/communication';
 import initialState from '../../../../../src/redux/reducer/communication/initialState';
 
-//register
+// register
 import {
     REGISTER,
     register,
@@ -15,7 +15,7 @@ import {
     registering,
 } from '../../../../../src/redux/action/thunk/register';
 
-//login
+// login
 import {
     LOGIN,
     login,
@@ -26,7 +26,7 @@ import {
     loggingIn,
 } from '../../../../../src/redux/action/thunk/login';
 
-//logout
+// logout
 import {
     LOGOUT,
     logout,
@@ -37,7 +37,7 @@ import {
     loggingOut,
 } from '../../../../../src/redux/action/thunk/logout';
 
-//change Password
+// change Password
 import {
     PASSWORD_CHANGE,
     passwordChange,
@@ -48,12 +48,9 @@ import {
     changingPassword,
 } from '../../../../../src/redux/action/thunk/changePassword';
 
-
 describe('communication reducer', () => {
-
     const buildSimpleTest = (thunkPart, action, expectedState, verb) => {
         it(thunkPart, () => {
-
             const oldState = deepFreeze({
                 ...initialState,
             });
@@ -90,5 +87,4 @@ describe('communication reducer', () => {
         buildSimpleTest(PASSWORD_CHANGE_FAILURE, passwordChangeFailure, failure, changingPassword);
         buildSimpleTest(PASSWORD_CHANGE_SUCCESS, passwordChangeSuccess, success, changingPassword);
     });
-
 });

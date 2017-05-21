@@ -1,6 +1,6 @@
 import builder from './builder';
 
-//@todo: like reducer -> control
+// @todo: like reducer -> control
 export const NAVIGATE_TO = 'NAVIGATE_TO';
 export const navigateTo = (value) => {
     return {

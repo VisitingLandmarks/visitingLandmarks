@@ -1,5 +1,4 @@
 module.exports = (app) => {
-
     /**
      * error handling during request
      * display 500 and error id to the user and log error internally
@@ -9,5 +8,4 @@ module.exports = (app) => {
         req.log.error(err);
         res.status(500).send(req.reqId);
     });
-
 };

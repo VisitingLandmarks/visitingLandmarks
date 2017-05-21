@@ -5,12 +5,10 @@
  * @returns {*}
  */
 export default module.exports = (categoryItems, visitedLocations) => {
-
-    return categoryItems.reduce((count, id)=> {
+    return categoryItems.reduce((count, id) => {
         if (visitedLocations[id]) {
             count++;
         }
         return count;
     }, 0);
-
 };

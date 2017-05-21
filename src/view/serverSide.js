@@ -9,15 +9,13 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
 import Providers from './providers';
 
-
 import {addLocaleData} from 'react-intl';
 import en from 'react-intl/locale-data/en';
 import de from 'react-intl/locale-data/de';
 addLocaleData([...en, ...de]);
 
 export default (store, url, userAgent) => {
-
-    //context is a referenced object, allowing the router to change the url during SSR
+    // context is a referenced object, allowing the router to change the url during SSR
     const context = {};
 
     // Render the component to a string
@@ -41,15 +39,15 @@ export default (store, url, userAgent) => {
     // Grab the initial state from our Redux store
     const initialState = store.getState();
 
-    //and now render the page and return a 200 code
+    // and now render the page and return a 200 code
     return {
         status: 200,
         html: renderFullPage(html, initialState),
     };
 };
 
-//@todo: move to template?
-function renderFullPage(html, initialState) {
+// @todo: move to template?
+function renderFullPage (html, initialState) {
     return `
     <!doctype html>
     <html>

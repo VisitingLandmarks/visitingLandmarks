@@ -1,10 +1,9 @@
-import logger from '../logger/index';
+import logger from '../logger';
 import io from 'socket.io-client';
-import {routes} from '../routes';
+import { routes } from '../routes';
 
-export const LOCATION_VISIT = 'LOCATION_VISIT';
-export const LOG = 'LOG';
-
+// event names
+import * as events from './events';
 
 /**
  * establish socket.io connection for loggedIn Users
@@ -12,40 +11,47 @@ export const LOG = 'LOG';
  * @param store
  */
 export default (store) => {
-
     let currentState = false;
     window.socket = null;
 
-
-    const changeState = () => {
+    /**
+     * checks and changes the connection state if needed
+     */
+    const updateState = () => {
         if (!!store.getState().session.user !== currentState) {
-            changer[!currentState]();
+            toggleState();
         }
     };
 
     /**
-     * handles two methods to switch between true(connected) and false(disconnected)
-     * @type {{true: (function()), false: (function())}}
+     * well, the toggle toggles the connection state
      */
-    const changer = {
-        true: () => {
-            currentState = true;
-            window.socket = io.connect(routes.root);
-
-            //bind client side events
-            window.socket.on('storeAction', store.dispatch);
-        },
-        false: () => {
+    const toggleState = () => {
+        if (currentState) { // disconnect, if we are connected
             currentState = false;
             window.socket.disconnect();
-        },
+            return;
+        }
+
+        currentState = true;
+        const socket = window.socket = io.connect(routes.root);
+
+        // bind client side events
+        addEventHandler(socket); // @todo: do we need an unbinding, when we disconnect?
     };
 
-    store.subscribe(changeState);
-    changeState();
+    /**
+     * CLIENT SIDE
+     * SERVER -> CLIENT
+     */
+    const addEventHandler = (socket) => {
+        socket.on(events.storeAction, store.dispatch);
+    };
 
+    // listen to store changes and get initial state
+    store.subscribe(updateState);
+    updateState();
 };
-
 
 /**
  * we only have a socket connection when the user is locked in
@@ -53,25 +59,32 @@ export default (store) => {
  * @param func
  */
 const onlyWhenSocketAvailable = (func) => {
-    return function () {
+    return (...args) => {
         if (!window.socket) {
-            logger.debug(arguments, 'socket connection not available');
+            logger.debug({method: args[0]}, 'socket connection not available');
             return;
         }
 
-        return func.apply(this, arguments);
+        return func(...args);
     };
 };
 
+/**
+ * CLIENT SIDE
+ * CLIENT -> SERVER
+ */
+
+/**
+ * send a client log event to the server
+ */
+export const logRemote = onlyWhenSocketAvailable((log) => {
+    window.socket.emit(events.log, log);
+});
 
 /**
  * claim that we visited a location
  * @param locationId
  */
 export const onVisitLocation = onlyWhenSocketAvailable((locationId) => {
-    window.socket.emit(LOCATION_VISIT, locationId);
-});
-
-export const logRemote = onlyWhenSocketAvailable((data) => {
-    window.socket.emit(LOG, data);
+    window.socket.emit(events.locationVisit, locationId);
 });

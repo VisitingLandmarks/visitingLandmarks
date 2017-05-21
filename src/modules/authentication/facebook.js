@@ -4,8 +4,7 @@ export const strategyName = 'facebook';
 const FacebookStrategy = require('passport-facebook').Strategy;
 const requiredFields = ['id', 'email', 'picture.type(large)'];
 
-import {routes} from  '../../modules/routes';
-
+import {routes} from '../../modules/routes';
 
 /**
  *setup passport to use strategy
@@ -14,7 +13,6 @@ import {routes} from  '../../modules/routes';
  * @param authenticateUser
  */
 export default (app, passport, registerProvider) => {
-
     if (!enabled()) {
         return;
     }
@@ -26,7 +24,6 @@ export default (app, passport, registerProvider) => {
         passReqToCallback: true,
     },
         function (req, accessToken, refreshToken, profile, cb) {
-
             registerProvider(
                 req,
                 {facebookId: profile.id},
@@ -44,7 +41,6 @@ export default (app, passport, registerProvider) => {
         }
     ));
 };
-
 
 export const enabled = () => {
     return !!(

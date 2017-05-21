@@ -16,7 +16,7 @@ export const loginSuccess = builder(LOGIN_SUCCESS);
 
 import {navigateTo} from '../../action/ui';
 
-export function loginThunk(loginData) {
+export function loginThunk (loginData) {
     return (dispatch) => {
         dispatch(login());
         axios.post(routes.user.login, loginData)
@@ -24,7 +24,7 @@ export function loginThunk(loginData) {
                 dispatch(loginSuccess({user: response.data.user}));
             })
 
-            //delay the closing of the dialog to display some positive feedback to the user
+            // delay the closing of the dialog to display some positive feedback to the user
             .then(() => {
                 return new Promise((resolve) => {
                     setTimeout(resolve, 500);

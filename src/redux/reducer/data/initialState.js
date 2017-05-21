@@ -1,5 +1,5 @@
 export default {
     locations: {},
     categories: {},
-    intl : {},
+    intl: {},
 };

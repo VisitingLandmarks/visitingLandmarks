@@ -1,7 +1,6 @@
 const degToRad = Math.PI / 180; // Degree-to-Radian conversion
 const radToDeg = 180 / Math.PI; // Radian-to-Degree conversion
 
-
 /**
  * translate geometrical device orieantation into a magnetical north orientation
  * simply, a direction pointer
@@ -10,7 +9,6 @@ const radToDeg = 180 / Math.PI; // Radian-to-Degree conversion
  * @param gamma
  */
 export default module.exports = (alpha, beta, gamma) => {
-
     const _x = beta ? beta * degToRad : 0; // beta value
     const _y = gamma ? gamma * degToRad : 0; // gamma value
     const _z = alpha ? alpha * degToRad : 0; // alpha value
@@ -37,5 +35,4 @@ export default module.exports = (alpha, beta, gamma) => {
 
     // Compass Heading (in degrees)
     return compassHeading * radToDeg;
-
 };

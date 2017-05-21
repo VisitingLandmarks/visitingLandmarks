@@ -14,10 +14,8 @@ import {
     locationsSet,
 } from '../../../../../src/redux/action/locations';
 
-
 describe('data reducer', () => {
     it(CATEGORIES_SET, () => {
-
         const oldState = deepFreeze({
             ...initialState,
         });
@@ -33,7 +31,6 @@ describe('data reducer', () => {
     });
 
     it(LOCATIONS_SET, () => {
-
         const oldState = deepFreeze({
             ...initialState,
         });

@@ -3,7 +3,7 @@ import config from '../../../config';
 export const strategyName = 'google';
 const GoogleStrategy = require('passport-google-oauth2').Strategy;
 
-import {routes} from  '../../modules/routes';
+import {routes} from '../../modules/routes';
 
 /**
  *setup passport to use strategy
@@ -12,7 +12,6 @@ import {routes} from  '../../modules/routes';
  * @param authenticateUser
  */
 export default (app, passport, registerProvider) => {
-
     if (!enabled()) {
         return;
     }

@@ -6,15 +6,14 @@ import config from '../../../config';
  * @param config
  * @returns {*}
  */
-let getMongoDB = (config) => { //@todo: check reconnecting and inially down connection is working fine
-
+let getMongoDB = (config) => { // @todo: check reconnecting and inially down connection is working fine
     // mongoose library
     const mongoose = require('mongoose');
 
-    //use more powerful native promises
+    // use more powerful native promises
     mongoose.Promise = global.Promise;
 
-    //mongoose way of enabling debugging
+    // mongoose way of enabling debugging
     if (config.debug) {
         mongoose.set('debug', true);
     }
@@ -33,12 +32,11 @@ let getMongoDB = (config) => { //@todo: check reconnecting and inially down conn
 
     mongoose.connect(config.connectURI, {server: {reconnectTries: Number.MAX_VALUE}});
 
-    //rewrite the getter to just return the instance
+    // rewrite the getter to just return the instance
     getMongoDB = () => mongoose;
 
     return mongoose;
 };
-
 
 const models = {};
 

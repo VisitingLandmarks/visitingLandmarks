@@ -11,12 +11,7 @@ import {routes} from '../../modules/routes';
 
 class DialogConversionLocationVisit extends React.Component {
 
-    constructor(props) {
-        super(props);
-    }
-
-    render() {
-
+    render () {
         if (!this.props.location) {
             return null;
         }
@@ -31,12 +26,12 @@ class DialogConversionLocationVisit extends React.Component {
             />,
             <RaisedButton
                 label={formatMessage({id: 'menu.register'})}
-                primary={true}
+                primary
                 onTouchTap={this.props.onOpenRegister}
             />,
             <RaisedButton
                 label={formatMessage({id: 'menu.login'})}
-                primary={true}
+                primary
                 onTouchTap={this.props.onOpenLogin}
             />,
 
@@ -45,12 +40,12 @@ class DialogConversionLocationVisit extends React.Component {
         return (<Dialog
             title={formatMessage({id: 'dialog.conversionLocationVisit.title'})}
             actions={actions}
-            open={true}
+            open
         >
             <div>
-                <p><FormattedMessage id="dialog.conversionLocationVisit.intro" values={this.props.location}/></p>
+                <p><FormattedMessage id='dialog.conversionLocationVisit.intro' values={this.props.location} /></p>
                 <p>{this.props.location.extent}</p>
-                <p><FormattedMessage id="dialog.conversionLocationVisit.callToAction"/></p>
+                <p><FormattedMessage id='dialog.conversionLocationVisit.callToAction' /></p>
             </div>
         </Dialog>);
     }

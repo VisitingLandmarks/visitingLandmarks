@@ -16,7 +16,7 @@ export const passwordChangeSuccess = builder(PASSWORD_CHANGE_SUCCESS);
 
 import {navigateTo} from '../../action/ui';
 
-export function changePasswordThunk(data) {
+export function changePasswordThunk (data) {
     return (dispatch) => {
         dispatch(passwordChange());
         axios.post(routes.user.passwordChange, data)
@@ -24,7 +24,7 @@ export function changePasswordThunk(data) {
                 dispatch(passwordChangeSuccess(response));
             })
 
-            //delay the closing of the dialog to display some positive feedback to the user
+            // delay the closing of the dialog to display some positive feedback to the user
             .then(() => {
                 return new Promise((resolve) => {
                     setTimeout(resolve, 500);

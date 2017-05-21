@@ -1,7 +1,5 @@
-//@todo: move to socket.io folder
-
 import passportSocketIo from 'passport.socketio';
-import handler from './handler';
+import eventHandler from './server';
 let getConnectionByUserId;
 
 /**
@@ -9,9 +7,9 @@ let getConnectionByUserId;
  * @param userId
  * @param payload
  */
-export const sendActionToAllConnectionOfAUser = (userId, payload) => {
+export const sendToAllConnectionOfAUser = (userId, event, payload) => {
     getConnectionByUserId(userId).forEach(socket => {
-        socket.emit('storeAction', payload);
+        socket.emit(event, payload);
     });
 };
 
@@ -19,13 +17,13 @@ export default (server) => {
     const ioApp = require('socket.io')(server);
     getConnectionByUserId = (userId) => {
         userId = userId && userId.toString();
-        return passportSocketIo.filterSocketsByUser(ioApp, (user)=> {
+        return passportSocketIo.filterSocketsByUser(ioApp, (user) => {
             return userId && user._id && userId === user._id.toString();
         });
     };
-    
-    //handle socket.io requests of the user
-    ioApp.on('connection', handler(sendActionToAllConnectionOfAUser));
+
+    // handle socket.io requests of the user
+    ioApp.on('connection', eventHandler);
 
     return ioApp;
 };
@@ -34,10 +32,9 @@ export const disconnectAllSocketsOfUser = (userId) => {
     const sockets = getConnectionByUserId(userId);
     const numberOfSockets = sockets.length;
 
-    sockets.forEach((socket)=> {
+    sockets.forEach((socket) => {
         socket.disconnect();
     });
-    
+
     return numberOfSockets;
 };
-

@@ -1,7 +1,7 @@
 import crypto from 'crypto';
 import config from '../../config';
 import logger from './logger';
-import generateRandomString from './generateRandomString';
+import randomHex, {string as randomString} from './random';
 import {Buffer} from 'buffer';
 
 /**
@@ -18,24 +18,22 @@ export const verify = (password, passwordHash, passwordSalt) => {
     });
 };
 
-
 /**
  * generate a new hash
  * @param password
  * @param passwordSalt - the salt stored with the user
  * @returns {Promise}
  */
-export const generate = (password = generateRandomString(), passwordSalt = generateRandomString()) => {
-
-    //ensure password is a string, otherwise the crypto will get crazy if the password is a pure number
+export const generate = (password = randomString(), passwordSalt = randomHex()) => {
+    // ensure password is a string, otherwise the crypto will get crazy if the password is a pure number
     password = password.toString();
     passwordSalt = passwordSalt.toString();
 
-    //combine application (config) and password salt (database)
+    // combine application (config) and password salt (database)
     const salt = config.applicationSalt + passwordSalt;
 
     return new Promise((resolve, reject) => {
-        crypto.pbkdf2(password, Buffer.from(salt, 'binary'), 100000, 512, 'sha512', (err, hash) => {
+        crypto.pbkdf2(password, Buffer.from(salt, 'hex'), 100000, 512, 'sha512', (err, hash) => {
             if (err) {
                 logger.error('error during generation of Hash');
                 return reject(err);
@@ -46,5 +44,4 @@ export const generate = (password = generateRandomString(), passwordSalt = gener
             });
         });
     });
-
 };
