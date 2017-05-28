@@ -1,14 +1,12 @@
 import * as data from '../data';
-import serverSideView from '../view/screen/admin/serverSide';
+import serverSideView from '../view/entry/admin/serverSide';
 
-import {createStore, applyMiddleware} from 'redux';
-import thunk from 'redux-thunk';
-import reducer from '../redux/reducer';
+import { loginSuccess } from '../redux/action/thunk/login';
+import { intlSet } from '../redux/action/data';
 
-import {loginSuccess} from '../redux/action/thunk/login';
-import {intlSet} from '../redux/action/data';
+import { updateIntl } from 'react-intl-redux';
 
-import {updateIntl} from 'react-intl-redux';
+import react from './react';
 
 /**
  * main controller to handle the home route and render application
@@ -16,52 +14,29 @@ import {updateIntl} from 'react-intl-redux';
  * @param res
  */
 export default (req, res) => {
-    const store = createStore(reducer, applyMiddleware(thunk));
+    const actions = [];
 
     // get user object if there is a user
     (req.user && data.findUserById(req.user) || Promise.resolve()).then((user) => {
         if (user) { // set user into session
-            store.dispatch(loginSuccess({user}));
+            actions.push(loginSuccess({user}));
         }
 
         // load data store
         Promise.all([
             data.getAllIntl().then((intl) => {
-                store.dispatch(intlSet(intl));
+                actions.push(intlSet(intl));
                 return data.getFlatIntlByLocale(user && user.preferences.locale || req.locale);
             })
-                .then((userIntl) => {
-                    store.dispatch(updateIntl(userIntl));
-                }),
-
+                .then((userIntl) => actions.push(updateIntl(userIntl))),
         ])
-            .then(() => {
-                // server side rendering
-                const {status, url, html} = serverSideView(store, req.url, req.headers['user-agent']);
-
-                // and translate the result to express
-                switch (status) {
-
-                    case 200: {
-                        res.send(html);
-                        return;
-                    }
-
-                    case 301:
-                    case 302: {
-                        res.redirect(status, url);
-                        return;
-                    }
-
-                    default: {
-                        throw new Error('unimplemented status code in server side rendering');
-                    }
-                }
-            })
-            .catch((err) => {
-                req.log.error({err}, 'Error in send admin app');
-                throw err;
-            });
+            .then(() => react(req, res, actions, serverSideView));
     });
 };
 
+export const getData = (req, res) => {
+    data.Admin.getAll(req.params.model)
+        .then((data) => {
+            res.json(data);
+        });
+};

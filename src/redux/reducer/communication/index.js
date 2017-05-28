@@ -39,6 +39,12 @@ import {
     visittingLocation,
 } from '../../action/thunk/visitLocation';
 
+import {
+    ADMIN_DATA_GET,
+    ADMIN_DATA_GET_SUCCESS,
+    gettingAdminData,
+} from '../../action/thunk/getAdminData';
+
 import initialState from './initialState';
 import omit from 'lodash/omit';
 
@@ -160,6 +166,23 @@ export default (oldState = initialState, action) => {
             return {
                 ...oldState,
                 [visittingLocation]: omit(oldState[visittingLocation], Object.keys(action.data)),
+            };
+        }
+
+        case ADMIN_DATA_GET: {
+            return {
+                ...oldState,
+                [gettingAdminData]: {
+                    ...oldState[gettingAdminData],
+                    [action.modelName]: true,
+                },
+            };
+        }
+
+        case LOCATIONS_VISIT_SUCCESS: {
+            return {
+                ...oldState,
+                [gettingAdminData]: omit(oldState[gettingAdminData], action.modelName),
             };
         }
 

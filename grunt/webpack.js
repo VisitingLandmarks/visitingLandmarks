@@ -38,8 +38,8 @@ const fsPathAssetTarget = path.resolve(__dirname, `..${webpackAssetTarget}`);
 module.exports = (grunt) => {
     const shared = {
         entry: {
-            home: ['./src/view/screen/home/browserSide.js', './src/style/home.scss'],
-            admin: ['./src/view/screen/admin/browserSide.js', './src/style/admin.scss'],
+            home: ['./src/view/entry/home/browserSide.js', './src/style/home.scss'],
+            admin: ['./src/view/entry/admin/browserSide.js', './src/style/admin.scss'],
         },
         resolve: {
             // These shims are needed for bunyan

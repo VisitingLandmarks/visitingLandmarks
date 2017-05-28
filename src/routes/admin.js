@@ -1,4 +1,4 @@
-import controller from '../controller/admin';
+import controller, {getData} from '../controller/admin';
 import { restrictAdminUser } from '../controller/restrict';
 
 import { routes } from '../modules/routes';
@@ -12,4 +12,10 @@ export default (app) => {
     ],
         restrictAdminUser,
         controller);
+
+    app.get(
+      routes.admin.data,
+        restrictAdminUser,
+        getData
+    );
 };

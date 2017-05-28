@@ -20,8 +20,8 @@ const Providers = (props) => {
 };
 
 Providers.propTypes = {
-    Router: PropTypes.element.isRequired,
-    RouteDefinition: PropTypes.element.isRequired,
+    Router: PropTypes.func.isRequired,
+    RouteDefinition: PropTypes.func.isRequired,
     store: PropTypes.object.isRequired,
     muiTheme: PropTypes.object.isRequired,
     routerProps: PropTypes.object.isRequired,

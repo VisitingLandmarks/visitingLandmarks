@@ -16,6 +16,7 @@ export const routes = {
     profile: '/profile',
     admin: {
         entry: '/admin',
+        data: '/admin/data/:model',
     },
     auth: {
         facebook: {

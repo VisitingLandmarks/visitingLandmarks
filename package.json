@@ -20,8 +20,8 @@
     "url": "https://github.com/VisitingLandmarks/visitingLandmarks/issues"
   },
   "engines": {
-    "node": "7.5.x",
-    "npm": "4.1.x"
+    "node": "7.10.x",
+    "npm": "4.2.x"
   },
   "homepage": "https://github.com/VisitingLandmarks/visitingLandmarks#readme",
   "dependencies": {
