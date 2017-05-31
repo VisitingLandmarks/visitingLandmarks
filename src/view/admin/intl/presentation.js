@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import flattenObject from '../../../modules/flattenObject';
 import { FormattedMessage } from 'react-intl';
+import omit from 'lodash/omit';
 
 import {
     Table,
@@ -12,23 +13,26 @@ import {
     TableRow,
     TableRowColumn,
 } from 'material-ui/Table';
+import TextField from 'material-ui/TextField';
 
 const onlyUnique = (value, index, self) => self.indexOf(value) === index;
 
+const columnIndex = 'locale';
+const dontShow = ['locale', '__v', '_id', 'updatedAt', 'createdAt'];
+
 const AdminIntl = (props) => {
-    debugger;
-    const languages = Object.keys(props.data);
+    const languages = props.data.map((data) => data[columnIndex]);
 
     const head =
-        <TableHeader>
+        <TableHeader displaySelectAll={false}>
             <TableRow>
                 <TableHeaderColumn><FormattedMessage id='admin.intl.key' /></TableHeaderColumn>
                 {languages.map((lang) => <TableHeaderColumn key={lang}>{lang}</TableHeaderColumn>)}
             </TableRow>
         </TableHeader>;
 
-    const flatByLanguage = languages.reduce((obj, lang) => {
-        obj[lang] = flattenObject(props.data[lang]);
+    const flatByLanguage = languages.reduce((obj, lang, idx) => {
+        obj[lang] = omit(flattenObject(props.data[idx]), dontShow);
         return obj;
     }, {});
 
@@ -38,18 +42,23 @@ const AdminIntl = (props) => {
     }, []).filter(onlyUnique);
 
     const rows = allKeys.map((key) =>
-        <TableRow key={key}>
+        <TableRow key={key} selectable={false}>
             <TableRowColumn>{key}</TableRowColumn>
             {languages.map((lang) =>
                 <TableRowColumn key={lang}>
-                    {flatByLanguage[lang][key]}
+                    <TextField
+                        defaultValue={flatByLanguage[lang][key]} onBlur={function (...args) {
+                            debugger;
+                            console.log(args);
+                        }}
+                    />
                 </TableRowColumn>)}
         </TableRow>);
 
     return (
-        <Table selectable={false}>
+        <Table>
             {head}
-            <TableBody stripedRows>
+            <TableBody stripedRows displayRowCheckbox={false}>
                 {rows}
             </TableBody>
         </Table>
@@ -59,5 +68,4 @@ const AdminIntl = (props) => {
 AdminIntl.propTypes = {
     data: PropTypes.object,
 };
-
 export default AdminIntl;

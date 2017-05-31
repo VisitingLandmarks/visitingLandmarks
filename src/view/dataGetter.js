@@ -17,7 +17,6 @@ export default class DataGetter extends React.Component {
     }
 
     render () {
-        debugger;
         // if the data is already there, we can render the wrapped component
         return this.props.data !== undefined && this.props.children || null;
     }
