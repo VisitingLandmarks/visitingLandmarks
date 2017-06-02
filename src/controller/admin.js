@@ -40,3 +40,11 @@ export const getData = (req, res) => {
             res.json(data);
         });
 };
+
+export const setData = (req, res) => {
+    data.Admin.set(req.params.model, req.body.locale, req.body.key, req.body.value)
+        .then((data) => {
+            res.json(data);
+        });
+};
+

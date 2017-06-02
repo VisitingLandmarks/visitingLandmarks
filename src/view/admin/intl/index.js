@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import Presentation from './presentation';
 import DataGetter from '../../dataGetter';
 
-import getAdminIntlThunk from '../../../redux/action/thunk/getAdminData';
+import getAdminDataThunk from '../../../redux/action/thunk/getAdminData';
 
 class AdminIntl extends React.Component {
 
@@ -21,7 +21,7 @@ class AdminIntl extends React.Component {
 }
 
 AdminIntl.propTypes = {
-    data: PropTypes.object,
+    data: PropTypes.arrayOf(PropTypes.object),
     state: PropTypes.any,
 
     getData: PropTypes.func.isRequired,
@@ -37,7 +37,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getData: () => dispatch(getAdminIntlThunk('intl')),
+        getData: () => dispatch(getAdminDataThunk('intl')),
     };
 };
 

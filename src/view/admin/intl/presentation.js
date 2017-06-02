@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import flattenObject from '../../../modules/flattenObject';
 import { FormattedMessage } from 'react-intl';
@@ -13,7 +14,10 @@ import {
     TableRow,
     TableRowColumn,
 } from 'material-ui/Table';
-import TextField from 'material-ui/TextField';
+import { TextField } from 'redux-form-material-ui';
+import { Field, reduxForm } from 'redux-form';
+
+import setAdminDataThunk from '../../../redux/action/thunk/setAdminData';
 
 const onlyUnique = (value, index, self) => self.indexOf(value) === index;
 
@@ -21,36 +25,27 @@ const columnIndex = 'locale';
 const dontShow = ['locale', '__v', '_id', 'updatedAt', 'createdAt'];
 
 const AdminIntl = (props) => {
-    const languages = props.data.map((data) => data[columnIndex]);
+    const {languages, allKeys, flatByLanguage} = props;
 
     const head =
         <TableHeader displaySelectAll={false}>
             <TableRow>
-                <TableHeaderColumn><FormattedMessage id='admin.intl.key' /></TableHeaderColumn>
-                {languages.map((lang) => <TableHeaderColumn key={lang}>{lang}</TableHeaderColumn>)}
+                {languages.map((lang) => <TableHeaderColumn key={lang}><FormattedMessage
+                    id={`language.${lang}`} /></TableHeaderColumn>)}
             </TableRow>
         </TableHeader>;
 
-    const flatByLanguage = languages.reduce((obj, lang, idx) => {
-        obj[lang] = omit(flattenObject(props.data[idx]), dontShow);
-        return obj;
-    }, {});
-
-    const allKeys = Object.values(flatByLanguage).reduce((arr, flatByLang) => {
-        arr.push.apply(arr, Object.keys(flatByLang));
-        return arr;
-    }, []).filter(onlyUnique);
-
     const rows = allKeys.map((key) =>
         <TableRow key={key} selectable={false}>
-            <TableRowColumn>{key}</TableRowColumn>
             {languages.map((lang) =>
                 <TableRowColumn key={lang}>
-                    <TextField
-                        defaultValue={flatByLanguage[lang][key]} onBlur={function (...args) {
-                            debugger;
-                            console.log(args);
+                    <Field
+                        onBlur={(event, newValue) => {
+                            if (newValue !== flatByLanguage[lang][key]) { props.handleSubmit(lang, key, newValue); }
                         }}
+                        name={`${lang}.${key}`}
+                        component={TextField}
+                        floatingLabelText={key}
                     />
                 </TableRowColumn>)}
         </TableRow>);
@@ -66,6 +61,46 @@ const AdminIntl = (props) => {
 };
 
 AdminIntl.propTypes = {
-    data: PropTypes.object,
+    data: PropTypes.arrayOf(PropTypes.object),
+    flatByLanguage: PropTypes.arrayOf(PropTypes.string),
+    languages: PropTypes.arrayOf(PropTypes.string),
+    allKeys: PropTypes.arrayOf(PropTypes.string),
 };
-export default AdminIntl;
+
+const mapStateToProps = (state, props) => {
+    const languages = props.data.map((data) => data[columnIndex]);
+    const flatByLanguage = languages.reduce((obj, lang, idx) => {
+        obj[lang] = omit(flattenObject(props.data[idx].messages), dontShow);
+        return obj;
+    }, {});
+
+    const allKeys = Object.values(flatByLanguage).reduce((arr, flatByLang) => {
+        arr.push.apply(arr, Object.keys(flatByLang));
+        return arr;
+    }, []).filter(onlyUnique).sort();
+
+    const initialValues = languages.reduce((obj, lang, idx) => {
+        obj[lang] = omit(props.data[idx].messages, dontShow);
+        return obj;
+    }, {});
+
+    return {
+        allKeys,
+        languages,
+        initialValues,
+        flatByLanguage,
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        handleSubmit: (lang, key, newValue) => dispatch(setAdminDataThunk('intl', lang, key, newValue)),
+    };
+};
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(reduxForm({
+    form: 'AdminIntl', // a unique name for this form
+})(AdminIntl));

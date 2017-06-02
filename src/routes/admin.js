@@ -1,4 +1,4 @@
-import controller, {getData} from '../controller/admin';
+import controller, { getData, setData } from '../controller/admin';
 import { restrictAdminUser } from '../controller/restrict';
 
 import { routes } from '../modules/routes';
@@ -14,8 +14,14 @@ export default (app) => {
         controller);
 
     app.get(
-      routes.admin.data,
+        routes.admin.data,
         restrictAdminUser,
-        getData
+        getData,
+    );
+
+    app.post(
+        routes.admin.data,
+        restrictAdminUser,
+        setData,
     );
 };

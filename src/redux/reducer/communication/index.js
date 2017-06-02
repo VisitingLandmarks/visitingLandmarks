@@ -1,3 +1,5 @@
+import deepMerge from 'deepmerge';
+
 import {
     REGISTER,
     REGISTER_FAILURE,
@@ -44,6 +46,12 @@ import {
     ADMIN_DATA_GET_SUCCESS,
     gettingAdminData,
 } from '../../action/thunk/getAdminData';
+
+import {
+    ADMIN_DATA_SET,
+    ADMIN_DATA_SET_SUCCESS,
+    settingAdminData,
+} from '../../action/thunk/setAdminData';
 
 import initialState from './initialState';
 import omit from 'lodash/omit';
@@ -174,16 +182,42 @@ export default (oldState = initialState, action) => {
                 ...oldState,
                 [gettingAdminData]: {
                     ...oldState[gettingAdminData],
-                    [action.modelName]: true,
+                    [action.modelName]: {[inProgress]: true},
                 },
             };
         }
 
-        case LOCATIONS_VISIT_SUCCESS: {
+        case ADMIN_DATA_GET_SUCCESS: {
             return {
                 ...oldState,
-                [gettingAdminData]: omit(oldState[gettingAdminData], action.modelName),
+                [gettingAdminData]: {
+                    ...oldState[gettingAdminData],
+                    [action.modelName]: {[success]: true},
+                },
             };
+        }
+
+        case ADMIN_DATA_SET: {
+            return deepMerge(oldState, {
+                [settingAdminData]: {
+                    [action.modelName]: {
+                        [action.locale]: {
+                            [action.key]: {[inProgress]: true},
+                        },
+                    },
+                },
+            });
+        }
+        case ADMIN_DATA_SET_SUCCESS: {
+            return deepMerge(oldState, {
+                [settingAdminData]: {
+                    [action.modelName]: {
+                        [action.locale]: {
+                            [action.key]: {[success]: true},
+                        },
+                    },
+                },
+            });
         }
 
         default: {

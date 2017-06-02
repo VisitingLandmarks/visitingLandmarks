@@ -19,6 +19,11 @@ import en from 'react-intl/locale-data/en';
 import de from 'react-intl/locale-data/de';
 addLocaleData([...en, ...de]);
 
+// Needed for onTouchTap
+// http://stackoverflow.com/a/34015469/988941
+import injectTapEventPlugin from 'react-tap-event-plugin';
+injectTapEventPlugin();
+
 export default (RouteDefinition, theme) => {
     let enhancer = applyMiddleware(thunk);
     if (window.devToolsExtension) {
