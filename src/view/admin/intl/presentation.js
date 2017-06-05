@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import flattenObject from '../../../modules/flattenObject';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import omit from 'lodash/omit';
 
 import {
@@ -16,8 +16,9 @@ import {
 } from 'material-ui/Table';
 import { TextField } from 'redux-form-material-ui';
 import { Field, reduxForm } from 'redux-form';
+import { success } from '../../../redux/reducer/communication';
 
-import setAdminDataThunk from '../../../redux/action/thunk/setAdminData';
+import setAdminDataThunk, { settingAdminData } from '../../../redux/action/thunk/setAdminData';
 
 const onlyUnique = (value, index, self) => self.indexOf(value) === index;
 
@@ -26,6 +27,7 @@ const dontShow = ['locale', '__v', '_id', 'updatedAt', 'createdAt'];
 
 const AdminIntl = (props) => {
     const {languages, allKeys, flatByLanguage} = props;
+    const {formatMessage} = props.intl;
 
     const head =
         <TableHeader displaySelectAll={false}>
@@ -34,7 +36,7 @@ const AdminIntl = (props) => {
                     id={`language.${lang}`} /></TableHeaderColumn>)}
             </TableRow>
         </TableHeader>;
-
+    console.log(props.communication);
     const rows = allKeys.map((key) =>
         <TableRow key={key} selectable={false}>
             {languages.map((lang) =>
@@ -45,7 +47,7 @@ const AdminIntl = (props) => {
                         }}
                         name={`${lang}.${key}`}
                         component={TextField}
-                        floatingLabelText={key}
+                        floatingLabelText={`${key} ${props.communication && props.communication[lang] && props.communication[lang][key + '.' + success] && formatMessage({id: 'admin.saved'}) || ''}`}
                     />
                 </TableRowColumn>)}
         </TableRow>);
@@ -61,10 +63,13 @@ const AdminIntl = (props) => {
 };
 
 AdminIntl.propTypes = {
+    communication: PropTypes.object,
     data: PropTypes.arrayOf(PropTypes.object),
-    flatByLanguage: PropTypes.arrayOf(PropTypes.string),
+    flatByLanguage: PropTypes.object,
     languages: PropTypes.arrayOf(PropTypes.string),
     allKeys: PropTypes.arrayOf(PropTypes.string),
+    intl: intlShape.isRequired,
+
 };
 
 const mapStateToProps = (state, props) => {
@@ -89,6 +94,11 @@ const mapStateToProps = (state, props) => {
         languages,
         initialValues,
         flatByLanguage,
+        communication: languages.reduce((obj, lang, idx) => {
+            obj[lang] = flattenObject(state.communication[settingAdminData] && state.communication[settingAdminData].intl && state.communication[settingAdminData].intl[lang] || {});
+            return obj;
+        }, {}),
+
     };
 };
 
@@ -103,4 +113,4 @@ export default connect(
     mapDispatchToProps,
 )(reduxForm({
     form: 'AdminIntl', // a unique name for this form
-})(AdminIntl));
+})(injectIntl(AdminIntl)));

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import Presentation from './presentation';
 import DataGetter from '../../dataGetter';
 
-import getAdminDataThunk from '../../../redux/action/thunk/getAdminData';
+import getAdminDataThunk, {gettingAdminData} from '../../../redux/action/thunk/getAdminData';
 
 class AdminIntl extends React.Component {
 
@@ -31,7 +31,7 @@ AdminIntl.propTypes = {
 const mapStateToProps = (state) => {
     return {
         data: state.data.admin && state.data.admin.intl,
-        state: state.communication.admin && state.communication.admin.intl,
+        state: state.communication[gettingAdminData] && state.communication[gettingAdminData].intl,
     };
 };
 
