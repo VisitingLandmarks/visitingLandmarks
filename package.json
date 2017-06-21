@@ -20,8 +20,8 @@
     "url": "https://github.com/VisitingLandmarks/visitingLandmarks/issues"
   },
   "engines": {
-    "node": "7.5.x",
-    "npm": "4.1.x"
+    "node": "7.10.x",
+    "npm": "4.2.x"
   },
   "homepage": "https://github.com/VisitingLandmarks/visitingLandmarks#readme",
   "dependencies": {
@@ -92,6 +92,8 @@
     "react-router-dom": "4.1.1",
     "react-tap-event-plugin": "2.0.1",
     "redux": "3.6.0",
+    "redux-form": "6.7.0",
+    "redux-form-material-ui": "4.2.0",
     "redux-thunk": "2.2.0",
     "request-promise-native": "1.0.3",
     "sass-loader": "6.0.3",

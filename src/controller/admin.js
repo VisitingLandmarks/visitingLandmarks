@@ -1,9 +1,7 @@
 import * as data from '../data';
-import serverSideView from '../view/entry/home/serverSide';
+import serverSideView from '../view/entry/admin/serverSide';
 
 import { loginSuccess } from '../redux/action/thunk/login';
-import { categoriesSet } from '../redux/action/categories';
-import { locationsSet } from '../redux/action/locations';
 import { intlSet } from '../redux/action/data';
 
 import { updateIntl } from 'react-intl-redux';
@@ -31,13 +29,22 @@ export default (req, res) => {
                 return data.getFlatIntlByLocale(user && user.preferences.locale || req.locale);
             })
                 .then((userIntl) => actions.push(updateIntl(userIntl))),
-
-            // application stuff
-            data.getAllCategories().then((categories) => actions.push(categoriesSet(categories))),
-            data.getAllLocations().then((locations) => actions.push(locationsSet(locations))),
-
         ])
             .then(() => react(req, res, actions, serverSideView));
     });
+};
+
+export const getData = (req, res) => {
+    data.Admin.getAll(req.params.model)
+        .then((data) => {
+            res.json(data);
+        });
+};
+
+export const setData = (req, res) => {
+    data.Admin.set(req.params.model, req.body.locale, req.body.key, req.body.value)
+        .then((data) => {
+            res.json(data);
+        });
 };
 

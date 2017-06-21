@@ -1,4 +1,5 @@
 const collectionName = 'Intl';
+import set from 'lodash/set';
 
 /**
  * returns a mongoose model representing a category
@@ -31,6 +32,22 @@ export default module.exports = function (mongoDB) {
                     obj[intl.locale] = intl.messages;
                     return obj;
                 }, {});
+            });
+    };
+
+    /**
+     * set a single translation
+     * @param locale
+     * @param key
+     * @param value
+     * @returns {Promise.<TResult>}
+     */
+    intlSchema.statics.set = (locale, key, value) => {
+        return IntlModel.findOne({locale}).exec()
+            .then((doc) => {
+                set(doc.messages, key, value);
+                doc.markModified(`messages.${key}`);
+                return doc.save();
             });
     };
 

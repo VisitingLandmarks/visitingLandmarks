@@ -3,6 +3,8 @@ import getMongoModel from './mongoDB';
 import flattenObject from '../modules/flattenObject';
 import { wrapPromise } from '../modules/logger';
 
+import * as AdminRepo from './admin';
+
 /**
  * a helper that ensures that no full-blown mongoose model leaves the data repository -> just plain objects
  * @param data
@@ -36,6 +38,8 @@ export const Location = getMongoModel('location');
 export const User = getMongoModel('user');
 const UserModel = getMongoModel('user');
 const ImageModel = getMongoModel('image');
+
+export const Admin = wrapAllMethodsOfObject('admin', AdminRepo);
 
 // caching is in the responsibility of the dataRepository
 const cache = {
@@ -202,8 +206,8 @@ export const user = wrapAllMethodsOfObject('user', {
     },
 
     isAdmin: (userId) => {
-        return UserModel.findById(userId, ['isAdmin']).exec()
-            .then((user) => user.isAdmin);
+        return UserModel.findById(userId, {isAdmin: 1}).exec()
+            .then((user) => !!user.isAdmin);
     },
 
     /**

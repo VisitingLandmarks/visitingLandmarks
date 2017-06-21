@@ -2,17 +2,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Route} from 'react-router-dom';
 
-import Home from './visitingLandmarks';
+import Home from '../../visitingLandmarks';
 
-import DialogChangePassword from './dialog/changePassword';
-import DialogResetPassword from './dialog/resetPassword';
-import DialogLogin from './dialog/login';
-import DialogProfile from './dialog/profile';
-import DialogRegister from './dialog/register';
+import DialogChangePassword from '../../dialog/changePassword';
+import DialogResetPassword from '../../dialog/resetPassword';
+import DialogLogin from '../../dialog/login';
+import DialogProfile from '../../dialog/profile';
+import DialogRegister from '../../dialog/register';
 
-import {routes} from '../modules/routes';
+import {routes} from '../../../modules/routes';
 
-import conditionalRoute from './conditionalRoute';
+import conditionalRoute from '../../conditionalRoute';
 
 const LoggedInRoute = conditionalRoute(routes.user.login, (store) => {
     return store.getState().session.user;
