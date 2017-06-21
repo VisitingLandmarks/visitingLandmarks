@@ -30,7 +30,7 @@ const AdminIntl = (props) => {
     const {formatMessage} = props.intl;
 
     const head =
-        <TableHeader displaySelectAll={false}>
+        <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
             <TableRow>
                 {languages.map((lang) => <TableHeaderColumn key={lang}><FormattedMessage
                     id={`language.${lang}`} /></TableHeaderColumn>)}
@@ -38,7 +38,7 @@ const AdminIntl = (props) => {
         </TableHeader>;
     console.log(props.communication);
     const rows = allKeys.map((key) =>
-        <TableRow key={key} selectable={false}>
+        <TableRow key={key}>
             {languages.map((lang) =>
                 <TableRowColumn key={lang}>
                     <Field
@@ -47,13 +47,14 @@ const AdminIntl = (props) => {
                         }}
                         name={`${lang}.${key}`}
                         component={TextField}
+                        fullWidth
                         floatingLabelText={`${key} ${props.communication && props.communication[lang] && props.communication[lang][key + '.' + success] && formatMessage({id: 'admin.saved'}) || ''}`}
                     />
                 </TableRowColumn>)}
         </TableRow>);
 
     return (
-        <Table>
+        <Table selectable={false}>
             {head}
             <TableBody stripedRows displayRowCheckbox={false}>
                 {rows}

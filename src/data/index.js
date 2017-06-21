@@ -39,7 +39,7 @@ export const User = getMongoModel('user');
 const UserModel = getMongoModel('user');
 const ImageModel = getMongoModel('image');
 
-export const Admin = wrapAllMethodsOfObject('boardstory', AdminRepo);
+export const Admin = wrapAllMethodsOfObject('admin', AdminRepo);
 
 // caching is in the responsibility of the dataRepository
 const cache = {
