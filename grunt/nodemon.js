@@ -13,13 +13,13 @@ module.exports = (grunt) => {
                 ],
 
                 // Piping the output through the bunyan binary to have a human readable output during development.
-                // Equivalent to "grunt nodemon | ./node_modules/bunyan/bin/bunyan"
+                // Equivalent to "grunt nodemon | ./node_modules/.bin/bunyan"
                 // taken from https://gist.github.com/ebourmalo/d3756bcd844c5eab7053
                 stdout: false,
                 callback: (nodemon) => {
                     nodemon.on('readable', function () {
                         const bunyan = grunt.util.spawn({
-                            cmd: './node_modules/bunyan/bin/bunyan',
+                            cmd: './node_modules/.bin/bunyan',
                             args: ['--output', 'short', '--color'],
                         }, () => {});
 

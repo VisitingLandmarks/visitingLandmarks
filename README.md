@@ -5,7 +5,7 @@ You can find the lateast stable build at http://visitinglandmarks.com
 Or install the mobile app at http://app.visitinglandmarks.com
 
 ## Run It
-1. Install node.js (>=7.0.0)
+1. Install node.js (>=8.0.0)
 2. Install grunt-cli 
 
     ```
